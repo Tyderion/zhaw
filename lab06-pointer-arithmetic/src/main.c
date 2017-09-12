@@ -22,7 +22,9 @@
  */
 void swap_char(char *a, char *b) {
 	// begin students to add code for task 4.1
-
+	char tmp = *a;
+	*a = *b;
+	*b = tmp;
 	// end students to add code
 }
 
@@ -32,8 +34,12 @@ void swap_char(char *a, char *b) {
  * @return             The passed buffer.
  */
 char *reverse(char buffer[]) {
+	size_t length = strlen(buffer);
 	// begin students to add code for task 4.1
-
+	for (size_t i = 0; i < length / 2; i++) {
+		swap_char(buffer+i, buffer+length-1-i);
+	}
+	
 	// end students to add code
 	return buffer;
 }
