@@ -15,6 +15,15 @@
 #include <stdlib.h>
 #include "date.h"
 
+bool valid_date(const Date* date) {
+	return true;
+}
+
+Date next_date(Date* date) {
+	Date new = { date->day+1, date->month, date->year };
+	return new;
+}
+
 /**
  * @brief Main entry point.
  * @param[in] argc  The size of the argv array.
