@@ -15,12 +15,12 @@ typedef struct {
  * @param[in] date the date to copmute the next of
  * @returns the next day
  */
- void next_day(Date date);
+ Date next_date(Date* date);
 
  /**
  * @brief   validates the given date
  * @param[in] date the date to validate
  * @returns true if the date is valid, false otherwise
  */
- bool valid_date(Date date);
+ bool valid_date(const Date* date);
  

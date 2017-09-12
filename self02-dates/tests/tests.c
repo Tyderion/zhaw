@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include "CUnit/Basic.h"
 #include "test_utils.h"
+#include "../src/date.h"
 
 #ifndef TARGET // must be given by the make file --> see test target
 #error missing TARGET define
@@ -24,11 +25,6 @@
 #define OUTFILE "stdout.txt"
 /// @brief The name of the STDERR text file.
 #define ERRFILE "stderr.txt"
-/// @brief The stimulus with a short sentence with 24 chars and 5 words
-#define INFILE_SHORT "stim-short-sentence.input"
-
-/// @brief The stimulus with a short sentence with 24 chars and 5 words with a tab as a seperator
-#define INFILE_SHORT_TAB "stim-short-sentence-tab.input"
 
 // setup & cleanup
 static int setup(void)
@@ -45,6 +41,268 @@ static int teardown(void)
 	return 0; // success
 }
 
+// tests
+static void test_next_date_simple(void)
+{
+	// arrange
+	Date date = { 1, Jan, 2000 };
+	// act
+	Date next = next_date(&date);
+	// assert
+	CU_ASSERT_EQUAL(next.day, 2);
+	CU_ASSERT_EQUAL(next.month, Jan);
+	CU_ASSERT_EQUAL(next.year, 2000);
+}
+
+static void test_next_date_end_of_jan(void)
+{
+	// arrange
+	Date date = { 31, Jan, 2000 };
+	// act
+	Date next = next_date(&date);
+	// assert
+	CU_ASSERT_EQUAL(next.day, 1);
+	CU_ASSERT_EQUAL(next.month, Feb);
+	CU_ASSERT_EQUAL(next.year, 2000);
+}
+
+static void test_next_date_end_of_june(void)
+{
+	// arrange
+	Date date = { 30, Jun, 2000 };
+	// act
+	Date next = next_date(&date);
+	// assert
+	CU_ASSERT_EQUAL(next.day, 1);
+	CU_ASSERT_EQUAL(next.month, Jul);
+	CU_ASSERT_EQUAL(next.year, 2000);
+}
+
+static void test_next_date_leap_year(void)
+{
+	// arrange
+	Date date = { 28, Feb, 2000 };
+	// act
+	Date next = next_date(&date);
+	// assert
+	CU_ASSERT_EQUAL(next.day, 29);
+	CU_ASSERT_EQUAL(next.month, Feb);
+	CU_ASSERT_EQUAL(next.year, 2000);
+}
+
+static void test_next_date_not_leap_year(void)
+{
+	// arrange
+	Date date = { 28, Feb, 2001 };
+	// act
+	Date next = next_date(&date);
+	// assert
+	CU_ASSERT_EQUAL(next.day, 1);
+	CU_ASSERT_EQUAL(next.month, Mar);
+	CU_ASSERT_EQUAL(next.year, 2001);
+}
+
+static void test_next_date_end_of_year(void)
+{
+	// arrange
+	Date date = { 31, Dec, 2001 };
+	// act
+	Date next = next_date(&date);
+	// assert
+	CU_ASSERT_EQUAL(next.day, 1);
+	CU_ASSERT_EQUAL(next.month, Jan);
+	CU_ASSERT_EQUAL(next.year, 2002);
+}
+
+
+static void test_valid_date_too_old(void)
+{
+	// arrange
+	Date date = { 31, Dec, 1582 };
+	// act
+	bool result = valid_date(&date);
+	// assert
+	CU_ASSERT_EQUAL(result, false);
+}
+
+static void test_valid_date_oldest(void)
+{
+	// arrange
+	Date date = { 1, Jan, 1582 };
+	// act
+	bool result = valid_date(&date);
+	// assert
+	CU_ASSERT_EQUAL(result, false);
+}
+
+static void test_valid_date_jan(void)
+{
+	// arrange
+	Date date_valid = { 31, Jan, 2000 };
+	Date date_invalid = { 32, Jan, 2000 };
+	// act
+	bool valid = valid_date(&date_valid);
+	bool invalid = valid_date(&date_invalid);
+	// assert
+	CU_ASSERT_EQUAL(valid, true);
+	CU_ASSERT_EQUAL(invalid, false);
+}
+
+static void test_valid_date_feb_no_leap(void)
+{
+	// arrange
+	Date date_valid = { 28, Feb, 1999 };
+	Date date_invalid = { 29, Jan, 1999 };
+	// act
+	bool valid = valid_date(&date_valid);
+	bool invalid = valid_date(&date_invalid);
+	// assert
+	CU_ASSERT_EQUAL(valid, true);
+	CU_ASSERT_EQUAL(invalid, false);
+}
+
+static void test_valid_date_feb_leap(void)
+{
+	// arrange
+	Date date_valid = { 29, Feb, 2000 };
+	Date date_invalid = { 30, Jan, 2000 };
+	// act
+	bool valid = valid_date(&date_valid);
+	bool invalid = valid_date(&date_invalid);
+	// assert
+	CU_ASSERT_EQUAL(valid, true);
+	CU_ASSERT_EQUAL(invalid, false);
+}
+
+static void test_valid_date_march(void)
+{
+	// arrange
+	Date date_valid = { 31, Mar, 2000 };
+	Date date_invalid = { 32, Mar, 2000 };
+	// act
+	bool valid = valid_date(&date_valid);
+	bool invalid = valid_date(&date_invalid);
+	// assert
+	CU_ASSERT_EQUAL(valid, true);
+	CU_ASSERT_EQUAL(invalid, false);
+}
+
+static void test_valid_date_april(void)
+{
+	// arrange
+	Date date_valid = { 30, Apr, 2000 };
+	Date date_invalid = { 31, Apr, 2000 };
+	// act
+	bool valid = valid_date(&date_valid);
+	bool invalid = valid_date(&date_invalid);
+	// assert
+	CU_ASSERT_EQUAL(valid, true);
+	CU_ASSERT_EQUAL(invalid, false);
+}
+
+static void test_valid_date_may(void)
+{
+	// arrange
+	Date date_valid = { 31, May, 2000 };
+	Date date_invalid = { 32, May, 2000 };
+	// act
+	bool valid = valid_date(&date_valid);
+	bool invalid = valid_date(&date_invalid);
+	// assert
+	CU_ASSERT_EQUAL(valid, true);
+	CU_ASSERT_EQUAL(invalid, false);
+}
+
+static void test_valid_date_june(void)
+{
+	// arrange
+	Date date_valid = { 30, Jun, 2000 };
+	Date date_invalid = { 31, Jun, 2000 };
+	// act
+	bool valid = valid_date(&date_valid);
+	bool invalid = valid_date(&date_invalid);
+	// assert
+	CU_ASSERT_EQUAL(valid, true);
+	CU_ASSERT_EQUAL(invalid, false);
+}
+
+static void test_valid_date_july(void)
+{
+	// arrange
+	Date date_valid = { 31, Jul, 2000 };
+	Date date_invalid = { 32, Jul, 2000 };
+	// act
+	bool valid = valid_date(&date_valid);
+	bool invalid = valid_date(&date_invalid);
+	// assert
+	CU_ASSERT_EQUAL(valid, true);
+	CU_ASSERT_EQUAL(invalid, false);
+}
+
+static void test_valid_date_august(void)
+{
+	// arrange
+	Date date_valid = { 31, Aug, 2000 };
+	Date date_invalid = { 32, Aug, 2000 };
+	// act
+	bool valid = valid_date(&date_valid);
+	bool invalid = valid_date(&date_invalid);
+	// assert
+	CU_ASSERT_EQUAL(valid, true);
+	CU_ASSERT_EQUAL(invalid, false);
+}
+
+static void test_valid_date_september(void)
+{
+	// arrange
+	Date date_valid = { 30, Sep, 2000 };
+	Date date_invalid = { 31, Sep, 2000 };
+	// act
+	bool valid = valid_date(&date_valid);
+	bool invalid = valid_date(&date_invalid);
+	// assert
+	CU_ASSERT_EQUAL(valid, true);
+	CU_ASSERT_EQUAL(invalid, false);
+}
+
+static void test_valid_date_october(void)
+{
+	// arrange
+	Date date_valid = { 31, Oct, 2000 };
+	Date date_invalid = { 32, Oct, 2000 };
+	// act
+	bool valid = valid_date(&date_valid);
+	bool invalid = valid_date(&date_invalid);
+	// assert
+	CU_ASSERT_EQUAL(valid, true);
+	CU_ASSERT_EQUAL(invalid, false);
+}
+
+static void test_valid_date_november(void)
+{
+	// arrange
+	Date date_valid = { 30, Nov, 2000 };
+	Date date_invalid = { 31,Nov, 2000 };
+	// act
+	bool valid = valid_date(&date_valid);
+	bool invalid = valid_date(&date_invalid);
+	// assert
+	CU_ASSERT_EQUAL(valid, true);
+	CU_ASSERT_EQUAL(invalid, false);
+}
+
+static void test_valid_date_december(void)
+{
+	// arrange
+	Date date_valid = { 31, Dec, 2000 };
+	Date date_invalid = { 32, Dec, 2000 };
+	// act
+	bool valid = valid_date(&date_valid);
+	bool invalid = valid_date(&date_invalid);
+	// assert
+	CU_ASSERT_EQUAL(valid, true);
+	CU_ASSERT_EQUAL(invalid, false);
+}
 
 // tests
 static void test_wordcount_short_sentence(void)
@@ -56,7 +314,7 @@ static void test_wordcount_short_sentence(void)
 	 };
 	const char *err_txt[] = { };
 	// act
-	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_SHORT);
+	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE);
 	// assert
 	CU_ASSERT_EQUAL(exit_code, 0);
 	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
@@ -72,7 +330,7 @@ static void test_wordcount_short_sentence_tab(void)
 	 };
 	const char *err_txt[] = { };
 	// act
-	int exit_code = system(XSTR(TARGET) " some args here 1>" OUTFILE " 2>" ERRFILE " < " INFILE_SHORT_TAB);
+	int exit_code = system(XSTR(TARGET) " some args here 1>" OUTFILE " 2>" ERRFILE);
 	// assert
 	CU_ASSERT_EQUAL(exit_code, 0);
 	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
@@ -85,8 +343,27 @@ static void test_wordcount_short_sentence_tab(void)
 int main(void)
 {
 	// setup, run, teardown
-	TestMainBasic("Selbstudium 01  - Word Count", setup, teardown
-				  , test_wordcount_short_sentence
-				  , test_wordcount_short_sentence_tab
+	TestMainBasic("Selbstudium 02  - Dates", setup, teardown
+				  , test_next_date_simple
+				  , test_next_date_end_of_jan
+				  , test_next_date_leap_year
+				  , test_next_date_not_leap_year
+				  , test_next_date_end_of_year
+				  , test_next_date_end_of_june
+				  , test_valid_date_oldest
+				  , test_valid_date_too_old
+				  , test_valid_date_jan
+				  , test_valid_date_feb_no_leap
+				  , test_valid_date_feb_leap
+				  , test_valid_date_march
+				  , test_valid_date_april
+				  , test_valid_date_may
+				  , test_valid_date_june
+				  , test_valid_date_july
+				  , test_valid_date_august
+				  , test_valid_date_september
+				  , test_valid_date_october
+				  , test_valid_date_november
+				  , test_valid_date_december
 				  );
 }
