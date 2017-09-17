@@ -74,6 +74,49 @@ static void test_get_mark_minimal(void)
     CU_ASSERT_EQUAL(mark, One);
 }
 
+static void test_statistics_basic(void) {
+    int* grades[2] = {60, 40};
+    Statistic t = compute_statistics(
+        grades, 2, 60
+    );
+
+    CU_ASSERT_EQUAL(t.best_mark, 6);
+    CU_ASSERT_EQUAL(t.worst_mark, 4);
+    CU_ASSERT_EQUAL(t.num_students, 2);
+    CU_ASSERT_EQUAL(t.p6, 60);
+    CU_ASSERT_TRUE(t.average > 4.99);
+    CU_ASSERT_TRUE(t.average < 5.01);
+    CU_ASSERT_EQUAL(t.above_4, 2);
+    CU_ASSERT_EQUAL(t.distribution[0], 0);
+    CU_ASSERT_EQUAL(t.distribution[1], 0);
+    CU_ASSERT_EQUAL(t.distribution[2], 0);
+    CU_ASSERT_EQUAL(t.distribution[3], 1);
+    CU_ASSERT_EQUAL(t.distribution[4], 0);
+    CU_ASSERT_EQUAL(t.distribution[5], 1);
+}
+
+static void test_statistics_more_grades(void) {
+    const int num_students = 6;
+    int* grades[6] = {60, 43, 24, 25, 57, 77};
+    Statistic t = compute_statistics(
+        grades, num_students, 60
+    );
+
+    CU_ASSERT_EQUAL(t.best_mark, 6);
+    CU_ASSERT_EQUAL(t.worst_mark, 4);
+    CU_ASSERT_EQUAL(t.num_students, num_students);
+    CU_ASSERT_EQUAL(t.p6, 60);
+    CU_ASSERT_TRUE(t.average > 4.49);
+    CU_ASSERT_TRUE(t.average < 4.51);
+    CU_ASSERT_EQUAL(t.above_4, 2);
+    CU_ASSERT_EQUAL(t.distribution[0], 0);
+    CU_ASSERT_EQUAL(t.distribution[1], 1);
+    CU_ASSERT_EQUAL(t.distribution[2], 1);
+    CU_ASSERT_EQUAL(t.distribution[3], 1);
+    CU_ASSERT_EQUAL(t.distribution[4], 0);
+    CU_ASSERT_EQUAL(t.distribution[5], 1);
+}
+
 // static void test_date_main_invalid_leap(void)
 // {
 // 	// arrange
@@ -96,5 +139,13 @@ static void test_get_mark_minimal(void)
 int main(void)
 {
     // setup, run, teardown
-    TestMainBasic("Selbstudium 03  - Marks - Statistics", setup, teardown, test_get_mark_above_6, test_get_mark_exact_5, test_get_mark_round_down_5, test_get_mark_round_up_6, test_get_mark_minimal);
+    TestMainBasic("Selbstudium 03  - Marks - Statistics", setup, teardown
+        , test_get_mark_above_6
+        , test_get_mark_exact_5
+        , test_get_mark_round_down_5
+        , test_get_mark_round_up_6
+        , test_get_mark_minimal
+        , test_statistics_basic
+        , test_statistics_more_grades
+    );
 }
