@@ -68,9 +68,13 @@ Date next_date(const Date* date) {
  */
 int main(int argc, char* argv[])
 {
-	(void)printf("Please enter a date in the format 15.5.2007.\n");
+	(void)printf("Please enter a date in the format '15.5.2007'.\n");
 	int day, month, year;
-	scanf("%d.%d.%d", &day, &month, &year);
+	int successful = scanf("%d.%d.%d", &day, &month, &year);
+	if (successful != 3) {
+		(void)printf("Format wrong, please use the format 'day.month.year'.\n");
+		return 0;
+	}
 	Date date = { day, month, year };
 	if (!valid_date(&date)) {
 		(void)printf("The date '%d.%d.%d' is invalid.\n", day, month, year);

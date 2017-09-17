@@ -1,2 +1,2 @@
-Please enter a date in the format 15.5.2007.
-The date '29.2.2001' is invalid.
+Please enter a date in the format '15.5.2007'.
+Format wrong, please use the format 'day.month.year'.

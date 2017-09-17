@@ -29,6 +29,7 @@
 #define INFILE_VALID_DATE_SIMPLE "stim-valid-date-simple.input"
 #define INFILE_VALID_DATE_INVALID_LEAP "stim-valid-date-invalid-leap.input"
 #define INFILE_VALID_DATE_INVALID_AGE "stim-valid-date-invalid-age.input"
+#define INFILE_VALID_DATE_INVALID_NO_DATE "stim-valid-date-invalid-no-date.input"
 
 // setup & cleanup
 static int setup(void)
@@ -313,7 +314,7 @@ static void test_date_main_valid(void)
 {
 	// arrange
 	const char *out_txt[] = { 
-		"Please enter a date in the format 15.5.2007.\n",
+		"Please enter a date in the format '15.5.2007'.\n",
 		"The date of the next day is: 2.1.2001.\n"
 	 };
 	const char *err_txt[] = { };
@@ -329,7 +330,7 @@ static void test_date_main_invalid_age(void)
 {
 	// arrange
 	const char *out_txt[] = { 
-		"Please enter a date in the format 15.5.2007.\n",
+		"Please enter a date in the format '15.5.2007'.\n",
 		"The date '1.1.1322' is invalid.\n"
 	 };
 	const char *err_txt[] = { };
@@ -345,12 +346,28 @@ static void test_date_main_invalid_leap(void)
 {
 	// arrange
 	const char *out_txt[] = { 
-		"Please enter a date in the format 15.5.2007.\n",
+		"Please enter a date in the format '15.5.2007'.\n",
 		"The date '29.2.2001' is invalid.\n"
 	 };
 	const char *err_txt[] = { };
 	// act
 	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_VALID_DATE_INVALID_LEAP);
+	// assert
+	CU_ASSERT_EQUAL(exit_code, 0);
+	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
+	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+}
+
+static void test_date_main_invalid_no_date_input(void)
+{
+	// arrange
+	const char *out_txt[] = { 
+		"Please enter a date in the format '15.5.2007'.\n",
+		"Format wrong, please use the format 'day.month.year'.\n"
+	 };
+	const char *err_txt[] = { };
+	// act
+	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_VALID_DATE_INVALID_NO_DATE);
 	// assert
 	CU_ASSERT_EQUAL(exit_code, 0);
 	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
@@ -388,5 +405,6 @@ int main(void)
 				  , test_date_main_valid
 				  , test_date_main_invalid_age
 				  , test_date_main_invalid_leap
+				  , test_date_main_invalid_no_date_input
 				  );
 }
