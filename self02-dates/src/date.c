@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include "date.h"
 
-static const int MONTHS_LENGTHS[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+static const int MONTHS_LENGTHS[Dec] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 
 static bool leap_year(int year) {
