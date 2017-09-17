@@ -48,35 +48,30 @@ static void test_get_mark_above_6(void)
 {
     Mark mark = get_mark(70, 60);
     CU_ASSERT_EQUAL(mark, Six);
-    
 }
 
 static void test_get_mark_exact_5(void)
 {
     Mark mark = get_mark(50, 60);
     CU_ASSERT_EQUAL(mark, Five);
-    
 }
 
 static void test_get_mark_round_up_6(void)
 {
     Mark mark = get_mark(55, 60);
     CU_ASSERT_EQUAL(mark, Six);
-    
 }
 
 static void test_get_mark_round_down_5(void)
 {
     Mark mark = get_mark(54, 60);
     CU_ASSERT_EQUAL(mark, Five);
-    
 }
 
 static void test_get_mark_minimal(void)
 {
     Mark mark = get_mark(0, 60);
     CU_ASSERT_EQUAL(mark, One);
-    
 }
 
 // static void test_date_main_invalid_leap(void)
