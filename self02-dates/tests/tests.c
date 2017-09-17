@@ -152,7 +152,7 @@ static void test_valid_date_feb_no_leap(void)
 {
 	// arrange
 	Date date_valid = { 28, Feb, 1999 };
-	Date date_invalid = { 29, Jan, 1999 };
+	Date date_invalid = { 29, Feb, 1999 };
 	// act
 	bool valid = valid_date(&date_valid);
 	bool invalid = valid_date(&date_invalid);
@@ -165,7 +165,7 @@ static void test_valid_date_feb_leap(void)
 {
 	// arrange
 	Date date_valid = { 29, Feb, 2000 };
-	Date date_invalid = { 30, Jan, 2000 };
+	Date date_invalid = { 30, Feb, 2000 };
 	// act
 	bool valid = valid_date(&date_valid);
 	bool invalid = valid_date(&date_invalid);

@@ -22,21 +22,28 @@ static bool leap_year(int year) {
 	return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
 }
 
-bool valid_date(const Date* date) {
-	return true;
-}
-
-static const int getMonthLenght(const Date* date) {
+static const int month_length(const Date* date) {
 	int length = MONTHS_LENGTHS[date->month-1];
-	if (Feb == date-> month && leap_year(date->year)) {
+	if (Feb == date->month && leap_year(date->year)) {
 		return length + 1;
 	}
 	return length;
 }
 
+static const bool valid_day(const Date* date) {
+	int length = month_length(date);
+	return date->day <= length;
+}
+
+bool valid_date(const Date* date) {
+	return date->year >= 1583 
+	&& date->month <= Dec
+	&& valid_day(date);
+}
+
 Date next_date(const Date* date) {
 	Date new = { date->day, date->month, date->year };
-	if (getMonthLenght(date) > date->day){
+	if (month_length(date) > date->day){
 		new.day++;
 	} else if (date->month != Dec) {
 		new.month++;
