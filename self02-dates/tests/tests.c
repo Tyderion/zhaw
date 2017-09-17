@@ -350,8 +350,6 @@ int main(void)
 				  , test_next_date_not_leap_year
 				  , test_next_date_end_of_year
 				  , test_next_date_end_of_june
-				  , test_valid_date_oldest
-				  , test_valid_date_too_old
 				  , test_valid_date_jan
 				  , test_valid_date_feb_no_leap
 				  , test_valid_date_feb_leap
