@@ -13,9 +13,14 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "marks.h"
 
-Mark get_mark(const int p, const int p6) {
+Mark get_mark(const int p, const int p6)
+{
+	double mark_raw = 1 + (5 * p) / (float)p6;
+	Mark rounded = floor(mark_raw);
+	return rounded;
 }
 
 /**
@@ -28,7 +33,6 @@ Mark get_mark(const int p, const int p6) {
  * @returns Returns EXIT_SUCCESS (=0) on success,
  *                  EXIT_FAILURE (=1) if more than one argument is given.
  */
- int main(int argc, char* argv[])
- {
-
- }
+int main(int argc, char *argv[])
+{
+}
