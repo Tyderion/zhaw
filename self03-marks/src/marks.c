@@ -23,6 +23,12 @@ Mark get_mark(const int p, const int p6)
 	return rounded;
 }
 
+Statistic compute_statistics(const int *const points, const int student_count, const int p6)
+{
+	Statistic statistic;
+	return statistic;
+}
+
 /**
  * @brief Main entry point.
  * @param[in] argc  The size of the argv array.
