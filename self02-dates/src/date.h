@@ -15,7 +15,7 @@ typedef struct {
  * @param[in] date the date to copmute the next of
  * @returns the next day
  */
- Date next_date(Date* date);
+ Date next_date(const Date* date);
 
  /**
  * @brief   validates the given date

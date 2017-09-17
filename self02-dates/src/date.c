@@ -15,12 +15,37 @@
 #include <stdlib.h>
 #include "date.h"
 
+static const int MONTHS_LENGTHS[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+
+static bool leap_year(int year) {
+	return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+}
+
 bool valid_date(const Date* date) {
 	return true;
 }
 
-Date next_date(Date* date) {
-	Date new = { date->day+1, date->month, date->year };
+static const int getMonthLenght(const Date* date) {
+	int length = MONTHS_LENGTHS[date->month-1];
+	if (Feb == date-> month && leap_year(date->year)) {
+		return length + 1;
+	}
+	return length;
+}
+
+Date next_date(const Date* date) {
+	Date new = { date->day, date->month, date->year };
+	if (getMonthLenght(date) > date->day){
+		new.day++;
+	} else if (date->month != Dec) {
+		new.month++;
+		new.day = 1;
+	} else {
+		new.month = Jan;
+		new.day = 1;
+		new.year++;
+	}
 	return new;
 }
 
