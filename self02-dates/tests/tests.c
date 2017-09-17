@@ -26,6 +26,10 @@
 /// @brief The name of the STDERR text file.
 #define ERRFILE "stderr.txt"
 
+#define INFILE_VALID_DATE_SIMPLE "stim-valid-date-simple.input"
+#define INFILE_VALID_DATE_INVALID_LEAP "stim-valid-date-invalid-leap.input"
+#define INFILE_VALID_DATE_INVALID_AGE "stim-valid-date-invalid-age.input"
+
 // setup & cleanup
 static int setup(void)
 {
@@ -305,32 +309,48 @@ static void test_valid_date_december(void)
 }
 
 // tests
-static void test_wordcount_short_sentence(void)
+static void test_date_main_valid(void)
 {
 	// arrange
 	const char *out_txt[] = { 
-		"Zeichen: 24\n",
-		"Wörter: 5\n"
+		"Please enter a date in the format 15.5.2007.\n",
+		"The date of the next day is: 2.1.2001.\n"
 	 };
 	const char *err_txt[] = { };
 	// act
-	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE);
+	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_VALID_DATE_SIMPLE);
 	// assert
 	CU_ASSERT_EQUAL(exit_code, 0);
 	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
 	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
 }
 
-static void test_wordcount_short_sentence_tab(void)
+static void test_date_main_invalid_age(void)
 {
 	// arrange
 	const char *out_txt[] = { 
-		"Zeichen: 35\n",
-		"Wörter: 7\n"
+		"Please enter a date in the format 15.5.2007.\n",
+		"The date '1.1.1322' is invalid.\n"
 	 };
 	const char *err_txt[] = { };
 	// act
-	int exit_code = system(XSTR(TARGET) " some args here 1>" OUTFILE " 2>" ERRFILE);
+	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_VALID_DATE_INVALID_AGE);
+	// assert
+	CU_ASSERT_EQUAL(exit_code, 0);
+	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
+	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+}
+
+static void test_date_main_invalid_leap(void)
+{
+	// arrange
+	const char *out_txt[] = { 
+		"Please enter a date in the format 15.5.2007.\n",
+		"The date '29.2.2001' is invalid.\n"
+	 };
+	const char *err_txt[] = { };
+	// act
+	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_VALID_DATE_INVALID_LEAP);
 	// assert
 	CU_ASSERT_EQUAL(exit_code, 0);
 	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
@@ -350,6 +370,8 @@ int main(void)
 				  , test_next_date_not_leap_year
 				  , test_next_date_end_of_year
 				  , test_next_date_end_of_june
+				  , test_valid_date_too_old
+				  , test_valid_date_oldest
 				  , test_valid_date_jan
 				  , test_valid_date_feb_no_leap
 				  , test_valid_date_feb_leap
@@ -363,5 +385,8 @@ int main(void)
 				  , test_valid_date_october
 				  , test_valid_date_november
 				  , test_valid_date_december
+				  , test_date_main_valid
+				  , test_date_main_invalid_age
+				  , test_date_main_invalid_leap
 				  );
 }
