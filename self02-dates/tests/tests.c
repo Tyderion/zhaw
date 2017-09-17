@@ -337,7 +337,7 @@ static void test_date_main_invalid_age(void)
 	// act
 	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_VALID_DATE_INVALID_AGE);
 	// assert
-	CU_ASSERT_EQUAL(exit_code, 0);
+	CU_ASSERT_NOT_EQUAL(exit_code, 0);
 	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
 	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
 }
@@ -353,7 +353,7 @@ static void test_date_main_invalid_leap(void)
 	// act
 	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_VALID_DATE_INVALID_LEAP);
 	// assert
-	CU_ASSERT_EQUAL(exit_code, 0);
+	CU_ASSERT_NOT_EQUAL(exit_code, 0);
 	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
 	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
 }
@@ -369,7 +369,7 @@ static void test_date_main_invalid_no_date_input(void)
 	// act
 	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_VALID_DATE_INVALID_NO_DATE);
 	// assert
-	CU_ASSERT_EQUAL(exit_code, 0);
+	CU_ASSERT_NOT_EQUAL(exit_code, 0);
 	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
 	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
 }

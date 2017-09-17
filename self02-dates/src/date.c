@@ -73,14 +73,15 @@ int main(int argc, char* argv[])
 	int successful = scanf("%d.%d.%d", &day, &month, &year);
 	if (successful != 3) {
 		(void)printf("Format wrong, please use the format 'day.month.year'.\n");
-		return 0;
+		return EXIT_FAILURE;
 	}
 	Date date = { day, month, year };
 	if (!valid_date(&date)) {
 		(void)printf("The date '%d.%d.%d' is invalid.\n", day, month, year);
+		return EXIT_FAILURE;
 	} else {
 		Date next = next_date(&date);
 		(void)printf("The date of the next day is: %d.%d.%d.\n", next.day, next.month, next.year);
+		return EXIT_SUCCESS;
 	}
-	return EXIT_SUCCESS;
 }
