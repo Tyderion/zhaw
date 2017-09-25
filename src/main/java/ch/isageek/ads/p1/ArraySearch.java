@@ -12,7 +12,7 @@ public class ArraySearch {
         return KEY_NOT_FOUND;
     }
 
-    public static long binarySearch(int[] array, int key) {
+    public static int binarySearch(int[] array, int key) {
         int start = 0, end = array.length - 1;
 
         while (start <= end) {
@@ -25,7 +25,6 @@ public class ArraySearch {
                 end = index-1;
             }
         }
-
         return KEY_NOT_FOUND;
     }
 }
