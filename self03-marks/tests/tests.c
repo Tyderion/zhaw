@@ -64,7 +64,7 @@ static void test_get_mark_round_up_6(void)
 
 static void test_get_mark_round_down_5(void)
 {
-    Mark mark = get_mark(54, 60);
+    Mark mark = get_mark(53, 60);
     CU_ASSERT_EQUAL(mark, Five);
 }
 
@@ -75,7 +75,7 @@ static void test_get_mark_minimal(void)
 }
 
 static void test_statistics_basic(void) {
-    int* grades[2] = {60, 40};
+    const int const grades[2] = {60, 40};
     Statistic t = compute_statistics(
         grades, 2, 60
     );
@@ -97,25 +97,26 @@ static void test_statistics_basic(void) {
 
 static void test_statistics_more_grades(void) {
     const int num_students = 6;
-    int* grades[6] = {60, 43, 24, 25, 57, 77};
+    const int const grades[6] = {60, 41, 15, 25, 57, 77};
     Statistic t = compute_statistics(
         grades, num_students, 60
     );
 
     CU_ASSERT_EQUAL(t.best_mark, 6);
-    CU_ASSERT_EQUAL(t.worst_mark, 4);
+    CU_ASSERT_EQUAL(t.worst_mark, 2);
     CU_ASSERT_EQUAL(t.num_students, num_students);
     CU_ASSERT_EQUAL(t.p6, 60);
     CU_ASSERT_TRUE(t.average > 4.49);
     CU_ASSERT_TRUE(t.average < 4.51);
-    CU_ASSERT_EQUAL(t.above_4, 2);
+    CU_ASSERT_EQUAL(t.above_4, 4);
     CU_ASSERT_EQUAL(t.distribution[0], 0);
     CU_ASSERT_EQUAL(t.distribution[1], 1);
     CU_ASSERT_EQUAL(t.distribution[2], 1);
     CU_ASSERT_EQUAL(t.distribution[3], 1);
     CU_ASSERT_EQUAL(t.distribution[4], 0);
-    CU_ASSERT_EQUAL(t.distribution[5], 1);
+    CU_ASSERT_EQUAL(t.distribution[5], 3);
 }
+
 
 // static void test_date_main_invalid_leap(void)
 // {

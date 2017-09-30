@@ -13,7 +13,7 @@ typedef struct
 {
     int num_students, p6, best_mark, worst_mark, above_4;
     double average;
-    int *distribution[6];
+    int distribution[6];
 } Statistic;
 
 /**
