@@ -2,7 +2,7 @@
 TARGET        := bin/marks
 
 # implementation files
-SOURCES       := src/marks.c
+SOURCES       := src/main.c src/marks.c 
 
 # test implementations
 TSTSOURCES    := tests/tests.c
@@ -32,7 +32,7 @@ CFLAGS        = -std=c99 -Wall -g
 CPPFLAGS      = -MD -Isrc -Itests -I$(TSTINCDIR) -I$(CUNITINCDIR) -DTARGET=$(FULLTARGET)
 LDFLAGS       = -static -z muldefs
 
-# targets which get always visited (without checking any up-to-date state)
+# targets which get always visited (wdithout checking any up-to-date state)
 .PHONY: default clean test doc mkdir
 
 # targets

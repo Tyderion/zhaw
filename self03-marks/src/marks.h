@@ -32,3 +32,9 @@ Mark get_mark(const int p, const int p6);
  * @returns statistic about this class
  */
 Statistic compute_statistics(const int *const points, const int student_count, const int p6);
+
+/**
+ * @brief computes statistics for the students
+ * @param[in] statistic the statistic to print to stout
+ */
+void print_statistic(Statistic statistic);    
