@@ -77,6 +77,12 @@ void print_statistic(Statistic statistic) {
 	printf("--------------------------------------------------------\n");
 }
 
+
+void flush_stdin() {
+	char c;
+	while ((c = getchar()) != '\n' && c != EOF) { }	
+}
+
 /**
  * @brief Main entry point.
  * @param[in] argc  The size of the argv array.
@@ -93,8 +99,13 @@ void print_statistic(Statistic statistic) {
 	 int grade;
 	 int count = 0;
 	 while (true) {
-		printf("Please enter the next grade. Enter -1 to end entering grades.\n");
-		scanf("%d", &grade);
+		printf("Please enter the next score. Enter -1 to end entering scores.\n");
+		int scanned = scanf("%d", &grade);
+		if (scanned != 1) {
+			printf("Please enter numbers for the scores.\n");
+			flush_stdin();
+			continue;
+		}
 		if (grade == -1) {
 			break;
 		}
@@ -105,10 +116,15 @@ void print_statistic(Statistic statistic) {
 		grades[count] = grade;
 		count ++;
 	 }
-	 int p6;
-	 printf("Please enter the minimal points for grade 6\n");
-	 scanf("%d", &p6);
+	 if (count > 0) {
+		int p6;
+		printf("Please enter the minimal points for grade 6\n");
+		scanf("%d", &p6);
 
-	 Statistic statistic = compute_statistics(grades, count, p6);
-	 print_statistic(statistic);
+		Statistic statistic = compute_statistics(grades, count, p6);
+		print_statistic(statistic);
+	 } else {
+		 printf("No scores have been entered.\n");
+	 }
+	 return EXIT_SUCCESS;
  }

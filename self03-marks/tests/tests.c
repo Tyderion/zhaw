@@ -27,7 +27,8 @@
 /// @brief The name of the STDERR text file.
 #define ERRFILE "stderr.txt"
 
-#define INFILE "infile.input"
+#define INFILE_NO_ERROR "infile_no_error.input"
+#define INFILE_ERRORS "infile_errors.input"
 
 // setup & cleanup
 static int setup(void)
@@ -118,21 +119,63 @@ static void test_statistics_more_grades(void) {
 }
 
 
-// static void test_date_main_invalid_leap(void)
-// {
-// 	// arrange
-// 	const char *out_txt[] = {
-// 		"Please enter a date in the format '15.5.2007'.\n",
-// 		"The date '29.2.2001' is invalid.\n"
-// 	 };
-// 	const char *err_txt[] = { };
-// 	// act
-// 	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE);
-// 	// assert
-// 	CU_ASSERT_NOT_EQUAL(exit_code, 0);
-// 	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
-// 	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
-// }
+static void test_main_no_error(void)
+{
+	// arrange
+	const char *out_txt[] = {
+        "Please enter the next score. Enter -1 to end entering scores.\n",
+        "Please enter the next score. Enter -1 to end entering scores.\n",
+        "Please enter the next score. Enter -1 to end entering scores.\n",
+        "Please enter the next score. Enter -1 to end entering scores.\n",
+        "Please enter the next score. Enter -1 to end entering scores.\n",
+        "Please enter the next score. Enter -1 to end entering scores.\n",
+        "Please enter the next score. Enter -1 to end entering scores.\n",
+        "Please enter the minimal points for grade 6\n",
+		"--------------------------------------------------------\n",
+        "Statistics (6 students, 60 points for mark 6.\n",
+        "\n",
+        "Grade 1: 0\n",
+        "Grade 2: 1\n",
+        "Grade 3: 1\n",
+        "Grade 4: 1\n",
+        "Grade 5: 0\n",
+        "Grade 6: 3\n",
+        "\n",
+        "Best Mark: 6\n",
+        "Worst Mark: 2\n",
+        "Average: 4.500000\n",
+        "Mark >= 4: 4 students (67%)\n",
+        "--------------------------------------------------------\n"
+	 };
+	const char *err_txt[] = { };
+	// act
+	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_NO_ERROR);
+	// assert
+	CU_ASSERT_EQUAL(exit_code, 0);
+	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
+	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+}
+
+static void test_main_errors(void)
+{
+	// arrange
+	const char *out_txt[] = {
+        "Please enter the next score. Enter -1 to end entering scores.\n",
+        "Please enter numbers for the scores.\n",
+        "Please enter the next score. Enter -1 to end entering scores.\n",
+        "Students cannot score negative points.\n",
+        "Please enter positive numbers or -1 to abort.\n",
+        "Please enter the next score. Enter -1 to end entering scores.\n",
+        "No scores have been entered.\n"
+	 };
+	const char *err_txt[] = { };
+	// act
+	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_ERRORS);
+	// assert
+	CU_ASSERT_EQUAL(exit_code, 0);
+	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
+	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+}
 
 /**
   * @brief Registers and runs the tests.
@@ -148,5 +191,7 @@ int main(void)
         , test_get_mark_minimal
         , test_statistics_basic
         , test_statistics_more_grades
+        , test_main_no_error
+        //, test_main_errors
     );
 }
