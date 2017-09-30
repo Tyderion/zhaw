@@ -1,0 +1,2 @@
+Please enter a date in the format '15.5.2007'.
+Format wrong, please use the format 'day.month.year'.
