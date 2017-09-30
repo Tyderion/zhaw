@@ -1,0 +1,7 @@
+Please enter the next score. Enter -1 to end entering scores.
+Please enter numbers for the scores.
+Please enter the next score. Enter -1 to end entering scores.
+Students cannot score negative points.
+Please enter positive numbers or -1 to abort.
+Please enter the next score. Enter -1 to end entering scores.
+No scores have been entered.

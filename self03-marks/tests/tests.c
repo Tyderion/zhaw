@@ -192,6 +192,6 @@ int main(void)
         , test_statistics_basic
         , test_statistics_more_grades
         , test_main_no_error
-        //, test_main_errors
+        , test_main_errors
     );
 }
