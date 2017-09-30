@@ -79,6 +79,7 @@ void print_statistic(Statistic statistic) {
 
 
 void flush_stdin() {
+	// Flushing stdin: https://stackoverflow.com/questions/7898215/how-to-clear-input-buffer-in-c
 	char c;
 	while ((c = getchar()) != '\n' && c != EOF) { }	
 }
@@ -103,6 +104,7 @@ void flush_stdin() {
 		int scanned = scanf("%d", &grade);
 		if (scanned != 1) {
 			printf("Please enter numbers for the scores.\n");
+			// We need to flush stdin because the entered string is not cleared when scanf can't parse the input.
 			flush_stdin();
 			continue;
 		}
