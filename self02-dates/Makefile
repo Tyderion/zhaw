@@ -2,7 +2,7 @@
 TARGET        := bin/next-date
 
 # implementation files
-SOURCES       := src/date.c
+SOURCES       := src/main.c src/date.c
 
 # test implementations
 TSTSOURCES    := tests/tests.c
