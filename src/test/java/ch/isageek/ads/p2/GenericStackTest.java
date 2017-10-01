@@ -3,6 +3,7 @@ package ch.isageek.ads.p2;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
@@ -57,5 +58,28 @@ public class GenericStackTest {
 
         assertEquals(value, decimalStack.pop());
         assertTrue(decimalStack.isEmpty());
+    }
+
+    @Test
+    public void shouldGrowStore() {
+        for (int i = 0; i < 15; i++) {
+            stack.push(String.valueOf(i));
+        }
+        assertFalse(stack.isEmpty());
+        assertEquals(String.valueOf(14), stack.top());
+    }
+
+    @Test
+    public void shouldShrinkStore() throws Exception {
+        for (int i = 0; i < 15; i++) {
+            stack.push(String.valueOf(i));
+        }
+        for (int i = 0; i < 15; i++) {
+            stack.pop();
+        }
+        Field storeF = GenericStack.class.getDeclaredField("store");
+        storeF.setAccessible(true);
+        Object[] store = (Object[]) storeF.get(stack);
+        assertEquals(10, store.length);
     }
 }
