@@ -61,12 +61,16 @@ public class GenericStackTest {
     }
 
     @Test
-    public void shouldGrowStore() {
+    public void shouldGrowStore() throws Exception {
         for (int i = 0; i < 15; i++) {
             stack.push(String.valueOf(i));
         }
         assertFalse(stack.isEmpty());
         assertEquals(String.valueOf(14), stack.top());
+        Field storeF = GenericStack.class.getDeclaredField("store");
+        storeF.setAccessible(true);
+        Object[] store = (Object[]) storeF.get(stack);
+        assertEquals(20, store.length);
     }
 
     @Test

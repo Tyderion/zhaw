@@ -46,12 +46,16 @@ public class IntStackTest {
     }
 
     @Test
-    public void shouldGrowStore() {
+    public void shouldGrowStore() throws Exception{
         for (int i = 0; i < 15; i++) {
             stack.push(i);
         }
         assertFalse(stack.isEmpty());
         assertEquals(14, stack.top());
+        Field storeF = IntStack.class.getDeclaredField("store");
+        storeF.setAccessible(true);
+        int[] store = (int[]) storeF.get(stack);
+        assertEquals(20, store.length);
     }
 
     @Test
