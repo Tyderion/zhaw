@@ -24,12 +24,20 @@ public class GenericStack<T> implements GenericStackExercise<T> {
 	}
 
 	@Override
+    @SuppressWarnings("unchecked")
 	public T pop() {
-		return (T) store[--index];
+	    // This uncheck cast will always work because we have CompileTime TypeChecks for the generics.
+        // ArrayList#get is implemented very similarly.
+		T ele = (T) store[--index];
+		shrink();
+		return ele;
 	}
 
 	@Override
+    @SuppressWarnings("unchecked")
 	public T top() {
+        // This uncheck cast will always work because we have CompileTime TypeChecks for the generics.
+        // ArrayList#get is implemented very similarly.
 		return (T) store[index-1];
 	}
 
@@ -38,9 +46,23 @@ public class GenericStack<T> implements GenericStackExercise<T> {
 		return index == 0;
 	}
 
+    /**
+     * Grow the array to double the size
+     */
 	private void grow() {
 	    Object[] newStore = new Object[store.length * 2];
         System.arraycopy(store, 0, newStore, 0, store.length);
         store = newStore;
+    }
+
+    /**
+     * Shrink the array to half the size if the index is in the first third
+     */
+    private void shrink() {
+        if (index < store.length / 3) {
+            Object[] newStore = new Object[store.length / 2];
+            System.arraycopy(store, 0, newStore, 0, newStore.length);
+            store = newStore;
+        }
     }
 }
