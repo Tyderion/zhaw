@@ -2,12 +2,13 @@ package ch.isageek.ads.p1;
 
 import org.junit.Test;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
 public class ArraySearchComparisonTest {
-    private static int[] SIZES = {100, 1000, 10000, 100000, 500000, 1000000, 5000000, 10000000, 50000000, 100000000, 500000000, 1000000000};
+    private static int[] SIZES = {10, 10, 100, 1000, 10000, 100000, 500000, 1000000, 5000000, 10000000, 50000000, 100000000, 500000000, 1000000000};
 
 
     @Test
@@ -15,7 +16,7 @@ public class ArraySearchComparisonTest {
         List<Result> results = new ArrayList<>(SIZES.length);
 
         final int key = 500000;
-        boolean first = true;
+        boolean first = false;
         System.out.println("Size\tSequential\tBinary");
         for (int size : SIZES) {
             final Result result = new Result(size);
@@ -32,6 +33,7 @@ public class ArraySearchComparisonTest {
     }
 
     private long testSize(Execute operation) {
+        gc();
         long startTime = System.nanoTime();
         operation.execute();
         long endTime = System.nanoTime();
@@ -59,6 +61,19 @@ public class ArraySearchComparisonTest {
             sepC = "\t";
             sepS = "\t";
             return String.format("%d%s%d%s%d", itemCount, sepS, durationSequential, sepC, durationBinary);
+        }
+    }
+
+    /**
+     * This method guarantees that garbage collection is
+     * done unlike <code>{@link System#gc()}</code>
+     */
+    public static void gc() {
+        Object obj = new Object();
+        WeakReference ref = new WeakReference<Object>(obj);
+        obj = null;
+        while(ref.get() != null) {
+            System.gc();
         }
     }
 }
