@@ -40,11 +40,11 @@ public class MyLinkedList {
     }
 
 
-    public int getFirst() throws ListEmptyException {
+    public int getFirst()  throws ListEmptyException {
         if (isEmpty()) {
             throw new ListEmptyException();
         }
-        return this.head.getNext().getValue();
+        return getNode(0).getValue();
     }
 
     public int getLast() throws ListEmptyException {
@@ -58,9 +58,8 @@ public class MyLinkedList {
         return last.getValue();
     }
 
-    public void addFirst(int i) {
-        Node newNode = new Node(i, head.getNext());
-        head.setNext(newNode);
+    public void addFirst(int value) {
+        add(0, value);
     }
 
     public void addLast(int i) {
@@ -72,12 +71,17 @@ public class MyLinkedList {
         last.setNext(newNode);
     }
 
-    public void add(int i, int value) {
-
+    public void add(int index, int value) {
+        Node beforeInsert = head;
+        if (index > 0)  { // insert to head
+           beforeInsert = getNode(index-1);
+        }
+        Node newNode = new Node(value, beforeInsert.getNext());
+        beforeInsert.setNext(newNode);
     }
 
     public int get(int index) {
-        return 0;
+        return getNode(index).getValue();
     }
 
     public int size() {
@@ -113,10 +117,32 @@ public class MyLinkedList {
     }
 
     public int remove(int index) {
-        return 0;
+        if (index < 0) {
+            throw new IndexOutOfBoundsException("Cannot remove elements with negative indices.");
+        }
+        Node beforeRemoved = getNode(index - 1);
+        Node removed = beforeRemoved.getNext();
+        beforeRemoved.setNext(removed.getNext());
+        return removed.getValue();
     }
 
     public boolean isEmpty() {
         return this.head.getNext() == null;
+    }
+
+    private Node getNode(int index) {
+        if (index < 0) {
+            throw new IndexOutOfBoundsException("Cannot get elements with negative indices.");
+        }
+        int i = 0;
+        Node ithNode = head;
+        while (ithNode.getNext() != null && i <= index) {
+            ithNode = ithNode.getNext();
+            i++;
+        }
+        if (i < index) {
+            throw new IndexOutOfBoundsException("Cannot get after end of list");
+        }
+        return ithNode;
     }
 }
