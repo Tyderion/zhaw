@@ -2,6 +2,20 @@
 #include <stdlib.h>
 #include "date.h"
 
+/* ----------------------------------------------------------------------------
+ * --  _____       ______  _____                                              -
+ * -- |_   _|     |  ____|/ ____|                                             -
+ * --   | |  _ __ | |__  | (___    Institute of Embedded Systems              -
+ * --   | | | '_ \|  __|  \___ \   Zuercher Hochschule Winterthur             -
+ * --  _| |_| | | | |____ ____) |  (University of Applied Sciences)           -
+ * -- |_____|_| |_|______|_____/   8401 Winterthur, Switzerland               -
+ * ----------------------------------------------------------------------------
+ */
+/**
+ * @file
+ * @brief Main Entry point wiht the main functino which gets called when the program is executed.
+ */
+
 /**
  * @brief Main entry point.
  * @param[in] argc  The size of the argv array.

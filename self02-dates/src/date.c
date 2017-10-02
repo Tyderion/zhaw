@@ -9,7 +9,7 @@
  */
 /**
  * @file
- * @brief Lab implementation
+ * @brief Implementation File, See documentation in header.
  */
 #include <stdio.h>
 #include <stdlib.h>
