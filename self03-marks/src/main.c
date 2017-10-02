@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "marks.h"
-
+/**
+ * @file
+ * @brief Main Entry point wiht the main functino which gets called when the program is executed.
+ */
+/**
+ * @brief Flushes standard input so that no more characters are stored in the buffer
+*/
 void flush_stdin() {
 	// Flushing stdin: https://stackoverflow.com/questions/7898215/how-to-clear-input-buffer-in-c
 	char c;

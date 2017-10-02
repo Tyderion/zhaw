@@ -27,7 +27,9 @@
 /// @brief The name of the STDERR text file.
 #define ERRFILE "stderr.txt"
 
+/// @brief The stimulus without any errors
 #define INFILE_NO_ERROR "infile_no_error.input"
+/// @brief The stimulus with errors
 #define INFILE_ERRORS "infile_errors.input"
 
 // setup & cleanup
