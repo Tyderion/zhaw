@@ -9,7 +9,7 @@
  */
 /**
  * @file
- * @brief Lab implementation
+ * @brief Implementation, see header file for docs.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,6 +17,11 @@
 #include <math.h>
 #include "sorting.h"
 
+/**
+ * @brief  swaps the pointers inplace
+ * @param[in] xp pointer x
+ * @param[in] yp pointer y
+ */
 void swap(char **xp, char **yp)
 {
    char* temp = *xp;
@@ -24,6 +29,11 @@ void swap(char **xp, char **yp)
    *yp = temp;
 }
 
+/**
+ * @brief  sorts the list inplace with a very simple bubblesort-like algorithm
+ * @param[in] wordlist the list of words to sort
+ * @param[in] n the size of the list to sort
+ */
 void bubbleSort(char* wordlist[], const size_t n) {
   int i, j;
   for (i = 0; i < n-1; i++)  {
@@ -35,18 +45,10 @@ void bubbleSort(char* wordlist[], const size_t n) {
 	}
 }
 
-/**
- * @brief   sorts the list in place
- * @param[in] wordlist the list to sort
- */
  void sort_wordlist(char* wordlist[100], const size_t length) {
 	 bubbleSort(wordlist, length);
  }
- 
- /**
-  * @brief   prints the wordlist to stdout
-  * @param[in] wordlist the list to print
-  */
+
  void print_wordlist(char* wordlist[100], const size_t length) {
 	 printf("Sorted:\n");
 	for (int i = 0; i < length; i++) {

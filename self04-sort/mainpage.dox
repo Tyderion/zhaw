@@ -1,17 +1,17 @@
 /**
- * @mainpage PROGC - Labs
+ * @mainpage PROGC - Selfstudy 04
  *
  * @section Purpose
  *
- * This is a PROGC lab <B>Hello World</B> source documentation.
+ * This is a PROGC selfstudy <B>Sorting Words</B> source documentation.
  *
  * @section Assignment
  *
- * This lab is provided to get acquainted with the development environment.
- * 
- * You may play around with the simple main program as well as add some more tests on your discretion.
+ * This program asks the user to input a list of unique words (with a maximum length of 30 characters).
+ * This list will then be sorted and printed.
  *
- * Run the lab by:
+ *
+ * Run the program by:
  *
  * @code
  * make clean; make; make doc; make test

@@ -26,8 +26,9 @@
 #define OUTFILE "stdout.txt"
 /// @brief The name of the STDERR text file.
 #define ERRFILE "stderr.txt"
-
+/// @brief The stimulus without any duplicate words
 #define INFILE_NO_DUPLICATES "infile_no_duplicates.input"
+/// @brief The stimulus with at least one duplicate
 #define INFILE_DUPLICATE "infile_duplicate.input"
 
 // setup & cleanup
