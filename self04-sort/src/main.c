@@ -38,7 +38,7 @@ void store(char* word, char** wordlist, const size_t index) {
 	size_t count = 0;
 	 char *wordlist[100];
 	 while (count < 100) {
-		 printf("Enter word (max 30chars):");
+		 printf("Enter word (max 30chars):\n");
 		 char word[30];
 		 scanf("%s", word);
 		 if (strcmp(word, "ZZZ") == 0) {

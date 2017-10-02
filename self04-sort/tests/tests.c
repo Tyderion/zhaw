@@ -27,8 +27,8 @@
 /// @brief The name of the STDERR text file.
 #define ERRFILE "stderr.txt"
 
-#define INFILE_NO_ERROR "infile_no_error.input"
-#define INFILE_ERRORS "infile_errors.input"
+#define INFILE_NO_DUPLICATES "infile_no_duplicates.input"
+#define INFILE_DUPLICATE "infile_duplicate.input"
 
 // setup & cleanup
 static int setup(void)
@@ -85,38 +85,25 @@ static void test_sort_list_3(void)
 
 
 
-/*
-static void test_main_no_error(void)
+
+static void test_main_no_duplicates(void)
 {
 	// arrange
 	const char *out_txt[] = {
-        "Please enter the next score. Enter -1 to end entering scores.\n",
-        "Please enter the next score. Enter -1 to end entering scores.\n",
-        "Please enter the next score. Enter -1 to end entering scores.\n",
-        "Please enter the next score. Enter -1 to end entering scores.\n",
-        "Please enter the next score. Enter -1 to end entering scores.\n",
-        "Please enter the next score. Enter -1 to end entering scores.\n",
-        "Please enter the next score. Enter -1 to end entering scores.\n",
-        "Please enter the minimal points for grade 6\n",
-		"--------------------------------------------------------\n",
-        "Statistics (6 students, 60 points for mark 6.\n",
-        "\n",
-        "Grade 1: 0\n",
-        "Grade 2: 1\n",
-        "Grade 3: 1\n",
-        "Grade 4: 1\n",
-        "Grade 5: 0\n",
-        "Grade 6: 3\n",
-        "\n",
-        "Best Mark: 6\n",
-        "Worst Mark: 2\n",
-        "Average: 4.500000\n",
-        "Mark >= 4: 4 students (67%)\n",
-        "--------------------------------------------------------\n"
+        "Enter word (max 30chars):\n",  
+        "Enter word (max 30chars):\n",
+        "Enter word (max 30chars):\n",
+        "Enter word (max 30chars):\n",
+        "Enter word (max 30chars):\n",
+        "Sorted:\n",
+        "a\n",
+        "b\n",
+        "c\n",
+        "d\n"
 	 };
 	const char *err_txt[] = { };
 	// act
-	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_NO_ERROR);
+	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_NO_DUPLICATES);
 	// assert
 	CU_ASSERT_EQUAL(exit_code, 0);
 	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
@@ -124,6 +111,32 @@ static void test_main_no_error(void)
 }
 
 
+static void test_main_duplicates(void)
+{
+	// arrange
+	const char *out_txt[] = {
+        "Enter word (max 30chars):\n",  
+        "Enter word (max 30chars):\n",
+        "Duplicate word a\n",
+        "Enter word (max 30chars):\n",
+        "Enter word (max 30chars):\n",
+        "Enter word (max 30chars):\n",
+        "Sorted:\n",
+        "a\n",
+        "c\n",
+        "d\n"
+	 };
+	const char *err_txt[] = { };
+	// act
+	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_DUPLICATE);
+	// assert
+	CU_ASSERT_EQUAL(exit_code, 0);
+	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
+	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+}
+
+
+/*
 static void test_main_errors(void)
 {
 	// arrange
@@ -156,5 +169,7 @@ int main(void)
         , test_sort_list_2
         , test_sort_list_3
         , test_sort_list_sorted
+        , test_main_no_duplicates
+        , test_main_duplicates
     );
 }

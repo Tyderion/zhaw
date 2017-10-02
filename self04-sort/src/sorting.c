@@ -48,7 +48,8 @@ void bubbleSort(char* wordlist[], const size_t n) {
   * @param[in] wordlist the list to print
   */
  void print_wordlist(char* wordlist[100], const size_t length) {
+	 printf("Sorted:\n");
 	for (int i = 0; i < length; i++) {
-		printf("word: %s\n", wordlist[i]);
+		printf("%s\n", wordlist[i]);
 	}
  }
