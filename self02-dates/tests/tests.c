@@ -26,9 +26,14 @@
 /// @brief The name of the STDERR text file.
 #define ERRFILE "stderr.txt"
 
+
+/// @brief The stimulus for a simple date
 #define INFILE_VALID_DATE_SIMPLE "stim-valid-date-simple.input"
+/// @brief The stimulus for an invalid date in a leap year
 #define INFILE_VALID_DATE_INVALID_LEAP "stim-valid-date-invalid-leap.input"
+/// @brief The stimulus for an invalid date because the year is out of range (too old)
 #define INFILE_VALID_DATE_INVALID_AGE "stim-valid-date-invalid-age.input"
+/// @brief The stimulus for an invalid date which is no date but a simple string.
 #define INFILE_VALID_DATE_INVALID_NO_DATE "stim-valid-date-invalid-no-date.input"
 
 // setup & cleanup

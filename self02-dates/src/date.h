@@ -1,12 +1,27 @@
 #include <stdbool.h>
 
+/**
+ * @brief Represents a Month
+*/
 typedef enum Months {
     Jan=1, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
 } Month;
 
+/**
+ * @brief Represents a date
+*/
 typedef struct {
+    /** 
+     *@brief represents the day in the month
+    */
     int day;
+    /** 
+     *@brief represents the month in the year
+    */
     Month month;
+    /** 
+     *@brief represents the year
+    */
     int year;
 } Date;
 
