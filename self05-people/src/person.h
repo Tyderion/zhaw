@@ -14,7 +14,7 @@ typedef struct
  * @param[in] person the person to convert to a string
  * @returns the string representation
  */
-char *person_toString(const Person *person);
+char *string_person(const Person *person);
 
 /**
  * @brief   compares two persons for sorting purposes
@@ -22,6 +22,6 @@ char *person_toString(const Person *person);
  * @param[in] length the length of the list
  * @returns 0 if both are equal, -1 if p1 is lexigraphically earlier than p2 and 1 if p1 is after p2
  */
-int compare(const Person *p1, const Person *p2);
+int compare_person(const Person *p1, const Person *p2);
 
 #endif /* PERSON_H */
