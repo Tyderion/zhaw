@@ -83,7 +83,7 @@ static void test_main_no_duplicates(void)
 int main(void)
 {
     // setup, run, teardown
-    TestMainBasic("Selbstudium 03  - Marks - Statistics", setup, teardown
+    TestMainBasic("Selbstudium 05  - Person Administration", setup, teardown
         //, test_sort_list
         //, test_main_no_duplicates
     );
