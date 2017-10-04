@@ -73,5 +73,5 @@ void store(char* word, char** wordlist, const size_t index) {
 		 }
 	 }
 	 sort_wordlist(wordlist, count);
-	 print_wordlist(wordlist, count);
+	 print_wordlist((char const * const *)wordlist, count);
  }

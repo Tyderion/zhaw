@@ -34,7 +34,7 @@ void swap(char **xp, char **yp)
  * @param[in] wordlist the list of words to sort
  * @param[in] n the size of the list to sort
  */
-void bubbleSort(char* wordlist[], const size_t n) {
+void bubbleSort(char** wordlist, const size_t n) {
   int i, j;
   for (i = 0; i < n-1; i++)  {
 	  for (j = i+1; j < n; j++) {
@@ -45,11 +45,11 @@ void bubbleSort(char* wordlist[], const size_t n) {
 	}
 }
 
- void sort_wordlist(char* wordlist[100], const size_t length) {
+ void sort_wordlist(char** wordlist, const size_t length) {
 	 bubbleSort(wordlist, length);
  }
 
- void print_wordlist(char* wordlist[100], const size_t length) {
+ void print_wordlist(const char* const * wordlist, const size_t length) {
 	 printf("Sorted:\n");
 	for (int i = 0; i < length; i++) {
 		printf("%s\n", wordlist[i]);

@@ -1,0 +1,10 @@
+Enter word (max 30chars):
+Enter word (max 30chars):
+Duplicate word a
+Enter word (max 30chars):
+Enter word (max 30chars):
+Enter word (max 30chars):
+Sorted:
+a
+c
+d
