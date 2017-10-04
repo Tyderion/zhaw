@@ -12,7 +12,7 @@
  * 
  *  - I: Insert Person
  *  - R: Remove Person
- *  - S: Print the list of all people on standard output
+ *  - S: Print the list of all people on standard output including their index
  *  - C: Clear saved people
  *  - E: End the program execution
  *

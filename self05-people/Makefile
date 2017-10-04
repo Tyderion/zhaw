@@ -2,7 +2,7 @@
 TARGET        := bin/manage
 
 # implementation files
-SOURCES       := src/main.c src/list.c
+SOURCES       := src/main.c src/list.c src/person.c
 
 # test implementations
 TSTSOURCES    := tests/tests.c

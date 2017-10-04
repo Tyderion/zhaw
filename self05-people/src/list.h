@@ -10,6 +10,8 @@ struct LE
     ListElement *next; // Pointer auf das nächstfolgende Element in der Liste.
 };
 
+ListElement le;
+
 /**
  * @brief   inserts a single person into the list
  * @param[in] person the person to insert
@@ -18,9 +20,9 @@ void insert_person(const Person *person);
 
 /**
  * @brief   removes the person at index index from he list
- * @param[in] person the person to remove from the list, all 3 properties (firstname, lastname, age) have to match
+ * @param[in] index the index of the person to remove
  */
-void remove_person(const Person *person);
+void remove_person(const int index);
 
 /**
  * @brief  clears the list and removes all registered Persons.

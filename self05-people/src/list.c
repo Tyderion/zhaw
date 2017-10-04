@@ -11,7 +11,7 @@ void insert_person(const Person *person)
   * @brief   removes the person at index index from he list
   * @param[in] person the person to remove from the list, all 3 properties (firstname, lastname, age) have to match
   */
-void remove_person(const Person *person)
+void remove_person(const int index)
 {
 }
 
@@ -21,3 +21,8 @@ void remove_person(const Person *person)
 void clear_people()
 {
 }
+
+
+ListElement le = {
+  next: &le
+};

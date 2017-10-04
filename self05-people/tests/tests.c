@@ -46,11 +46,113 @@ static int teardown(void)
     // Especially: do not remove result files - they are removed in int setup(void) *before* running a test.
     return 0; // success
 }
-/*
-static void test_sort_list(void)
+
+// Test person.h/person.c
+static void test_compare_person_simple(void)
 {
-     CU_ASSERT_EQUAL(list[2], "c");
+    Person p1 = {
+        "Hans", "Müller", 20};
+    Person p2 = {
+        "Hans",
+        "Meier",
+        20};
+    int comparison = compare_person(&p1, &p2);
+
+    CU_ASSERT_EQUAL(comparison, 1);
 }
+
+static void test_compare_person_equal(void)
+{
+    Person p1 = {
+        "Hans", "Müller", 20};
+    Person p2 = {
+        "Hans",
+        "Müller",
+        20};
+    int comparison = compare_person(&p1, &p2);
+
+    CU_ASSERT_EQUAL(comparison, 0);
+}
+
+static void test_compare_person_by_firstname(void)
+{
+    Person p1 = {
+        "Hans", "Müller", 20};
+    Person p2 = {
+        "Manuel",
+        "Müller",
+        20};
+    int comparison = compare_person(&p1, &p2);
+
+    CU_ASSERT_EQUAL(comparison, -1);
+}
+
+static void test_compare_person_by_age(void)
+{
+    Person p1 = {
+        "Manuel", "Müller", 21};
+    Person p2 = {
+        "Manuel",
+        "Müller",
+        20};
+    int comparison = compare_person(&p1, &p2);
+
+    CU_ASSERT_EQUAL(comparison, 1);
+}
+
+static void test_string_person(void)
+{
+    Person p = {
+        "Peter", "Muster", 20};
+    char *str = string_person(&p);
+    CU_ASSERT_EQUAL(str, "Muster Peter, 20");
+}
+
+// Test list.h/list.c
+static void test_empty_list(void)
+{
+    ListElement *next = le.next;
+    CU_ASSERT_EQUAL(next, &le);
+}
+
+static void test_insert_person(void)
+{
+    Person p = {
+        "Peter", "Muster", 20};
+    insert_person(&p);
+    Person inside = le.next->content;
+    CU_ASSERT_EQUAL(inside.firstname, p.firstname);
+    CU_ASSERT_EQUAL(inside.name, p.name);
+    CU_ASSERT_EQUAL(inside.age, p.age);
+}
+
+static void test_remove_person(void)
+{
+    Person p = {
+        "Peter", "Muster", 20};
+    insert_person(&p);
+    Person inside = le.next->content;
+    CU_ASSERT_EQUAL(inside.name, p.name);
+
+    remove_person(0);
+    CU_ASSERT_EQUAL(le.next, &le);
+}
+
+static void test_clear_people(void)
+{
+    Person p = {
+        "Peter", "Muster", 20};
+    insert_person(&p);
+
+    Person inside = le.next->content;
+    CU_ASSERT_EQUAL(inside.name, p.name);
+    clear_people();
+    CU_ASSERT_EQUAL(le.next, &le);
+}
+
+// Test main functionality
+// TODO
+/*
 
 static void test_main_no_duplicates(void)
 {
@@ -84,7 +186,14 @@ int main(void)
 {
     // setup, run, teardown
     TestMainBasic("Selbstudium 05  - Person Administration", setup, teardown
-        //, test_sort_list
-        //, test_main_no_duplicates
+        , test_compare_person_simple
+        , test_compare_person_by_firstname
+        , test_compare_person_equal
+        , test_compare_person_by_age
+        , test_empty_list
+        , test_insert_person
+        , test_string_person
+        , test_remove_person
+        , test_clear_people
     );
 }
