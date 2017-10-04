@@ -1,16 +1,7 @@
 #include <stdbool.h>
-/* ----------------------------------------------------------------------------
- * --  _____       ______  _____                                              -
- * -- |_   _|     |  ____|/ ____|                                             -
- * --   | |  _ __ | |__  | (___    Institute of Embedded Systems              -
- * --   | | | '_ \|  __|  \___ \   Zuercher Hochschule Winterthur             -
- * --  _| |_| | | | |____ ____) |  (University of Applied Sciences)           -
- * -- |_____|_| |_|______|_____/   8401 Winterthur, Switzerland               -
- * ----------------------------------------------------------------------------
- */
 /**
  * @file
- * @brief Header FIle with date definitions and function defintions.
+ * @brief Header File with Date definitions and Function defintions.
  */
 
 /**
