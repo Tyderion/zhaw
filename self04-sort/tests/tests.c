@@ -165,7 +165,7 @@ static void test_main_errors(void)
 int main(void)
 {
     // setup, run, teardown
-    TestMainBasic("Selbstudium 03  - Marks - Statistics", setup, teardown
+    TestMainBasic("Selbstudium 04 - Sorting", setup, teardown
         , test_sort_list
         , test_sort_list_2
         , test_sort_list_3
