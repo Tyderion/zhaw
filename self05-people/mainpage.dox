@@ -1,0 +1,27 @@
+/**
+ * @mainpage PROGC - Selfstudy 05
+ *
+ * @section Purpose
+ *
+ * This is a PROGC selfstudy <B>Person Administration</B> source documentation.
+ *
+ * @section Assignment
+ *
+ * This program implements a simple program to administer people.
+ * It offers the following operations:
+ * 
+ *  - I: Insert Person
+ *  - R: Remove Person
+ *  - S: Print the list of all people on standard output
+ *  - C: Clear saved people
+ *  - E: End the program execution
+ *
+ * 
+ * Run the program by:
+ *
+ * @code
+ * make clean; make; make doc; make test
+ * @endcode
+ *
+ * The executable program is located in the bin folder: bin/manage
+ */
