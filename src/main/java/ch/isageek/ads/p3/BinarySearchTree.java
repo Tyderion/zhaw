@@ -1,5 +1,9 @@
 package ch.isageek.ads.p3;
 
+/**
+ * A Binary Search tree, does not support duplicate items
+ * @param <T> The type of the elements
+ */
 public class BinarySearchTree<T extends Comparable<T>> extends BinaryTree<T> {
 
     public BinarySearchTree() {
@@ -21,6 +25,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends BinaryTree<T> {
 
     /**
      * Finds an element in the binary tree
+     *
      * @param element The element to find
      * @return the found element or null if not in the tree
      */
@@ -46,16 +51,14 @@ public class BinarySearchTree<T extends Comparable<T>> extends BinaryTree<T> {
     }
 
     private T findRecursively(T element, TreeNode<T> node) {
-        if (element.equals(node.getElement())) {
+        if (node == null) {
+            return null;
+        } else if (element.equals(node.getElement())) {
             return node.getElement();
-        }
-        if (element.compareTo(node.getElement()) > 0) {
+        } else if (element.compareTo(node.getElement()) > 0) {
             return findRecursively(element, node.getRight());
-        }
-
-        if (element.compareTo(node.getElement()) < 0) {
+        } else {
             return findRecursively(element, node.getLeft());
         }
-        return null;
     }
 }

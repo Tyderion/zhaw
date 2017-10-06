@@ -5,9 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 public class BinarySearchTreeTest {
@@ -69,6 +67,42 @@ public class BinarySearchTreeTest {
         assertNotNull(foundElement);
         assertEquals(c5, foundElement);
         assertNotEquals(searchValue.getCity(), foundElement.getCity());
+    }
+
+    @Test
+    public void testFindNonexistingElementInBiggerTree() throws Exception {
+        Competitor c1 = createCompetitor("A");
+        Competitor c2 = createCompetitor("B");
+        Competitor c3 = createCompetitor("C");
+        Competitor c4 = createCompetitor("D");
+        Competitor c5 = createCompetitor("E");
+        Competitor c6 = createCompetitor("F");
+        Competitor c7 = createCompetitor("G");
+        Competitor c8 = createCompetitor("H");
+        Competitor searchValue = createCompetitor("L", "NOT EMPTY");
+
+        BinarySearchTree<Competitor> tree = new BinarySearchTree<>();
+        tree.add(c2);
+        tree.add(c1);
+        tree.add(c8);
+        tree.add(c4);
+        tree.add(c5);
+        tree.add(c3);
+        tree.add(c7);
+        tree.add(c6);
+        Competitor foundElement = tree.find(searchValue);
+
+        assertNull(foundElement);
+    }
+
+    @Test
+    public void testFindInEmptyTree() throws Exception {
+        BinarySearchTree<Competitor> tree = new BinarySearchTree<>();
+        Competitor searchValue = createCompetitor("L", "NOT EMPTY");
+
+        Competitor foundElement = tree.find(searchValue);
+
+        assertNull(foundElement);
     }
 
 
