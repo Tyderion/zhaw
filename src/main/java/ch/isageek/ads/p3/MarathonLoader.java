@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.stream.Stream;
 
-public class Marathon {
+public class MarathonLoader {
 
     private final static String FILENAME = "zuerich_marathon_utf8.csv";
 
