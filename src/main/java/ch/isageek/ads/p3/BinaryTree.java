@@ -1,19 +1,16 @@
 package ch.isageek.ads.p3;
 
 import java.util.ArrayList;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class BinaryTree<T extends Comparable<T>> {
 
     private TreeNode<T> root;
 
-    public BinaryTree(T value) {
+    public BinaryTree(final T value) {
         root = new TreeNode<>(value);
     }
 
     public BinaryTree() {
-        root = new TreeNode<>(null);
     }
 
     public ArrayList<T> traversePostorder() {
@@ -50,14 +47,14 @@ public class BinaryTree<T extends Comparable<T>> {
         });
     }
 
-    private ArrayList<T> traverse(TreeNode<T> root, TraverseOperation<T> op) {
-        if (root.getElement() == null) {
+    private ArrayList<T> traverse(final TreeNode<T> root, final TraverseOperation<T> op) {
+        if (root == null) {
             return new ArrayList<>();
         }
-        TreeNode<T> left = root.getLeft();
-        TreeNode<T> right = root.getRight();
-        ArrayList<T> leftTraversal = left == null ? new ArrayList<>(0) : traverse(left, op);
-        ArrayList<T> rightTraversal = right == null ? new ArrayList<>(0) : traverse(right, op);
+        final TreeNode<T> left = root.getLeft();
+        final TreeNode<T> right = root.getRight();
+        final ArrayList<T> leftTraversal = left == null ? new ArrayList<>(0) : traverse(left, op);
+        final ArrayList<T> rightTraversal = right == null ? new ArrayList<>(0) : traverse(right, op);
 
         return op.combine(root.getElement(), leftTraversal, rightTraversal);
     }
@@ -66,13 +63,13 @@ public class BinaryTree<T extends Comparable<T>> {
         return root;
     }
 
-    public void setRoot(TreeNode<T> root) {
+    public void setRoot(final TreeNode<T> root) {
         this.root = root;
     }
 
 
     @FunctionalInterface
     interface TraverseOperation<T> {
-        ArrayList<T> combine(T node, ArrayList<T> left, ArrayList<T> right);
+        ArrayList<T> combine(final T node, final ArrayList<T> left, final ArrayList<T> right);
     }
 }
