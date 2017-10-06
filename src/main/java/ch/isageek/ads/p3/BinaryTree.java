@@ -1,6 +1,8 @@
 package ch.isageek.ads.p3;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class BinaryTree<T extends Comparable<T>> {
 
@@ -24,7 +26,19 @@ public class BinaryTree<T extends Comparable<T>> {
     }
 
     public ArrayList<T> traverseLevelorder() {
-        return new ArrayList<>();
+        final Queue<TreeNode<T>> queue = new LinkedList<>();
+        queue.add(root);
+        final ArrayList<T> traversal = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            final TreeNode<T> node = queue.poll();
+            if (node != null) {
+                traversal.add(node.getElement());
+                queue.add(node.getLeft());
+                queue.add(node.getRight());
+            }
+        }
+
+        return traversal;
     }
 
     public ArrayList<T> traversePreorder() {
@@ -47,16 +61,14 @@ public class BinaryTree<T extends Comparable<T>> {
         });
     }
 
-    private ArrayList<T> traverse(final TreeNode<T> root, final TraverseOperation<T> op) {
+    private ArrayList<T> traverse(final TreeNode<T> root, final TraverseOrder<T> traverseOrder) {
         if (root == null) {
             return new ArrayList<>();
         }
-        final TreeNode<T> left = root.getLeft();
-        final TreeNode<T> right = root.getRight();
-        final ArrayList<T> leftTraversal = left == null ? new ArrayList<>(0) : traverse(left, op);
-        final ArrayList<T> rightTraversal = right == null ? new ArrayList<>(0) : traverse(right, op);
+        final ArrayList<T> leftTraversal = traverse(root.getLeft(), traverseOrder);
+        final ArrayList<T> rightTraversal = traverse(root.getRight(), traverseOrder);
 
-        return op.combine(root.getElement(), leftTraversal, rightTraversal);
+        return traverseOrder.combine(root.getElement(), leftTraversal, rightTraversal);
     }
 
     public TreeNode<T> getRoot() {
@@ -69,7 +81,7 @@ public class BinaryTree<T extends Comparable<T>> {
 
 
     @FunctionalInterface
-    interface TraverseOperation<T> {
+    interface TraverseOrder<T> {
         ArrayList<T> combine(final T node, final ArrayList<T> left, final ArrayList<T> right);
     }
 }
