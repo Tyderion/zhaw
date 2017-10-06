@@ -2,6 +2,7 @@ package ch.isageek.ads.p3;
 
 import java.io.*;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
@@ -14,7 +15,7 @@ public class Marathon {
     /**
      * Loads the file 'zuerich_marathon_utf8.csv' into a {@link BinarySearchTree} as {@link Competitor}s
      * loading the file with {@link ClassLoader#getResource(String)}.
-     *
+     * <p>
      * After loading the data into a tree, an inorder (e.g. sorted) traversal of the tree is printed on the console.
      *
      * @param args ignored
@@ -24,30 +25,35 @@ public class Marathon {
 
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         try {
-            Stream<String> lines = Files.lines(Paths.get(URI.create("file://" + classloader.getResource(FILENAME).getPath())));
-            lines.forEach(line -> {
-                String[] parts = line.split(",");
-                try {
-                    tree.add(new Competitor(
-                            Integer.valueOf(parts[0]),
-                            parts[1],
-                            parts[2],
-                            Integer.valueOf(parts[3]),
-                            parts[4],
-                            parts[5]
-                    ));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            });
+            URL file = classloader.getResource(FILENAME);
+            if (file != null) {
+                Stream<String> lines = Files.lines(Paths.get(URI.create("file://" +file.getPath())));
+                lines.forEach(line -> {
+                    String[] parts = line.split(",");
+                    try {
+                        tree.add(new Competitor(
+                                Integer.valueOf(parts[0]),
+                                parts[1],
+                                parts[2],
+                                Integer.valueOf(parts[3]),
+                                parts[4],
+                                parts[5]
+                        ));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } else {
+                System.out.println("File not found: " + FILENAME);
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (NullPointerException e) {
-           System.out.println("File not found: " + FILENAME);
+        }
+        if (tree.getRoot() != null) {
+            System.out.println("Inserted all people into the search tree.");
+            System.out.println("Inorder Traversal: ");
+            tree.traverseInorder().forEach(System.out::println);
         }
 
-        System.out.println("Inserted all people into the search tree.");
-        System.out.println("Inorder Traversal: ");
-        tree.traverseInorder().forEach(System.out::println);
     }
 }
