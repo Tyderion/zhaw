@@ -62,7 +62,7 @@ public final class Competitor implements Comparable<Competitor> {
 
         /* Fuegen Sie hier Ihren Code ein. */
 
-        return String.format("%d: %s - %s %s (%d, %s)", number, TIME_FORMAT.format(time), lastName, firstName, yearOfBirth, city);
+        return String.format("%d\t%s\t%s %s (%d, %s)", number, TIME_FORMAT.format(time), lastName, firstName, yearOfBirth, city);
     }
 
     @Override

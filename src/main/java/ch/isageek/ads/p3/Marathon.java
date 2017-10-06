@@ -27,22 +27,22 @@ public class Marathon {
         try {
             URL file = classloader.getResource(FILENAME);
             if (file != null) {
-                Stream<String> lines = Files.lines(Paths.get(URI.create("file://" +file.getPath())));
-                lines.forEach(line -> {
-                    String[] parts = line.split(",");
-                    try {
-                        tree.add(new Competitor(
-                                Integer.valueOf(parts[0]),
-                                parts[1],
-                                parts[2],
-                                Integer.valueOf(parts[3]),
-                                parts[4],
-                                parts[5]
-                        ));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                });
+                Files.lines(Paths.get(URI.create("file://" + file.getPath())))
+                        .forEach(line -> {
+                            String[] parts = line.split(",");
+                            try {
+                                tree.add(new Competitor(
+                                        Integer.valueOf(parts[0]),
+                                        parts[1],
+                                        parts[2],
+                                        Integer.valueOf(parts[3]),
+                                        parts[4],
+                                        parts[5]
+                                ));
+                            } catch (ParseException | NullPointerException e) {
+                                System.out.println(String.format("Error parsing competitor: %s", line));
+                            }
+                        });
             } else {
                 System.out.println("File not found: " + FILENAME);
             }
