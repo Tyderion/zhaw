@@ -82,6 +82,14 @@ public class CompetitorTest {
         assertFalse(c1.equals(c2));
     }
 
+    @Test
+    public void testEqualHaveSameHashcode() throws Exception {
+        Competitor c1 = createCompetitor("Max", "Müller");
+        Competitor c2 = createCompetitor("Max", "Müller");
+
+        assertTrue(c1.hashCode() == c2.hashCode());
+    }
+
     private Competitor createCompetitor(final String firstname, final String lastname) throws Exception {
         return new Competitor(1, firstname, lastname, 1999, "Zürich", "12:15:12.132");
     }

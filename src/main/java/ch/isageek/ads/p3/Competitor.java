@@ -54,8 +54,7 @@ public final class Competitor implements Comparable<Competitor> {
     public int hashCode() {
 
         /* Fuegen Sie hier Ihren Code ein. */
-
-        return 0;
+        return Objects.hash(lastName, firstName);
     }
 
     @Override
@@ -68,9 +67,6 @@ public final class Competitor implements Comparable<Competitor> {
 
     @Override
     public int compareTo(Competitor competitor) {
-
-        /* Fuegen Sie hier Ihren Code ein. */
-
         int lastNameComparison = getLastName().compareTo(competitor.getLastName());
         if (lastNameComparison != 0) {
             return lastNameComparison;
