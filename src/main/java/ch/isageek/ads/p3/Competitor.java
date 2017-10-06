@@ -47,7 +47,7 @@ public final class Competitor implements Comparable<Competitor> {
 
         /* Fuegen Sie hier Ihren Code ein. */
 
-        return false;
+        return object instanceof Competitor && this.compareTo((Competitor) object) == 0;
     }
 
     @Override
@@ -63,7 +63,7 @@ public final class Competitor implements Comparable<Competitor> {
 
         /* Fuegen Sie hier Ihren Code ein. */
 
-        return null;
+        return String.format("%d: %s - %s %s (%d, %s)", number, TIME_FORMAT.format(time), firstName, lastName, yearOfBirth, city);
     }
 
     @Override
@@ -71,7 +71,11 @@ public final class Competitor implements Comparable<Competitor> {
 
         /* Fuegen Sie hier Ihren Code ein. */
 
-        return 0;
+        int lastNameComparison = getLastName().compareTo(competitor.getLastName());
+        if (lastNameComparison != 0) {
+            return lastNameComparison;
+        }
+        return getFirstName().compareTo(competitor.getFirstName());
     }
 
     public int getNumber() {
