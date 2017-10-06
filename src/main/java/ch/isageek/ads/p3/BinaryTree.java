@@ -7,27 +7,27 @@ public class BinaryTree<T extends Comparable<T>> {
     private TreeNode<T> root;
 
     public BinaryTree(T value) {
-
+        root = new TreeNode<>(value);
     }
 
     public BinaryTree() {
-
+        root = new TreeNode<>(null);
     }
 
     public ArrayList<Integer> traversePostorder() {
-        return null;
+        return new ArrayList<>();
     }
 
     public ArrayList<Integer> traverseLevelorder() {
-        return null;
+        return new ArrayList<>();
     }
 
     public ArrayList<Integer> traversePreorder() {
-        return null;
+        return new ArrayList<>();
     }
 
     public ArrayList<Integer> traverseInorder() {
-        return null;
+        return new ArrayList<>();
     }
 
     public TreeNode<T> getRoot() {

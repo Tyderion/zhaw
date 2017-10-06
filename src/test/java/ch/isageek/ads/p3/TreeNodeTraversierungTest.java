@@ -35,10 +35,10 @@ public class TreeNodeTraversierungTest {
 		ArrayList<Integer> rootNodeTree = new ArrayList<Integer>();
 		rootNodeTree.add(42);
 				
-		assertEquals(onlyRootNodeTree.traversePostorder(),rootNodeTree);
-		assertEquals(onlyRootNodeTree.traversePreorder(),rootNodeTree);
-		assertEquals(onlyRootNodeTree.traverseInorder(),rootNodeTree);
-		assertEquals(onlyRootNodeTree.traverseLevelorder(),rootNodeTree);
+		assertEquals(rootNodeTree, onlyRootNodeTree.traversePostorder());
+		assertEquals(rootNodeTree, onlyRootNodeTree.traversePreorder());
+		assertEquals(rootNodeTree, onlyRootNodeTree.traverseInorder());
+		assertEquals(rootNodeTree, onlyRootNodeTree.traverseLevelorder());
 	}
 	
 	
@@ -53,7 +53,7 @@ public class TreeNodeTraversierungTest {
 		createTwoNodeBinaeryTree();
 		ArrayList<Integer> levelorderArrayList = twoNodeTree.traverseLevelorder();
 		
-		assertEquals(levelorderArrayList, testArrayList);
+		assertEquals(testArrayList, levelorderArrayList);
 	}
 
 	
@@ -67,7 +67,7 @@ public class TreeNodeTraversierungTest {
 		createTwoNodeBinaeryTree();
 		ArrayList<Integer> postorderArrayList = twoNodeTree.traversePostorder();
 		
-		assertEquals(postorderArrayList,testArrayList);
+		assertEquals(testArrayList, postorderArrayList);
 	}
 	
 	@Test
@@ -80,7 +80,7 @@ public class TreeNodeTraversierungTest {
 		createTwoNodeBinaeryTree();
 		ArrayList<Integer> preorderArrayList = twoNodeTree.traversePreorder();
 		
-		assertEquals(preorderArrayList,testArrayList);
+		assertEquals(testArrayList,preorderArrayList);
 	}
 	
 	@Test
@@ -94,7 +94,7 @@ public class TreeNodeTraversierungTest {
 		createTwoNodeBinaeryTree();
 		ArrayList<Integer> inorderArrayList = twoNodeTree.traverseInorder();
 		
-		assertEquals(inorderArrayList,testArrayList);
+		assertEquals(testArrayList, inorderArrayList);
 	}
 	
 	@Test
@@ -104,7 +104,7 @@ public class TreeNodeTraversierungTest {
 		
 		ArrayList<Integer> list = manyNodeTree.traverseInorder();
 
-		assertEquals(list, manyNodeTreeListTraversedByInorder);
+		assertEquals(manyNodeTreeListTraversedByInorder, list);
 	}
 	
 	@Test
@@ -114,7 +114,7 @@ public class TreeNodeTraversierungTest {
 		
 		ArrayList<Integer> list = manyNodeTree.traversePreorder();
 		
-		assertEquals(list, manyNodeTreeListTraversedByPreorder);
+		assertEquals(manyNodeTreeListTraversedByPreorder, list);
 		
 	}
 	
@@ -125,7 +125,7 @@ public class TreeNodeTraversierungTest {
 		
 		ArrayList<Integer> list = manyNodeTree.traversePostorder();
 		
-		assertEquals(list, manyNodeTreeListTraversedByPostorder);
+		assertEquals(manyNodeTreeListTraversedByPostorder, list);
 		
 	}
 	
@@ -136,7 +136,7 @@ public class TreeNodeTraversierungTest {
 		
 		ArrayList<Integer> list = manyNodeTree.traverseLevelorder();
 		
-		assertEquals(list, manyNodeTreeListTraversedByLevelorder);
+		assertEquals(manyNodeTreeListTraversedByLevelorder, list);
 		
 	}
 	
