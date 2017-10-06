@@ -6,7 +6,7 @@ import java.util.Queue;
 
 public class BinaryTree<T extends Comparable<T>> {
 
-    private TreeNode<T> root;
+    protected TreeNode<T> root;
 
     public BinaryTree(final T value) {
         root = new TreeNode<>(value);
