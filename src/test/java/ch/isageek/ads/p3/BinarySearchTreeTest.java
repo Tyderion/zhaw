@@ -75,6 +75,7 @@ public class BinarySearchTreeTest {
     private Competitor createCompetitor(final String lastname) throws Exception {
         return createCompetitor(lastname, "");
     }
+
     private Competitor createCompetitor(final String lastname, String city) throws Exception {
         return new Competitor(1, "", lastname, 1999, city, "12:15:12.132");
     }

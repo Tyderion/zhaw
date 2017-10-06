@@ -10,7 +10,7 @@ public class CompetitorTest {
 
     @Test
     public void testToString() throws Exception {
-        final String result = "1: 12:15:12.132 - Max Müller (1999, Zürich)";
+        final String result = "1: 12:15:12.132 - Müller Max (1999, Zürich)";
         Competitor competitor = createCompetitor("Max", "Müller");
 
         assertEquals(result, competitor.toString());
