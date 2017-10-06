@@ -12,7 +12,11 @@ public class Marathon {
     private final static String FILENAME = "zuerich_marathon_utf8.csv";
 
     /**
-     * Loads the file 'zuerich_marathon_utf8.csv' from the resources folder into a binary search tree
+     * Loads the file 'zuerich_marathon_utf8.csv' into a {@link BinarySearchTree} as {@link Competitor}s
+     * loading the file with {@link ClassLoader#getResource(String)}.
+     *
+     * After loading the data into a tree, an inorder (e.g. sorted) traversal of the tree is printed on the console.
+     *
      * @param args ignored
      */
     public static void main(String[] args) {
