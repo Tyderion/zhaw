@@ -331,7 +331,7 @@ static void test_date_main_valid(void)
 	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
 }
 
-static void test_date_main_invalid_age(void)
+static void test_date_main_invalid_year(void)
 {
 	// arrange
 	const char *out_txt[] = { 
@@ -408,7 +408,7 @@ int main(void)
 				  , test_valid_date_november
 				  , test_valid_date_december
 				  , test_date_main_valid
-				  , test_date_main_invalid_age
+				  , test_date_main_invalid_year
 				  , test_date_main_invalid_leap
 				  , test_date_main_invalid_no_date_input
 				  );

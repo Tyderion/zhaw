@@ -7,14 +7,26 @@
 /**
  * @brief Represents a Month
 */
-typedef enum Months {
-    Jan=1, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
+typedef enum {
+    Jan = 1,
+    Feb,
+    Mar,
+    Apr,
+    May,
+    Jun,
+    Jul,
+    Aug,
+    Sep,
+    Oct,
+    Nov,
+    Dec
 } Month;
 
 /**
  * @brief Represents a date
 */
-typedef struct {
+typedef struct
+{
     /** 
      *@brief represents the day in the month
     */
@@ -34,12 +46,11 @@ typedef struct {
  * @param[in] date the date to copmute the next of
  * @returns the next day
  */
- Date next_date(const Date* date);
+Date next_date(const Date *date);
 
- /**
+/**
  * @brief   validates the given date
  * @param[in] date the date to validate
  * @returns true if the date is valid, false otherwise
  */
- bool valid_date(const Date* date);
- 
+bool valid_date(const Date *date);
