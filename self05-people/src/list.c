@@ -7,6 +7,7 @@
  */
 void insert_person(const Person *person)
 {
+  printf("insert_person not yet  implemented!\n");
 }
 
 /**
@@ -15,6 +16,7 @@ void insert_person(const Person *person)
   */
 void remove_person(const int index)
 {
+  printf("remove_person not yet  implemented!\n");
 }
 
 /**
@@ -22,6 +24,7 @@ void remove_person(const int index)
   */
 void clear_people()
 {
+  printf("clear_people not yet implemented!\n");
 }
 
 
