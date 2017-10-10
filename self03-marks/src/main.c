@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "marks.h"
-
-void flush_stdin() {
+/**
+ * @file
+ * @brief Main Entry point wiht the main functino which gets called when the program is executed.
+ */
+/**
+ * @brief Flushes standard input so that no more characters are stored in the buffer
+*/
+static void flush_stdin() {
 	// Flushing stdin: https://stackoverflow.com/questions/7898215/how-to-clear-input-buffer-in-c
 	char c;
 	while ((c = getchar()) != '\n' && c != EOF) { }	
@@ -24,6 +30,9 @@ void flush_stdin() {
 	 int grade;
 	 int count = 0;
 	 while (true) {
+		 if (count >= 100) {
+			 break;
+		 }
 		printf("Please enter the next score. Enter -1 to end entering scores.\n");
 		int scanned = scanf("%d", &grade);
 		if (scanned != 1) {
@@ -44,11 +53,16 @@ void flush_stdin() {
 	 }
 	 if (count > 0) {
 		int p6;
-		printf("Please enter the minimal points for grade 6\n");
-		scanf("%d", &p6);
-
-		Statistic statistic = compute_statistics(grades, count, p6);
-		print_statistic(statistic);
+		printf("Please enter the minimal points for grade 6 (-1 to skip the statistics and end the program)\n");
+		 do {
+			scanf("%d", &p6);
+			if (p6 == -1) {
+				break;
+			}
+			Statistic statistic = compute_statistics(grades, count, p6);
+			print_statistic(statistic);
+			printf("Do you want to compute the statistic with a different number of points? (-1 to end program)\n");
+		 } while (true);
 	 } else {
 		 printf("No scores have been entered.\n");
 	 }

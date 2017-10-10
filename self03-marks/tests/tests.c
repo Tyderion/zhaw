@@ -27,7 +27,9 @@
 /// @brief The name of the STDERR text file.
 #define ERRFILE "stderr.txt"
 
+/// @brief The stimulus without any errors
 #define INFILE_NO_ERROR "infile_no_error.input"
+/// @brief The stimulus with errors
 #define INFILE_ERRORS "infile_errors.input"
 
 // setup & cleanup
@@ -130,7 +132,7 @@ static void test_main_no_error(void)
         "Please enter the next score. Enter -1 to end entering scores.\n",
         "Please enter the next score. Enter -1 to end entering scores.\n",
         "Please enter the next score. Enter -1 to end entering scores.\n",
-        "Please enter the minimal points for grade 6\n",
+        "Please enter the minimal points for grade 6 (-1 to skip the statistics and end the program)\n",
 		"--------------------------------------------------------\n",
         "Statistics (6 students, 60 points for mark 6.\n",
         "\n",
@@ -145,7 +147,8 @@ static void test_main_no_error(void)
         "Worst Mark: 2\n",
         "Average: 4.500000\n",
         "Mark >= 4: 4 students (67%)\n",
-        "--------------------------------------------------------\n"
+        "--------------------------------------------------------\n",
+        "Do you want to compute the statistic with a different number of points? (-1 to end program)\n"
 	 };
 	const char *err_txt[] = { };
 	// act

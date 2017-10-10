@@ -1,5 +1,11 @@
 #include <stdbool.h>
-
+/**
+ * @file
+ * @brief Defines the datatypes and functions used in this module
+ */
+/**
+ * @brief Represents a Mark between 1 and 6
+*/
 typedef enum Marks {
     One = 1,
     Two,
@@ -9,10 +15,40 @@ typedef enum Marks {
     Six
 } Mark;
 
+/**
+ * @brief Represents the statistics of one class
+*/
 typedef struct
 {
-    int num_students, p6, best_mark, worst_mark, above_4;
+        /** 
+     *@brief represents the numbers of students
+    */
+    int num_students,
+        /** 
+     *@brief The minimal amount of points for a 6
+    */
+     p6,     
+     /** 
+     *@brief The best mark in the class
+    */
+     best_mark,
+     /** 
+     *@brief The worst mark in the class
+    */ 
+     worst_mark, 
+     /** 
+     *@brief The amount of grades above 4
+    */
+     above_4;
+
+     /** 
+     *@brief The average grade of the class
+    */
     double average;
+
+     /** 
+     *@brief A list of how many students got which grade
+    */
     int distribution[6];
 } Statistic;
 

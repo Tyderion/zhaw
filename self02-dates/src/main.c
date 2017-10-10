@@ -3,6 +3,11 @@
 #include "date.h"
 
 /**
+ * @file
+ * @brief Main Entry point with the main function which gets called when the program is executed.
+ */
+
+/**
  * @brief Main entry point.
  * @param[in] argc  The size of the argv array.
  * @param[in] argv  The command line arguments

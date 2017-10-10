@@ -1,17 +1,16 @@
 /**
- * @mainpage PROGC - Labs
+ * @mainpage PROGC - Selfstudy 03
  *
  * @section Purpose
  *
- * This is a PROGC lab <B>Hello World</B> source documentation.
+ * This is a PROGC selfstudy <B>Grades</B> source documentation.
  *
  * @section Assignment
  *
- * This lab is provided to get acquainted with the development environment.
+ * This program reads a list of scored points (one for each student) and a minimal amount of points for the grade 6.
  * 
- * You may play around with the simple main program as well as add some more tests on your discretion.
  *
- * Run the lab by:
+ * Run the program by:
  *
  * @code
  * make clean; make; make doc; make test

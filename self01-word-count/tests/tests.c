@@ -28,7 +28,7 @@
 #define INFILE_SHORT "stim-short-sentence.input"
 
 /// @brief The stimulus with a short sentence with 24 chars and 5 words with a tab as a seperator
-#define INFILE_SHORT_TAB "stim-short-sentence-tab.input"
+#define INFILE_SHORT_TAB "stim-short-sentence-tabs.input"
 
 // setup & cleanup
 static int setup(void)
@@ -51,8 +51,8 @@ static void test_wordcount_short_sentence(void)
 {
 	// arrange
 	const char *out_txt[] = { 
-		"Zeichen: 24\n",
-		"Wörter: 5\n"
+		"Characters: 24\n",
+		"Words: 5\n"
 	 };
 	const char *err_txt[] = { };
 	// act
@@ -67,8 +67,8 @@ static void test_wordcount_short_sentence_tab(void)
 {
 	// arrange
 	const char *out_txt[] = { 
-		"Zeichen: 35\n",
-		"Wörter: 7\n"
+		"Characters: 34\n",
+		"Words: 7\n"
 	 };
 	const char *err_txt[] = { };
 	// act

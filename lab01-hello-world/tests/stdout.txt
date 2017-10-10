@@ -1,1 +1,0 @@
-Program name: /home/tyderion/progc/lab01-hello-world/bin/hello-world
