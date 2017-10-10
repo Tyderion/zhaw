@@ -58,8 +58,7 @@ static void test_compare_person_simple(void)
         "Hans",
         20};
     int comparison = compare_person(&p1, &p2);
-
-    CU_ASSERT_EQUAL(comparison, 1);
+    CU_ASSERT_TRUE(comparison > 0);
 }
 
 static void test_compare_person_equal(void)
@@ -85,7 +84,7 @@ static void test_compare_person_by_firstname(void)
         20};
     int comparison = compare_person(&p1, &p2);
 
-    CU_ASSERT_EQUAL(comparison, -1);
+    CU_ASSERT_TRUE(comparison < 0);
 }
 
 static void test_compare_person_by_age(void)
@@ -98,7 +97,7 @@ static void test_compare_person_by_age(void)
         20};
     int comparison = compare_person(&p1, &p2);
 
-    CU_ASSERT_EQUAL(comparison, 1);
+    CU_ASSERT_TRUE(comparison > 0);
 }
 
 static void test_string_person(void)

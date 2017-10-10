@@ -9,15 +9,17 @@
  * @brief Main Entry point with the main function which gets called when the program is executed.
  */
 
- /**
+/**
  * @brief Flushes standard input so that no more characters are stored in the buffer
 */
-static void flush_stdin() {
+static void flush_stdin()
+{
 	// Flushing stdin: https://stackoverflow.com/questions/7898215/how-to-clear-input-buffer-in-c
 	char c;
-	while ((c = getchar()) != '\n' && c != EOF) { }	
+	while ((c = getchar()) != '\n' && c != EOF)
+	{
+	}
 }
-
 
 static Person action_read_person()
 {
@@ -33,7 +35,8 @@ static Person action_read_person()
 
 	int age;
 	int scanned = scanf("%d", &age);
-	while (scanned != 1) {
+	while (scanned != 1)
+	{
 		printf("Please enter a number for the age\n");
 		flush_stdin();
 		scanned = scanf("%d", &age);
@@ -45,16 +48,27 @@ static Person action_read_person()
 	return p;
 }
 
-static void action_remove_person() {
+static void action_remove_person()
+{
 	printf("Please enter the index of the person to remove\n");
 	int index;
 	scanf("%d", &index);
 	remove_person(index);
 }
 
-static void action_print_list() {
-	if (le.next == &le) {
+static void action_print_list()
+{
+	if (le.next == &le)
+	{
 		printf("List is empty\n");
+	} else {
+		ListElement *ele = &le;
+		int index = 0;
+		while (ele->next != &le) {
+			ele = ele->next;
+			index++;
+			printf("%d: %s\n",index, string_person(&(ele->content)));
+		}
 	}
 }
 
@@ -71,7 +85,7 @@ static void action_print_list() {
 int main(int argc, char *argv[])
 {
 	printf("Welcome to ProgC Person Administration:\n");
-	char *input = malloc(1*sizeof(char));
+	char *input = malloc(1 * sizeof(char));
 	do
 	{
 		printf("Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n");

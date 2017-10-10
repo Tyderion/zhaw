@@ -20,7 +20,7 @@ char *string_person(const Person *person);
  * @brief   compares two persons for sorting purposes
  * @param[in] p1 the list to print
  * @param[in] p2 the length of the list
- * @returns 0 if both are equal, -1 if p1 is lexigraphically earlier than p2 and 1 if p1 is after p2 (name then firstname)
+ * @returns 0 if both are equal, negative if p1 is lexigraphically earlier than p2 or positive if p1 is after p2 (name then firstname then age)
  */
 int compare_person(const Person *p1, const Person *p2);
 

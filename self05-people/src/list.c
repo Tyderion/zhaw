@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "list.h"
 #include "person.h"
 
@@ -8,7 +10,17 @@
  */
 void insert_person(const Person *person)
 {
-  printf("insert_person not yet  implemented!\n");
+  ListElement *nextElement = malloc(sizeof(ListElement));
+  strcpy(nextElement->content.name, person->name);
+  strcpy(nextElement->content.firstname, person->firstname);
+  nextElement->content.age = person->age;
+
+  ListElement *previous = &le;
+  while (previous->next != &le) {
+    previous = previous->next;
+  }
+  previous->next = nextElement;
+  nextElement->next = &le;
 }
 
 /**
