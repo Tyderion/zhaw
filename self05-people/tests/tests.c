@@ -206,8 +206,8 @@ static void test_main_all_operations(void)
         "1: Muster Markus, 25\n",
         "2: Muster Max, 24\n",
         "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",
-        "Please enter the index of the person to remove\n"
-        "Removed Muster Max, 24 from the list.\n",
+        "Please enter the index of the person to remove\n",
+        "Removed index 2.\n",
         "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",
         "Currently the following people are stored:\n",
         "1: Muster Markus, 25\n",
@@ -245,6 +245,6 @@ static void test_main_all_operations(void)
           , test_remove_person
           , test_remove_second_person
           , test_clear_people
-        //   , test_main_all_operations
+          , test_main_all_operations
       );
   }

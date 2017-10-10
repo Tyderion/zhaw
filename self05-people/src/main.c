@@ -54,20 +54,26 @@ static void action_remove_person()
 	int index;
 	scanf("%d", &index);
 	remove_person(index);
+
+	printf("Removed index %d.\n", index);
 }
 
 static void action_print_list()
 {
 	if (le.next == &le)
 	{
-		printf("List is empty\n");
-	} else {
+		printf("The list is empty.\n");
+	}
+	else
+	{
+		printf("Currently the following people are stored:\n");
 		ListElement *ele = &le;
 		int index = 0;
-		while (ele->next != &le) {
+		while (ele->next != &le)
+		{
 			ele = ele->next;
 			index++;
-			printf("%d: %s\n",index, string_person(&(ele->content)));
+			printf("%d: %s\n", index, string_person(&(ele->content)));
 		}
 	}
 }
@@ -84,7 +90,6 @@ static void action_print_list()
  */
 int main(int argc, char *argv[])
 {
-	printf("Welcome to ProgC Person Administration:\n");
 	char *input = malloc(1 * sizeof(char));
 	do
 	{
@@ -94,10 +99,16 @@ int main(int argc, char *argv[])
 		{
 			Person p = action_read_person();
 			insert_person(&p);
+			printf("%s %s inserted.\n", p.firstname, p.name);
 		}
 		else if (strcmp(input, "R") == 0)
 		{
 			action_remove_person();
+		}
+		else if (strcmp(input, "C") == 0)
+		{
+			clear_people();
+			printf("The list was cleared.\n");
 		}
 		else if (strcmp(input, "S") == 0)
 		{
@@ -108,5 +119,5 @@ int main(int argc, char *argv[])
 			printf("Command not recognized\n");
 		}
 	} while (strcmp(input, "E") != 0);
-	printf("Bye\n");
+	printf("Bye.\n");
 }
