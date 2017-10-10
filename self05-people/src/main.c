@@ -120,4 +120,5 @@ int main(int argc, char *argv[])
 		}
 	} while (strcmp(input, "E") != 0);
 	printf("Bye.\n");
+	clear_people();
 }
