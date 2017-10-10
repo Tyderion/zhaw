@@ -9,12 +9,12 @@
 
 static const int MONTHS_LENGTHS[Dec] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-static const bool leap_year(int year)
+static bool leap_year(int year)
 {
 	return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
 }
 
-static const int month_length(const Date *date)
+static int month_length(const Date *date)
 {
 	int length = MONTHS_LENGTHS[date->month - 1];
 	if (Feb == date->month && leap_year(date->year))
@@ -24,7 +24,7 @@ static const int month_length(const Date *date)
 	return length;
 }
 
-static const bool valid_day(const Date *date)
+static bool valid_day(const Date *date)
 {
 	int length = month_length(date);
 	return date->day <= length && date->day > 0;

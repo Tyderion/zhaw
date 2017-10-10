@@ -11,7 +11,7 @@
 /**
  * @brief Flushes stdin so that no more characters are left there to scan
  */
-void flush_stdin() {
+static void flush_stdin() {
 	// Flushing stdin: https://stackoverflow.com/questions/7898215/how-to-clear-input-buffer-in-c
 	char c;
 	while ((c = getchar()) != '\n' && c != EOF) { }	
