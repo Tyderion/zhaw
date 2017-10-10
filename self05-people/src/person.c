@@ -14,6 +14,7 @@ char *string_person(const Person *person)
 int compare_person(const Person *p1, const Person *p2)
 {
     int compare_name = strcmp(p1->name, p2->name);
+    // printf("%s vs %s: %d", p1->name, p2->name, compare_name);
     if (compare_name == 0) {
         int compare_first = strcmp(p1->firstname, p2->firstname);
         if (compare_first == 0) {

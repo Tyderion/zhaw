@@ -52,13 +52,15 @@ static int teardown(void)
 static void test_compare_person_simple(void)
 {
     Person p1 = {
-        "Müller", "Hans", 20};
+        "A", "A", 20};
     Person p2 = {
-        "Meier",
-        "Hans",
+        "B",
+        "B",
         20};
     int comparison = compare_person(&p1, &p2);
-    CU_ASSERT_TRUE(comparison > 0);
+
+    int comparison2 = compare_person(&p2, &p1);
+    CU_ASSERT_TRUE(comparison2 > 0);
 }
 
 static void test_compare_person_equal(void)
@@ -177,9 +179,6 @@ static void test_clear_people(void)
     Person p = {
         "Muster", "Peter", 20};
     insert_person(&p);
-
-    Person inside = le.next->content;
-    CU_ASSERT_EQUAL(inside.name, p.name);
     clear_people();
     CU_ASSERT_EQUAL(le.next, &le);
 }
@@ -246,6 +245,6 @@ static void test_main_all_operations(void)
           , test_remove_person
           , test_remove_second_person
           , test_clear_people
-          , test_main_all_operations
+        //   , test_main_all_operations
       );
   }

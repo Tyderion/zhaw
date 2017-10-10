@@ -15,12 +15,19 @@ void insert_person(const Person *person)
   strcpy(nextElement->content.firstname, person->firstname);
   nextElement->content.age = person->age;
 
+  // ListElement *current = &le;
   ListElement *previous = &le;
-  while (previous->next != &le) {
+  while (previous->next != &le)
+  {
+    int comparison = compare_person(person, &previous->next->content);
+    if (comparison < 0)
+    {
+      break;
+    }
     previous = previous->next;
   }
+  nextElement->next = previous->next;
   previous->next = nextElement;
-  nextElement->next = &le;
 }
 
 /**
@@ -37,10 +44,20 @@ void remove_person(const int index)
   */
 void clear_people()
 {
-  printf("clear_people not yet implemented!\n");
+  if (le.next == &le) {
+    // List is empty
+    return;
+  }
+  ListElement *ele = le.next;
+  ListElement *next;
+  while (ele->next != &le) {
+    next = ele->next;
+    free(ele);
+    ele = next;
+  }
+  le.next = &le;
 }
 
-
 ListElement le = {
-  next: &le
+  next : &le
 };
