@@ -74,9 +74,10 @@ int main(int argc, char *argv[])
 		{
 			action_print_list();
 		}
-		else
+		else if (strcmp(input, "E") != 0)
 		{
 			printf("Command not recognized\n");
 		}
 	} while (strcmp(input, "E") != 0);
+	printf("Bye\n");
 }
