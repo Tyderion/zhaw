@@ -38,6 +38,8 @@ Statistic compute_statistics(const int *const points, const int student_count, c
 		sum += grade;
 	}
 
+	statistic.average = sum / student_count; 
+
 	for (int grade = 1; grade <= 6; grade++) {
 		int distribution = statistic.distribution[grade-1];
 		if (distribution > 0){
@@ -54,7 +56,6 @@ Statistic compute_statistics(const int *const points, const int student_count, c
 
 		}
 	}
-	statistic.average = sum / student_count; 
 	
 	return statistic;
 }

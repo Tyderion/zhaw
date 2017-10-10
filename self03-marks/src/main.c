@@ -30,6 +30,9 @@ void flush_stdin() {
 	 int grade;
 	 int count = 0;
 	 while (true) {
+		 if (grades >= 100) {
+			 break;
+		 }
 		printf("Please enter the next score. Enter -1 to end entering scores.\n");
 		int scanned = scanf("%d", &grade);
 		if (scanned != 1) {
