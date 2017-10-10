@@ -30,7 +30,7 @@ static void swap(char **xp, char **yp)
 }
 
 /**
- * @brief  sorts the list inplace with a very simple bubblesort-like algorithm
+ * @brief  sorts the list inplace with a very simple selectionsort like algorithm
  * @param[in] wordlist the list of words to sort
  * @param[in] n the size of the list to sort
  */
