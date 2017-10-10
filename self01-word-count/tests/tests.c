@@ -45,38 +45,35 @@ static int teardown(void)
 	return 0; // success
 }
 
-
 // tests
 static void test_wordcount_short_sentence(void)
 {
 	// arrange
-	const char *out_txt[] = { 
+	const char *out_txt[] = {
 		"Characters: 24\n",
-		"Words: 5\n"
-	 };
-	const char *err_txt[] = { };
+		"Words: 5\n"};
+	const char *err_txt[] = {};
 	// act
 	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_SHORT);
 	// assert
 	CU_ASSERT_EQUAL(exit_code, 0);
-	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
-	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+	assert_lines(OUTFILE, out_txt, sizeof(out_txt) / sizeof(*out_txt));
+	assert_lines(ERRFILE, err_txt, sizeof(err_txt) / sizeof(*err_txt));
 }
 
 static void test_wordcount_short_sentence_tab(void)
 {
 	// arrange
-	const char *out_txt[] = { 
+	const char *out_txt[] = {
 		"Characters: 34\n",
-		"Words: 7\n"
-	 };
-	const char *err_txt[] = { };
+		"Words: 7\n"};
+	const char *err_txt[] = {};
 	// act
 	int exit_code = system(XSTR(TARGET) " some args here 1>" OUTFILE " 2>" ERRFILE " < " INFILE_SHORT_TAB);
 	// assert
 	CU_ASSERT_EQUAL(exit_code, 0);
-	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
-	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+	assert_lines(OUTFILE, out_txt, sizeof(out_txt) / sizeof(*out_txt));
+	assert_lines(ERRFILE, err_txt, sizeof(err_txt) / sizeof(*err_txt));
 }
 
 /**
@@ -86,7 +83,8 @@ int main(void)
 {
 	// setup, run, teardown
 	TestMainBasic("Selbstudium 01  - Word Count", setup, teardown
-				  , test_wordcount_short_sentence
-				  , test_wordcount_short_sentence_tab
-				  );
+				, test_wordcount_short_sentence
+				, test_wordcount_short_sentence_tab
+				);
 }
+ 

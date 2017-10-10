@@ -170,7 +170,8 @@ static void test_remove_second_person(void)
     insert_person(&p2);
 
     remove_person(2);
-    CU_ASSERT_EQUAL(strcmp(le.next->content.name, "Hermann"), 0);;
+    CU_ASSERT_EQUAL(strcmp(le.next->content.name, "Hermann"), 0);
+    ;
     CU_ASSERT_EQUAL(le.next->next, &le);
 }
 
@@ -229,22 +230,22 @@ static void test_main_all_operations(void)
 /**
   * @brief Registers and runs the tests.
   */
-  int main(void)
-  {
-      // setup, run, teardown
-      TestMainBasic("Selbstudium 05  - Person Administration", setup, teardown
-          , test_compare_person_simple
-          , test_compare_person_by_firstname
-          , test_compare_person_equal
-          , test_compare_person_by_age
-          , test_empty_list
-          , test_insert_person
-          , test_insert_multiple_people
-          , test_string_person
-          , test_string_person_long_name
-          , test_remove_person
-          , test_remove_second_person
-          , test_clear_people
-          , test_main_all_operations
-      );
-  }
+int main(void)
+{
+    // setup, run, teardown
+    TestMainBasic("Selbstudium 05  - Person Administration", setup, teardown
+        , test_compare_person_simple
+        , test_compare_person_by_firstname
+        , test_compare_person_equal
+        , test_compare_person_by_age
+        , test_empty_list
+        , test_insert_person
+        , test_insert_multiple_people
+        , test_string_person
+        , test_string_person_long_name
+        , test_remove_person
+        , test_remove_second_person
+        , test_clear_people
+        , test_main_all_operations
+    );
+}

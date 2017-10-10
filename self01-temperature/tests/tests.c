@@ -25,25 +25,8 @@
 /// @brief The name of the STDERR text file.
 #define ERRFILE "stderr.txt"
 
-static const char *out_txt[] = { 
-	 "F'heit    Celsius\n"
-	,"  -100     -73.33\n"
-	,"   -80     -62.22\n"
-	,"   -60     -51.11\n"
-	,"   -40     -40.00\n"
-	,"   -20     -28.89\n"
-	,"     0     -17.78\n"
-	,"    20      -6.67\n"
-	,"    40       4.44\n"
-	,"    60      15.56\n"
-	,"    80      26.67\n"
-	,"   100      37.78\n"
-	,"   120      48.89\n"
-	,"   140      60.00\n"
-	,"   160      71.11\n"
-	,"   180      82.22\n"
-	,"   200      93.33\n"
- };
+static const char *out_txt[] = {
+	"F'heit    Celsius\n", "  -100     -73.33\n", "   -80     -62.22\n", "   -60     -51.11\n", "   -40     -40.00\n", "   -20     -28.89\n", "     0     -17.78\n", "    20      -6.67\n", "    40       4.44\n", "    60      15.56\n", "    80      26.67\n", "   100      37.78\n", "   120      48.89\n", "   140      60.00\n", "   160      71.11\n", "   180      82.22\n", "   200      93.33\n"};
 
 // setup & cleanup
 static int setup(void)
@@ -60,40 +43,40 @@ static int teardown(void)
 	return 0; // success
 }
 
-
 // tests
 static void test_temperature_with_zero_args(void)
 {
 	// arrange
-	const char *err_txt[] = { };
+	const char *err_txt[] = {};
 	// act
 	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE);
 	// assert
 	CU_ASSERT_EQUAL(exit_code, 0);
-	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
-	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+	assert_lines(OUTFILE, out_txt, sizeof(out_txt) / sizeof(*out_txt));
+	assert_lines(ERRFILE, err_txt, sizeof(err_txt) / sizeof(*err_txt));
 }
 
 static void test_temperature_with_multiple_args(void)
 {
 	// arrange
-	const char *err_txt[] = { };
+	const char *err_txt[] = {};
 	// act
 	int exit_code = system(XSTR(TARGET) " some args here 1>" OUTFILE " 2>" ERRFILE);
 	// assert
 	CU_ASSERT_EQUAL(exit_code, 0);
-	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
-	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+	assert_lines(OUTFILE, out_txt, sizeof(out_txt) / sizeof(*out_txt));
+	assert_lines(ERRFILE, err_txt, sizeof(err_txt) / sizeof(*err_txt));
 }
+
 
 /**
  * @brief Registers and runs the tests.
  */
-int main(void)
-{
-	// setup, run, teardown
-	TestMainBasic("Selbstudium 01  - Fahrenheit to Celsius", setup, teardown
-				  , test_temperature_with_zero_args
-				  , test_temperature_with_multiple_args
-				  );
-}
+ int main(void)
+ {
+	 // setup, run, teardown
+	 TestMainBasic("Selbstudium 01  - Fahrenheit to Celsius", setup, teardown
+				   , test_temperature_with_zero_args
+				   , test_temperature_with_multiple_args
+				   );
+ }

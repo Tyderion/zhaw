@@ -48,17 +48,16 @@ static int teardown(void)
 
 static void test_sort_list(void)
 {
-    char* list[] = { "b", "c", "a" };
+    char *list[] = {"b", "c", "a"};
     sort_wordlist(list, 3);
     CU_ASSERT_EQUAL(list[0], "a");
     CU_ASSERT_EQUAL(list[1], "b");
     CU_ASSERT_EQUAL(list[2], "c");
 }
 
-
 static void test_sort_list_sorted(void)
 {
-    char* list[] = { "a", "b", "c" };
+    char *list[] = {"a", "b", "c"};
     sort_wordlist(list, 3);
     CU_ASSERT_EQUAL(list[0], "a");
     CU_ASSERT_EQUAL(list[1], "b");
@@ -67,7 +66,7 @@ static void test_sort_list_sorted(void)
 
 static void test_sort_list_2(void)
 {
-    char* list[] = { "c", "b", "a" };
+    char *list[] = {"c", "b", "a"};
     sort_wordlist(list, 3);
     CU_ASSERT_EQUAL(list[0], "a");
     CU_ASSERT_EQUAL(list[1], "b");
@@ -76,22 +75,18 @@ static void test_sort_list_2(void)
 
 static void test_sort_list_3(void)
 {
-    char* list[] = { "a", "c", "b" };
+    char *list[] = {"a", "c", "b"};
     sort_wordlist(list, 3);
     CU_ASSERT_EQUAL(list[0], "a");
     CU_ASSERT_EQUAL(list[1], "b");
     CU_ASSERT_EQUAL(list[2], "c");
 }
 
-
-
-
-
 static void test_main_no_duplicates(void)
 {
-	// arrange
-	const char *out_txt[] = {
-        "Enter word (max 30chars):\n",  
+    // arrange
+    const char *out_txt[] = {
+        "Enter word (max 30chars):\n",
         "Enter word (max 30chars):\n",
         "Enter word (max 30chars):\n",
         "Enter word (max 30chars):\n",
@@ -100,23 +95,21 @@ static void test_main_no_duplicates(void)
         "a\n",
         "b\n",
         "c\n",
-        "d\n"
-	 };
-	const char *err_txt[] = { };
-	// act
-	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_NO_DUPLICATES);
-	// assert
-	CU_ASSERT_EQUAL(exit_code, 0);
-	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
-	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+        "d\n"};
+    const char *err_txt[] = {};
+    // act
+    int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_NO_DUPLICATES);
+    // assert
+    CU_ASSERT_EQUAL(exit_code, 0);
+    assert_lines(OUTFILE, out_txt, sizeof(out_txt) / sizeof(*out_txt));
+    assert_lines(ERRFILE, err_txt, sizeof(err_txt) / sizeof(*err_txt));
 }
-
 
 static void test_main_duplicates(void)
 {
-	// arrange
-	const char *out_txt[] = {
-        "Enter word (max 30chars):\n",  
+    // arrange
+    const char *out_txt[] = {
+        "Enter word (max 30chars):\n",
         "Enter word (max 30chars):\n",
         "Duplicate word a\n",
         "Enter word (max 30chars):\n",
@@ -125,15 +118,14 @@ static void test_main_duplicates(void)
         "Sorted:\n",
         "a\n",
         "c\n",
-        "d\n"
-	 };
-	const char *err_txt[] = { };
-	// act
-	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_DUPLICATE);
-	// assert
-	CU_ASSERT_EQUAL(exit_code, 0);
-	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
-	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+        "d\n"};
+    const char *err_txt[] = {};
+    // act
+    int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_DUPLICATE);
+    // assert
+    CU_ASSERT_EQUAL(exit_code, 0);
+    assert_lines(OUTFILE, out_txt, sizeof(out_txt) / sizeof(*out_txt));
+    assert_lines(ERRFILE, err_txt, sizeof(err_txt) / sizeof(*err_txt));
 }
 
 /**

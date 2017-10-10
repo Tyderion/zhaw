@@ -77,11 +77,11 @@ static void test_get_mark_minimal(void)
     CU_ASSERT_EQUAL(mark, One);
 }
 
-static void test_statistics_basic(void) {
+static void test_statistics_basic(void)
+{
     const int const grades[2] = {60, 40};
     Statistic t = compute_statistics(
-        grades, 2, 60
-    );
+        grades, 2, 60);
 
     CU_ASSERT_EQUAL(t.best_mark, 6);
     CU_ASSERT_EQUAL(t.worst_mark, 4);
@@ -98,12 +98,12 @@ static void test_statistics_basic(void) {
     CU_ASSERT_EQUAL(t.distribution[5], 1);
 }
 
-static void test_statistics_more_grades(void) {
+static void test_statistics_more_grades(void)
+{
     const int num_students = 6;
     const int const grades[6] = {60, 41, 15, 25, 57, 77};
     Statistic t = compute_statistics(
-        grades, num_students, 60
-    );
+        grades, num_students, 60);
 
     CU_ASSERT_EQUAL(t.best_mark, 6);
     CU_ASSERT_EQUAL(t.worst_mark, 2);
@@ -120,11 +120,10 @@ static void test_statistics_more_grades(void) {
     CU_ASSERT_EQUAL(t.distribution[5], 3);
 }
 
-
 static void test_main_no_error(void)
 {
-	// arrange
-	const char *out_txt[] = {
+    // arrange
+    const char *out_txt[] = {
         "Please enter the next score. Enter -1 to end entering scores.\n",
         "Please enter the next score. Enter -1 to end entering scores.\n",
         "Please enter the next score. Enter -1 to end entering scores.\n",
@@ -133,7 +132,7 @@ static void test_main_no_error(void)
         "Please enter the next score. Enter -1 to end entering scores.\n",
         "Please enter the next score. Enter -1 to end entering scores.\n",
         "Please enter the minimal points for grade 6 (-1 to skip the statistics and end the program)\n",
-		"--------------------------------------------------------\n",
+        "--------------------------------------------------------\n",
         "Statistics (6 students, 60 points for mark 6.\n",
         "\n",
         "Grade 1: 0\n",
@@ -148,36 +147,35 @@ static void test_main_no_error(void)
         "Average: 4.500000\n",
         "Mark >= 4: 4 students (67%)\n",
         "--------------------------------------------------------\n",
-        "Do you want to compute the statistic with a different number of points? (-1 to end program)\n"
-	 };
-	const char *err_txt[] = { };
-	// act
-	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_NO_ERROR);
-	// assert
-	CU_ASSERT_EQUAL(exit_code, 0);
-	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
-	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+        "Do you want to compute the statistic with a different number of points? (-1 to end program)\n"};
+    const char *err_txt[] = {};
+    // act
+    int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_NO_ERROR);
+    // assert
+    CU_ASSERT_EQUAL(exit_code, 0);
+    assert_lines(OUTFILE, out_txt, sizeof(out_txt) / sizeof(*out_txt));
+    assert_lines(ERRFILE, err_txt, sizeof(err_txt) / sizeof(*err_txt));
 }
 
 static void test_main_errors(void)
 {
-	// arrange
-	const char *out_txt[] = {
+    // arrange
+    const char *out_txt[] = {
         "Please enter the next score. Enter -1 to end entering scores.\n",
         "Please enter numbers for the scores.\n",
         "Please enter the next score. Enter -1 to end entering scores.\n",
         "Students cannot score negative points.\n",
         "Please enter positive numbers or -1 to abort.\n",
         "Please enter the next score. Enter -1 to end entering scores.\n",
-        "No scores have been entered.\n"
-	 };
-	const char *err_txt[] = { };
-	// act
-	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_ERRORS);
-	// assert
-	CU_ASSERT_EQUAL(exit_code, 0);
-	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
-	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+        "No scores have been entered.\n"};
+    const char *err_txt[] = {};
+    // act
+    int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_ERRORS);
+
+    // assert
+    CU_ASSERT_EQUAL(exit_code, 0);
+    assert_lines(OUTFILE, out_txt, sizeof(out_txt) / sizeof(*out_txt));
+    assert_lines(ERRFILE, err_txt, sizeof(err_txt) / sizeof(*err_txt));
 }
 
 /**
