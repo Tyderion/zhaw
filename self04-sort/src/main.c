@@ -1,21 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "sorting.h"
+#include "sort.h"
 
 /**
  * @file
  * @brief Main Entry point with the main function which gets called when the program is executed.
  */
 
-/**
- * @brief Flushes stdin so that no more characters are left there to scan
- */
-static void flush_stdin() {
-	// Flushing stdin: https://stackoverflow.com/questions/7898215/how-to-clear-input-buffer-in-c
-	char c;
-	while ((c = getchar()) != '\n' && c != EOF) { }	
-}
 
 /**
  * @brief Checks if the list already contains word
@@ -24,7 +16,7 @@ static void flush_stdin() {
  * @param[in] word the newest entered word
  * @returns true if the word is not already in the wordlist
  */
-bool contains(char** wordlist, const size_t length, char* word) {
+static bool contains(char** wordlist, const size_t length, char* word) {
 	for (int i = 0; i < length; i++) {
 		if (strcmp(wordlist[i], word) == 0) {
 			return true;
@@ -39,7 +31,7 @@ bool contains(char** wordlist, const size_t length, char* word) {
  * @param[in] wordlist the list of words the user entered
  * @param[in] index the index to store the word at
  */
-void store(char* word, char** wordlist, const size_t index) {
+static void store(char* word, char** wordlist, const size_t index) {
 	const size_t length = strlen(word);
 	wordlist[index] = malloc((length+1) * sizeof(char));
 	strcpy(wordlist[index], word);

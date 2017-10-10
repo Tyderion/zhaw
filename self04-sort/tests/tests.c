@@ -16,7 +16,7 @@
 #include <stdbool.h>
 #include "CUnit/Basic.h"
 #include "test_utils.h"
-#include "../src/sorting.h"
+#include "../src/sort.h"
 
 #ifndef TARGET // must be given by the make file --> see test target
 #error missing TARGET define
@@ -137,7 +137,7 @@ static void test_main_duplicates(void)
 }
 
 
-/*
+
 static void test_main_errors(void)
 {
 	// arrange
@@ -158,7 +158,7 @@ static void test_main_errors(void)
 	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
 	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
 }
-*/
+
 /**
   * @brief Registers and runs the tests.
   */
@@ -172,5 +172,6 @@ int main(void)
         , test_sort_list_sorted
         , test_main_no_duplicates
         , test_main_duplicates
+        , test_main_errors
     );
 }

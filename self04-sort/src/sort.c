@@ -15,14 +15,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "sorting.h"
+#include "sort.h"
 
 /**
  * @brief  swaps the pointers inplace
  * @param[in] xp pointer x
  * @param[in] yp pointer y
  */
-void swap(char **xp, char **yp)
+static void swap(char **xp, char **yp)
 {
    char* temp = *xp;
    *xp = *yp;
@@ -34,7 +34,7 @@ void swap(char **xp, char **yp)
  * @param[in] wordlist the list of words to sort
  * @param[in] n the size of the list to sort
  */
-void bubbleSort(char** wordlist, const size_t n) {
+static void bubbleSort(char** wordlist, const size_t n) {
   int i, j;
   for (i = 0; i < n-1; i++)  {
 	  for (j = i+1; j < n; j++) {
