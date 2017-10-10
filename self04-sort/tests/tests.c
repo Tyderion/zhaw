@@ -136,29 +136,6 @@ static void test_main_duplicates(void)
 	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
 }
 
-
-
-static void test_main_errors(void)
-{
-	// arrange
-	const char *out_txt[] = {
-        "Please enter the next score. Enter -1 to end entering scores.\n",
-        "Please enter numbers for the scores.\n",
-        "Please enter the next score. Enter -1 to end entering scores.\n",
-        "Students cannot score negative points.\n",
-        "Please enter positive numbers or -1 to abort.\n",
-        "Please enter the next score. Enter -1 to end entering scores.\n",
-        "No scores have been entered.\n"
-	 };
-	const char *err_txt[] = { };
-	// act
-	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_ERRORS);
-	// assert
-	CU_ASSERT_EQUAL(exit_code, 0);
-	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
-	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
-}
-
 /**
   * @brief Registers and runs the tests.
   */
@@ -172,6 +149,5 @@ int main(void)
         , test_sort_list_sorted
         , test_main_no_duplicates
         , test_main_duplicates
-        , test_main_errors
     );
 }
