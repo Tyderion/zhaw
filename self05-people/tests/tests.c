@@ -121,12 +121,14 @@ static void test_string_person_long_name(void)
 // Test list.h/list.c
 static void test_empty_list(void)
 {
+    clear_people();
     ListElement *next = le.next;
     CU_ASSERT_EQUAL(next, &le);
 }
 
 static void test_insert_person(void)
 {
+    clear_people();
     Person p = {
         "Peter", "Muster", 20};
     insert_person(&p);
@@ -136,32 +138,30 @@ static void test_insert_person(void)
 
 static void test_insert_multiple_people(void)
 {
+    clear_people();
     Person p1 = {
         "Peter", "Muster", 20};
     Person p2 = {
         "Patrick", "Muster", 20};
     insert_person(&p1);
     insert_person(&p2);
-    Person first = le.next->content;
-    CU_ASSERT_EQUAL(strcmp(string_person(&first), string_person(&p2)), 0);
-    Person second = le.next->next->content;
-    CU_ASSERT_EQUAL(strcmp(string_person(&second), string_person(&p1)), 0);
+    CU_ASSERT_EQUAL(strcmp(string_person(&le.next->content), string_person(&p2)), 0);
+    CU_ASSERT_EQUAL(strcmp(string_person(&le.next->next->content), string_person(&p1)), 0);
 }
 
 static void test_remove_person(void)
 {
+    clear_people();
     Person p = {
         "Peter", "Muster", 20};
     insert_person(&p);
-    Person inside = le.next->content;
-    CU_ASSERT_EQUAL(inside.name, p.name);
-
-    remove_person(0);
+    remove_person(1);
     CU_ASSERT_EQUAL(le.next, &le);
 }
 
 static void test_remove_second_person(void)
 {
+    clear_people();
     Person p = {
         "Muster", "Peter", 20};
     Person p2 = {
@@ -170,7 +170,7 @@ static void test_remove_second_person(void)
     insert_person(&p2);
 
     remove_person(2);
-    CU_ASSERT_EQUAL(le.next->content.name, "Muster");
+    CU_ASSERT_EQUAL(strcmp(le.next->content.name, "Hermann"), 0);;
     CU_ASSERT_EQUAL(le.next->next, &le);
 }
 

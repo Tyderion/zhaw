@@ -36,7 +36,20 @@ void insert_person(const Person *person)
   */
 void remove_person(const int index)
 {
-  printf("remove_person not yet  implemented!\n");
+  ListElement *ele = &le;
+  int count = 0;
+  while (ele->next != &le)
+  {
+    count++;
+    if (index == count)
+    {
+      break;
+    }
+    ele = ele->next;
+  }
+  ListElement *to_remove = ele->next;
+  ele->next = to_remove->next;
+  free(to_remove);
 }
 
 /**
@@ -44,13 +57,15 @@ void remove_person(const int index)
   */
 void clear_people()
 {
-  if (le.next == &le) {
+  if (le.next == &le)
+  {
     // List is empty
     return;
   }
   ListElement *ele = le.next;
   ListElement *next;
-  while (ele->next != &le) {
+  while (ele->next != &le)
+  {
     next = ele->next;
     free(ele);
     ele = next;
