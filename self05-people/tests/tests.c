@@ -30,7 +30,7 @@
 /// @brief The stimulus without any duplicate words
 #define INFILE_NO_DUPLICATES "infile_no_duplicates.input"
 /// @brief The stimulus with at least one duplicate
-#define INFILE_DUPLICATE "infile_duplicate.input"
+#define INFILE_ALL_OPERATIONS "infile_do_all_operations.input"
 
 // setup & cleanup
 static int setup(void)
@@ -51,10 +51,10 @@ static int teardown(void)
 static void test_compare_person_simple(void)
 {
     Person p1 = {
-        "Hans", "Müller", 20};
+        "Müller", "Hans", 20};
     Person p2 = {
-        "Hans",
         "Meier",
+        "Hans",
         20};
     int comparison = compare_person(&p1, &p2);
 
@@ -64,10 +64,10 @@ static void test_compare_person_simple(void)
 static void test_compare_person_equal(void)
 {
     Person p1 = {
-        "Hans", "Müller", 20};
+        "Müller", "Hans", 20};
     Person p2 = {
-        "Hans",
         "Müller",
+        "Hans",
         20};
     int comparison = compare_person(&p1, &p2);
 
@@ -77,10 +77,10 @@ static void test_compare_person_equal(void)
 static void test_compare_person_by_firstname(void)
 {
     Person p1 = {
-        "Hans", "Müller", 20};
+         "Müller","Hans",  20};
     Person p2 = {
-        "Manuel",
         "Müller",
+        "Manuel",
         20};
     int comparison = compare_person(&p1, &p2);
 
@@ -90,10 +90,10 @@ static void test_compare_person_by_firstname(void)
 static void test_compare_person_by_age(void)
 {
     Person p1 = {
-        "Manuel", "Müller", 21};
+        "Müller", "Manuel",  21};
     Person p2 = {
-        "Manuel",
         "Müller",
+        "Manuel",
         20};
     int comparison = compare_person(&p1, &p2);
 
@@ -103,8 +103,9 @@ static void test_compare_person_by_age(void)
 static void test_string_person(void)
 {
     Person p = {
-        "Peter", "Muster", 20};
+        "Muster","Peter",  20};
     char *str = string_person(&p);
+    printf("Person: %s", str);
     CU_ASSERT_EQUAL(str, "Muster Peter, 20");
 }
 
@@ -121,6 +122,7 @@ static void test_insert_person(void)
         "Peter", "Muster", 20};
     insert_person(&p);
     Person inside = le.next->content;
+    printf("%s", inside.name);
     CU_ASSERT_EQUAL(inside.firstname, p.firstname);
     CU_ASSERT_EQUAL(inside.name, p.name);
     CU_ASSERT_EQUAL(inside.age, p.age);
@@ -138,10 +140,24 @@ static void test_remove_person(void)
     CU_ASSERT_EQUAL(le.next, &le);
 }
 
+static void test_remove_second_person(void)
+{
+    Person p = {
+        "Muster","Peter",  20};
+    Person p2 = {
+        "Hermann","Peter",  20};
+    insert_person(&p);
+    insert_person(&p2);
+
+    remove_person(2);
+    CU_ASSERT_EQUAL(le.next->content.name, "Muster");
+    CU_ASSERT_EQUAL(le.next->next, &le);
+}
+
 static void test_clear_people(void)
 {
     Person p = {
-        "Peter", "Muster", 20};
+        "Muster", "Peter",  20};
     insert_person(&p);
 
     Person inside = le.next->content;
@@ -151,33 +167,49 @@ static void test_clear_people(void)
 }
 
 // Test main functionality
-// TODO
-/*
 
-static void test_main_no_duplicates(void)
+static void test_main_all_operations(void)
 {
 	// arrange
 	const char *out_txt[] = {
-        "Enter word (max 30chars):\n",  
-        "Enter word (max 30chars):\n",
-        "Enter word (max 30chars):\n",
-        "Enter word (max 30chars):\n",
-        "Enter word (max 30chars):\n",
-        "Sorted:\n",
-        "a\n",
-        "b\n",
-        "c\n",
-        "d\n"
+        "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",  
+        "Register new person.\n",
+        "Firstname:\n",
+        "Name:\n",
+        "Age:\n",
+        "Max Muster inserted.\n",
+        "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",
+        "Register new person.\n",
+        "Firstname:\n",
+        "Name:\n",
+        "Age:\n",
+        "Markus Muster inserted.\n",
+        "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",
+        "Currently the following people are stored:\n",
+        "1: Muster Markus, 25\n",
+        "2: Muster Max, 24\n",
+        "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",
+        "Please enter the index of the person to remove\n"
+        "Removed Muster Max, 24 from the list.\n",
+        "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",
+        "Currently the following people are stored:\n",
+        "1: Muster Markus, 25\n",
+        "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",
+        "The list was cleared.\n",
+        "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",
+        "The list is empty.\n",
+        "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",
+        "Bye.\n"
 	 };
 	const char *err_txt[] = { };
 	// act
-	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_NO_DUPLICATES);
+	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_ALL_OPERATIONS);
 	// assert
 	CU_ASSERT_EQUAL(exit_code, 0);
 	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
 	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
 }
-*/
+
 
 /**
   * @brief Registers and runs the tests.
@@ -186,14 +218,16 @@ int main(void)
 {
     // setup, run, teardown
     TestMainBasic("Selbstudium 05  - Person Administration", setup, teardown
-        , test_compare_person_simple
-        , test_compare_person_by_firstname
-        , test_compare_person_equal
-        , test_compare_person_by_age
-        , test_empty_list
+        // , test_compare_person_simple
+        // , test_compare_person_by_firstname
+        // , test_compare_person_equal
+        // , test_compare_person_by_age
+        // , test_empty_list
         , test_insert_person
         , test_string_person
-        , test_remove_person
-        , test_clear_people
+        // , test_remove_person
+        // , test_remove_second_person
+        // , test_clear_people
+        // , test_main_all_operations
     );
 }
