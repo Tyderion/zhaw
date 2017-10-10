@@ -18,9 +18,9 @@ char *string_person(const Person *person);
 
 /**
  * @brief   compares two persons for sorting purposes
- * @param[in] wordlist the list to print
- * @param[in] length the length of the list
- * @returns 0 if both are equal, -1 if p1 is lexigraphically earlier than p2 and 1 if p1 is after p2
+ * @param[in] p1 the list to print
+ * @param[in] p2 the length of the list
+ * @returns 0 if both are equal, -1 if p1 is lexigraphically earlier than p2 and 1 if p1 is after p2 (name then firstname)
  */
 int compare_person(const Person *p1, const Person *p2);
 
