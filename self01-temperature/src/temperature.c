@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static float convert(int f)
+static float convert(const int f)
 {
 	return (float)(5 * (f - 32)) / 9.0;
 }
