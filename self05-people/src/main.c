@@ -22,5 +22,5 @@
  */
  int main(int argc, char *argv[]) {
 	 printf("Welcome to ProgC Person Administration:\n");
-	 printf("Nothing is implemented yet!!\n");
+	 printf("Implementation missing\n");
  }

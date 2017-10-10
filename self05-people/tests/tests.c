@@ -78,7 +78,7 @@ static void test_compare_person_equal(void)
 static void test_compare_person_by_firstname(void)
 {
     Person p1 = {
-         "Müller","Hans",  20};
+        "Müller", "Hans", 20};
     Person p2 = {
         "Müller",
         "Manuel",
@@ -91,7 +91,7 @@ static void test_compare_person_by_firstname(void)
 static void test_compare_person_by_age(void)
 {
     Person p1 = {
-        "Müller", "Manuel",  21};
+        "Müller", "Manuel", 21};
     Person p2 = {
         "Müller",
         "Manuel",
@@ -104,7 +104,7 @@ static void test_compare_person_by_age(void)
 static void test_string_person(void)
 {
     Person p = {
-        "Muster","Peter",  20};
+        "Muster", "Peter", 20};
     char *str = string_person(&p);
     CU_ASSERT_EQUAL(strcmp("Muster Peter, 20", str), 0);
 }
@@ -112,7 +112,7 @@ static void test_string_person(void)
 static void test_string_person_long_name(void)
 {
     Person p = {
-        "Und Vielen Nachname","Person mit Vornamen",  105};
+        "Und Vielen Nachname", "Person mit Vornamen", 105};
     char *str = string_person(&p);
     CU_ASSERT_EQUAL(strcmp("Und Vielen Nachname Person mit Vornamen, 105", str), 0);
 }
@@ -130,10 +130,21 @@ static void test_insert_person(void)
         "Peter", "Muster", 20};
     insert_person(&p);
     Person inside = le.next->content;
-    printf("%s", inside.name);
-    CU_ASSERT_EQUAL(inside.firstname, p.firstname);
-    CU_ASSERT_EQUAL(inside.name, p.name);
-    CU_ASSERT_EQUAL(inside.age, p.age);
+    CU_ASSERT_EQUAL(strcmp(string_person(&inside), string_person(&p)), 0);
+}
+
+static void test_insert_multiple_people(void)
+{
+    Person p1 = {
+        "Peter", "Muster", 20};
+    Person p2 = {
+        "Patrick", "Muster", 20};
+    insert_person(&p1);
+    insert_person(&p2);
+    Person first = le.next->content;
+    CU_ASSERT_EQUAL(strcmp(string_person(&first), string_person(&p2)), 0);
+    Person second = le.next->next->content;
+    CU_ASSERT_EQUAL(strcmp(string_person(&second), string_person(&p1)), 0);
 }
 
 static void test_remove_person(void)
@@ -151,9 +162,9 @@ static void test_remove_person(void)
 static void test_remove_second_person(void)
 {
     Person p = {
-        "Muster","Peter",  20};
+        "Muster", "Peter", 20};
     Person p2 = {
-        "Hermann","Peter",  20};
+        "Hermann", "Peter", 20};
     insert_person(&p);
     insert_person(&p2);
 
@@ -165,7 +176,7 @@ static void test_remove_second_person(void)
 static void test_clear_people(void)
 {
     Person p = {
-        "Muster", "Peter",  20};
+        "Muster", "Peter", 20};
     insert_person(&p);
 
     Person inside = le.next->content;
@@ -178,9 +189,9 @@ static void test_clear_people(void)
 
 static void test_main_all_operations(void)
 {
-	// arrange
-	const char *out_txt[] = {
-        "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",  
+    // arrange
+    const char *out_txt[] = {
+        "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",
         "Register new person.\n",
         "Firstname:\n",
         "Name:\n",
@@ -207,36 +218,35 @@ static void test_main_all_operations(void)
         "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",
         "The list is empty.\n",
         "Please choose your operation from I(nsert), R(emove), S(how), C(lear) and E(nd):\n",
-        "Bye.\n"
-	 };
-	const char *err_txt[] = { };
-	// act
-	int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_ALL_OPERATIONS);
-	// assert
-	CU_ASSERT_EQUAL(exit_code, 0);
-	assert_lines(OUTFILE, out_txt, sizeof(out_txt)/sizeof(*out_txt));
-	assert_lines(ERRFILE, err_txt, sizeof(err_txt)/sizeof(*err_txt));
+        "Bye.\n"};
+    const char *err_txt[] = {};
+    // act
+    int exit_code = system(XSTR(TARGET) " 1>" OUTFILE " 2>" ERRFILE " < " INFILE_ALL_OPERATIONS);
+    // assert
+    CU_ASSERT_EQUAL(exit_code, 0);
+    assert_lines(OUTFILE, out_txt, sizeof(out_txt) / sizeof(*out_txt));
+    assert_lines(ERRFILE, err_txt, sizeof(err_txt) / sizeof(*err_txt));
 }
-
 
 /**
   * @brief Registers and runs the tests.
   */
-int main(void)
-{
-    // setup, run, teardown
-    TestMainBasic("Selbstudium 05  - Person Administration", setup, teardown
-        // , test_compare_person_simple
-        // , test_compare_person_by_firstname
-        // , test_compare_person_equal
-        // , test_compare_person_by_age
-        // , test_empty_list
-        , test_insert_person
-        , test_string_person
-        , test_string_person_long_name
-        // , test_remove_person
-        // , test_remove_second_person
-        // , test_clear_people
-        // , test_main_all_operations
-    );
-}
+  int main(void)
+  {
+      // setup, run, teardown
+      TestMainBasic("Selbstudium 05  - Person Administration", setup, teardown
+          , test_compare_person_simple
+          , test_compare_person_by_firstname
+          , test_compare_person_equal
+          , test_compare_person_by_age
+          , test_empty_list
+          , test_insert_person
+          , test_insert_multiple_people
+          , test_string_person
+          , test_string_person_long_name
+          , test_remove_person
+          , test_remove_second_person
+          , test_clear_people
+          , test_main_all_operations
+      );
+  }
