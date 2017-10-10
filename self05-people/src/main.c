@@ -9,6 +9,16 @@
  * @brief Main Entry point with the main function which gets called when the program is executed.
  */
 
+ /**
+ * @brief Flushes standard input so that no more characters are stored in the buffer
+*/
+static void flush_stdin() {
+	// Flushing stdin: https://stackoverflow.com/questions/7898215/how-to-clear-input-buffer-in-c
+	char c;
+	while ((c = getchar()) != '\n' && c != EOF) { }	
+}
+
+
 static Person action_read_person()
 {
 	printf("Register new person.\n");
@@ -22,7 +32,12 @@ static Person action_read_person()
 	printf("Age:\n");
 
 	int age;
-	scanf("%d", &age);
+	int scanned = scanf("%d", &age);
+	while (scanned != 1) {
+		printf("Please enter a number for the age\n");
+		flush_stdin();
+		scanned = scanf("%d", &age);
+	}
 	Person p;
 	strcpy(p.name, last);
 	strcpy(p.firstname, first);
