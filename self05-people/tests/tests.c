@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "CUnit/Basic.h"
 #include "test_utils.h"
 #include "../src/list.h"
@@ -105,8 +106,15 @@ static void test_string_person(void)
     Person p = {
         "Muster","Peter",  20};
     char *str = string_person(&p);
-    printf("Person: %s", str);
-    CU_ASSERT_EQUAL(str, "Muster Peter, 20");
+    CU_ASSERT_EQUAL(strcmp("Muster Peter, 20", str), 0);
+}
+
+static void test_string_person_long_name(void)
+{
+    Person p = {
+        "Und Vielen Nachname","Person mit Vornamen",  105};
+    char *str = string_person(&p);
+    CU_ASSERT_EQUAL(strcmp("Und Vielen Nachname Person mit Vornamen, 105", str), 0);
 }
 
 // Test list.h/list.c
@@ -225,6 +233,7 @@ int main(void)
         // , test_empty_list
         , test_insert_person
         , test_string_person
+        , test_string_person_long_name
         // , test_remove_person
         // , test_remove_second_person
         // , test_clear_people
