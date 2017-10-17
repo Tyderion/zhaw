@@ -1,12 +1,16 @@
 package ch.isageek.ads.p5.list;
 
+import ch.isageek.ads.p5.Edge;
+import ch.isageek.ads.p5.Graph;
+import ch.isageek.ads.p5.Node;
 import ch.isageek.ads.p5.NodeAlreadyDefinedException;
 
+import java.io.File;
 import java.util.*;
 
-public class GraphList {
+public class GraphList implements Graph {
 
-    final private Map<String, Node> nodes;
+    final private Map<String, NodeL> nodes;
 
     public GraphList() {
         this(0);
@@ -16,40 +20,64 @@ public class GraphList {
         this.nodes = new HashMap<>(nodes);
     }
 
-    public Node addNode(final String label) throws NodeAlreadyDefinedException {
+    public NodeL addNode(final String label) throws NodeAlreadyDefinedException {
         if (nodes.containsKey(label)) {
-            throw new NodeAlreadyDefinedException(String.format("Node %s is already defined.", label));
+            throw new NodeAlreadyDefinedException(String.format("NodeL %s is already defined.", label));
         }
-        Node n = new Node(label);
+        NodeL n = new NodeL(label);
         nodes.put(label, n);
         return n;
     }
 
     public void removeNode(final String label) throws NoSuchElementException {
-        Node node = getNode(label);
+        NodeL node = getNode(label);
         nodes.remove(label);
         nodes.values().forEach(n -> n.removeEdgeTo(node));
     }
 
-    public Node getNode(final String label) throws NoSuchElementException {
-        Node node =  nodes.get(label);
+    public NodeL getNode(final String label) throws NoSuchElementException {
+        NodeL node =  nodes.get(label);
         if (node == null) {
-            throw new NoSuchElementException(String.format("Node %s does not exist.", label));
+            throw new NoSuchElementException(String.format("NodeL %s does not exist.", label));
         }
         return node;
     }
 
     public void addEdge(final String src, final String dest, final int cost) {
-        Node source = this.getNode(src);
-        Node destination = this.getNode(dest);
-        source.addEdge(new Edge(destination, cost));
+        NodeL source = this.getNode(src);
+        NodeL destination = this.getNode(dest);
+        source.addEdge(new EdgeL(destination, cost));
     }
 
     public void removeEdge(final String src, final String dest) {
-        Node source = this.getNode(src);
-        Node destination = this.getNode(dest);
+        NodeL source = this.getNode(src);
+        NodeL destination = this.getNode(dest);
         source.removeEdgeTo(destination);
     }
 
 
+    @Override
+    public void readFromFile(File file, FileType type) {
+
+    }
+
+    @Override
+    public int getNumberOfNodes() {
+        return nodes.size();
+    }
+
+    @Override
+    public int getNumberOfEdges() {
+        return nodes.values().stream().mapToInt(NodeL::getEdgeCount).sum();
+    }
+
+    @Override
+    public List<Node> getNodes() {
+        return new ArrayList<>(nodes.values());
+    }
+
+    @Override
+    public List<Edge> getEdgesFor(final String label) {
+        return getNode(label).getEdges();
+    }
 }

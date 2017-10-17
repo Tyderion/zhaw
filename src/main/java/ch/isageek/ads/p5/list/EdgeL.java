@@ -1,18 +1,22 @@
 package ch.isageek.ads.p5.list;
 
-public class Edge {
-    final private Node destination;
+import ch.isageek.ads.p5.Edge;
+
+public class EdgeL implements Edge {
+    final private NodeL destination;
     final private int cost;
 
-    public Edge(Node destination, int cost) {
+    public EdgeL(NodeL destination, int cost) {
         this.destination = destination;
         this.cost = cost;
     }
 
-    public Node getDestination() {
+    @Override
+    public NodeL getDestination() {
         return destination;
     }
 
+    @Override
     public int getCost() {
         return cost;
     }

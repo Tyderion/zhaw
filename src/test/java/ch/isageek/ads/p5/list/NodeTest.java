@@ -9,9 +9,9 @@ public class NodeTest {
 
     @Test
     public void testAddEdge() {
-        Node a = new Node("a");
-        Node b = new Node("b");
-        Edge e = new Edge(b, 1);
+        NodeL a = new NodeL("a");
+        NodeL b = new NodeL("b");
+        EdgeL e = new EdgeL(b, 1);
 
 
         a.addEdge(e);
@@ -21,9 +21,9 @@ public class NodeTest {
 
     @Test
     public void testGetEdge() {
-        Node a = new Node("a");
-        Node b = new Node("b");
-        Edge e = new Edge(b, 1);
+        NodeL a = new NodeL("a");
+        NodeL b = new NodeL("b");
+        EdgeL e = new EdgeL(b, 1);
 
 
         a.addEdge(e);
@@ -33,9 +33,9 @@ public class NodeTest {
 
     @Test
     public void testGetNonexistingEdge() {
-        Node a = new Node("a");
-        Node b = new Node("b");
-        Edge e = new Edge(b, 1);
+        NodeL a = new NodeL("a");
+        NodeL b = new NodeL("b");
+        EdgeL e = new EdgeL(b, 1);
 
 
         a.addEdge(e);
@@ -45,9 +45,9 @@ public class NodeTest {
 
     @Test
     public void testRemoveEdge() {
-        Node a = new Node("a");
-        Node b = new Node("b");
-        Edge e = new Edge(b, 1);
+        NodeL a = new NodeL("a");
+        NodeL b = new NodeL("b");
+        EdgeL e = new EdgeL(b, 1);
 
         a.addEdge(e);
 
@@ -59,11 +59,11 @@ public class NodeTest {
 
     @Test
     public void testAddRemoveMultipleEdges() {
-        Node a = new Node("a");
-        Node b = new Node("b");
-        Node c = new Node("c");
-        Edge e1 = new Edge(b, 1);
-        Edge e2 = new Edge(c, 1);
+        NodeL a = new NodeL("a");
+        NodeL b = new NodeL("b");
+        NodeL c = new NodeL("c");
+        EdgeL e1 = new EdgeL(b, 1);
+        EdgeL e2 = new EdgeL(c, 1);
 
         a.addEdge(e1);
         a.addEdge(e2);
