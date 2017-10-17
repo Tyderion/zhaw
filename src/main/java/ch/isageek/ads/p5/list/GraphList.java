@@ -22,7 +22,7 @@ public class GraphList implements Graph {
 
     public NodeL addNode(final String label) throws NodeAlreadyDefinedException {
         if (nodes.containsKey(label)) {
-            throw new NodeAlreadyDefinedException(String.format("NodeL %s is already defined.", label));
+            throw new NodeAlreadyDefinedException(label);
         }
         NodeL n = new NodeL(label);
         nodes.put(label, n);

@@ -37,4 +37,13 @@ public class NodeL implements ch.isageek.ads.p5.Node {
     public int getEdgeCount() {
         return adjList.size();
     }
+
+    @Override
+    public String getValue() {
+        return label;
+    }
+
+
+
+
 }
