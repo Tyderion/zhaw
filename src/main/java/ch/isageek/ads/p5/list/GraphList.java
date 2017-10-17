@@ -20,7 +20,15 @@ public class GraphList {
         if (nodes.containsKey(label)) {
             throw new NodeAlreadyDefinedException(String.format("Node %s is already defined.", label));
         }
-        return nodes.put(label, new Node(label));
+        Node n = new Node(label);
+        nodes.put(label, n);
+        return n;
+    }
+
+    public void removeNode(final String label) throws NoSuchElementException {
+        Node node = getNode(label);
+        nodes.remove(label);
+        nodes.values().forEach(n -> n.removeEdgeTo(node));
     }
 
     public Node getNode(final String label) throws NoSuchElementException {
@@ -40,7 +48,7 @@ public class GraphList {
     public void removeEdge(final String src, final String dest) {
         Node source = this.getNode(src);
         Node destination = this.getNode(dest);
-        source.removeEdge(source.getEdgeTo(destination));
+        source.removeEdgeTo(destination);
     }
 
 

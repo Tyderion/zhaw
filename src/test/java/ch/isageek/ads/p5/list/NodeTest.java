@@ -51,7 +51,7 @@ public class NodeTest {
 
         a.addEdge(e);
 
-        a.removeEdge(e);
+        a.removeEdgeTo(b);
 
         assertEquals(0, a.getEdges().size());
         assertNull(a.getEdgeTo(b));
@@ -68,7 +68,7 @@ public class NodeTest {
         a.addEdge(e1);
         a.addEdge(e2);
 
-        a.removeEdge(e1);
+        a.removeEdgeTo(b);
 
         assertEquals(1, a.getEdges().size());
         assertEquals(e2, a.getEdgeTo(c));

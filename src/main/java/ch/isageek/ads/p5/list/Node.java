@@ -26,7 +26,8 @@ public class Node {
         return adjList.stream().filter(edge -> edge.getDestination().equals(n)).findFirst().orElse(null);
     }
 
-    public void removeEdge(Edge e) {
+    public void removeEdgeTo(Node n) {
+        Edge e = getEdgeTo(n);
         if (e != null) {
             adjList = adjList.stream().filter(edge -> !edge.equals(e)).collect(Collectors.toList());
         }
