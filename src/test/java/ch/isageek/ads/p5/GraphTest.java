@@ -2,7 +2,7 @@ package ch.isageek.ads.p5;
 
 import ch.isageek.ads.p5.exception.GraphParseException;
 import ch.isageek.ads.p5.impl.GraphList;
-import ch.isageek.ads.p5.impl.GraphMatrix;
+import ch.isageek.ads.p5.impl.GraphHashmapMatrix;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +42,7 @@ public class GraphTest {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection<Class> getClasses() {
-        return asList(GraphMatrix.class, GraphList.class);
+        return asList(GraphHashmapMatrix.class, GraphList.class);
     }
 
     @Before

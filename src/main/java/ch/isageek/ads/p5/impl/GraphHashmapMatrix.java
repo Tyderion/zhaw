@@ -6,11 +6,11 @@ import ch.isageek.ads.p5.exception.NodeAlreadyDefinedException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GraphMatrix extends LoadingGraph {
+public class GraphHashmapMatrix extends LoadingGraph {
 
     Map<String, Map<String, Integer>> adjacencyMatrix;
 
-    public GraphMatrix() {
+    public GraphHashmapMatrix() {
         adjacencyMatrix = new HashMap<>(0);
     }
 
@@ -22,7 +22,7 @@ public class GraphMatrix extends LoadingGraph {
     @Override
     public int getNumberOfEdges() {
         return adjacencyMatrix.values().stream()
-                .mapToInt(values -> values.values().stream().mapToInt(value -> value).sum()).sum();
+                .mapToInt(row -> (int)row.values().stream().filter(value -> value != 0).count()).sum();
     }
 
     @Override
