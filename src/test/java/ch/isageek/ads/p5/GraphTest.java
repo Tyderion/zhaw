@@ -116,5 +116,13 @@ public class GraphTest {
         assertReflectionEquals(Collections.singletonList(a), graph.getNodes());
     }
 
+    @Test
+    public void testReadEdgeListGraph() throws Exception {
+
+        Graph g = new GraphList();
+        
+
+    }
+
 
 }
