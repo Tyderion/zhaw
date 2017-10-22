@@ -3,6 +3,7 @@ package ch.isageek.ads.p5.list;
 import ch.isageek.ads.p5.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GraphList extends LoadingGraph {
 
@@ -69,5 +70,63 @@ public class GraphList extends LoadingGraph {
     @Override
     public List<Edge> getEdgesFor(final String label) {
         return getNode(label).getEdges();
+    }
+
+    private static class EdgeL implements Edge {
+        final private NodeL destination;
+        final private int cost;
+
+        EdgeL(NodeL destination, int cost) {
+            this.destination = destination;
+            this.cost = cost;
+        }
+
+        @Override
+        public NodeL getDestination() {
+            return destination;
+        }
+
+        @Override
+        public int getCost() {
+            return cost;
+        }
+    }
+
+    private static class NodeL implements Node {
+        final private String label;
+
+        private List<EdgeL> adjList = new ArrayList<>();
+
+        NodeL(String label) {
+            this.label = label;
+        }
+
+        void addEdge(EdgeL e) {
+            adjList.add(e);
+        }
+
+        public List<Edge> getEdges() {
+            return new ArrayList<>(adjList);
+        }
+
+        EdgeL getEdgeTo(NodeL n) {
+            return adjList.stream().filter(edge -> edge.getDestination().equals(n)).findFirst().orElse(null);
+        }
+
+        void removeEdgeTo(NodeL n) {
+            EdgeL e = getEdgeTo(n);
+            if (e != null) {
+                adjList = adjList.stream().filter(edge -> !edge.equals(e)).collect(Collectors.toList());
+            }
+        }
+
+        int getEdgeCount() {
+            return adjList.size();
+        }
+
+        @Override
+        public String getValue() {
+            return label;
+        }
     }
 }
