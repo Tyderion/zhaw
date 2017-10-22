@@ -1,14 +1,11 @@
 package ch.isageek.ads.p5.list;
 
-import ch.isageek.ads.p5.Edge;
-import ch.isageek.ads.p5.Graph;
-import ch.isageek.ads.p5.Node;
-import ch.isageek.ads.p5.NodeAlreadyDefinedException;
+import ch.isageek.ads.p5.*;
 
 import java.io.File;
 import java.util.*;
 
-public class GraphList implements Graph {
+public class GraphList extends BaseGraph {
 
     final private Map<String, NodeL> nodes;
 
@@ -53,12 +50,6 @@ public class GraphList implements Graph {
         NodeL source = this.getNode(src);
         NodeL destination = this.getNode(dest);
         source.removeEdgeTo(destination);
-    }
-
-
-    @Override
-    public void readFromFile(File file, FileType type) {
-
     }
 
     @Override

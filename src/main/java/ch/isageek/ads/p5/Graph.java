@@ -1,6 +1,7 @@
 package ch.isageek.ads.p5;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -16,7 +17,7 @@ public interface Graph {
      * @param file the file to load
      * @param type The type of representation of the file, either an edgelist or a nodelist
      */
-    void readFromFile(File file, FileType type);
+    void readFromFile(File file, FileType type) throws IOException;
 
     int getNumberOfNodes();
 
