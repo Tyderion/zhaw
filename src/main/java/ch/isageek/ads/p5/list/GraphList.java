@@ -2,10 +2,9 @@ package ch.isageek.ads.p5.list;
 
 import ch.isageek.ads.p5.*;
 
-import java.io.File;
 import java.util.*;
 
-public class GraphList extends BaseGraph {
+public class GraphList extends LoadingGraph {
 
     final private Map<String, NodeL> nodes;
 

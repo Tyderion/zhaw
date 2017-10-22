@@ -10,44 +10,44 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public abstract class BaseGraph implements Graph {
+public abstract class LoadingGraph implements Graph {
 
     @Override
     public void readFromFile(File file) throws IOException, GraphParseException {
-        parse(getParseInformation(file));
+        parseEdgelistGraph(getFileInformation(file));
     }
 
-    private void parse(ParseInformation parseInformation) throws IOException, GraphParseException {
-        Set<String> nodes = new HashSet<>(parseInformation.numberOfNodes);
-        Set<Edge> edges = new HashSet<>(parseInformation.numberOfEdges);
-        switch (parseInformation.type) {
+    private void parseEdgelistGraph(FileInformation fileInformation) throws IOException, GraphParseException {
+        Set<String> nodes = new HashSet<>(fileInformation.numberOfNodes);
+        Set<Edge> edges = new HashSet<>(fileInformation.numberOfEdges);
+        switch (fileInformation.type) {
             case EDGELIST:
-                if (parseInformation.line.size() % 2 != 0) {
+                if (fileInformation.line.size() % 2 != 0) {
                     System.err.println("Weightless edgelist must contain an even number of entries");
                     throw new GraphParseException("Weightless edgelist must contain an even number of entries");
                 }
-                for (int i = 0; i < parseInformation.line.size(); i = i+2) {
-                    String first = parseInformation.line.get(i);
-                    String second = parseInformation.line.get(i+1);
+                for (int i = 0; i < fileInformation.line.size(); i = i+2) {
+                    String first = fileInformation.line.get(i);
+                    String second = fileInformation.line.get(i+1);
                     nodes.add(first);
                     nodes.add(second);
                     edges.add(new Edge(first, second));
                 }
                 break;
             case EDGELIST_WEIGHTED:
-                if (parseInformation.line.size() % 3 != 0) {
+                if (fileInformation.line.size() % 3 != 0) {
                     System.err.println("Weighted edgelist must contain 3 entries for each edge");
                     throw new GraphParseException("Weighted edgelist must contain 3 entries for each edge");
                 }
-                for (int i = 0; i < parseInformation.line.size(); i = i+3) {
-                    String first = parseInformation.line.get(i);
-                    String second = parseInformation.line.get(i+1);
+                for (int i = 0; i < fileInformation.line.size(); i = i+3) {
+                    String first = fileInformation.line.get(i);
+                    String second = fileInformation.line.get(i+1);
                     int cost;
                     try {
-                        cost = Integer.parseInt(parseInformation.line.get(i+2));
+                        cost = Integer.parseInt(fileInformation.line.get(i+2));
                     } catch (NumberFormatException e) {
                         System.err.println("Weights must be integers");
-                        throw new GraphParseException(String.format("All weights must be integers but %s is not.", parseInformation.line.get(i+2)));
+                        throw new GraphParseException(String.format("All weights must be integers but %s is not.", fileInformation.line.get(i+2)));
                     }
                     nodes.add(first);
                     nodes.add(second);
@@ -66,7 +66,7 @@ public abstract class BaseGraph implements Graph {
         edges.forEach(edge -> addEdge(edge.start, edge.end, edge.cost));
     }
 
-    private ParseInformation getParseInformation(File file) throws IOException, GraphParseException {
+    private FileInformation getFileInformation(File file) throws IOException, GraphParseException {
         List<String> lines = Files.readAllLines(file.toPath(), Charset.forName("UTF-8"));
 
         if (lines.size() < 1) {
@@ -80,7 +80,7 @@ public abstract class BaseGraph implements Graph {
             System.out.println("File contains multiple lines, assuming csv representation");
             // We transform the csv to a "fake" edgelist, NodeCount and EdgeCount is not necessary to read the graph so we set it to an arbitrary number (1)
             boolean isWeighted = lines.get(1).split(",").length  == 3;
-            content = (isWeighted ? "W:" : "") + "1,1,"+ lines.stream().collect(Collectors.joining(","));
+            content = String.format("%s%s,%s", (isWeighted ? "W:" : ""), "1,1", lines.stream().collect(Collectors.joining(",")));
         } else {
             content = lines.get(0);
         }
@@ -98,9 +98,9 @@ public abstract class BaseGraph implements Graph {
             numberOfEdges = Integer.parseInt(graphInformation[1]);
         } catch (NumberFormatException e) {
             System.err.println("File does not start with 2 integers");
-            throw new GraphParseException("Could not parse either node count or edge count.");
+            throw new GraphParseException("Could not parseEdgelistGraph either node count or edge count.");
         }
-        return new ParseInformation(numberOfNodes, numberOfEdges, Arrays.stream(graphInformation).skip(2).collect(Collectors.toList()), type);
+        return new FileInformation(numberOfNodes, numberOfEdges, Arrays.stream(graphInformation).skip(2).collect(Collectors.toList()), type);
     }
 
     private static class Edge {
@@ -119,13 +119,13 @@ public abstract class BaseGraph implements Graph {
         }
     }
 
-    private static class ParseInformation {
+    private static class FileInformation {
         int numberOfNodes;
         int numberOfEdges;
         List<String> line;
         FileType type;
 
-        ParseInformation(int numberOfNodes, int numberOfEdges,List<String> line, FileType type) {
+        FileInformation(int numberOfNodes, int numberOfEdges, List<String> line, FileType type) {
             this.numberOfNodes = numberOfNodes;
             this.numberOfEdges = numberOfEdges;
             this.line = line;

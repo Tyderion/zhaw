@@ -2,11 +2,10 @@ package ch.isageek.ads.p5.matrix;
 
 import ch.isageek.ads.p5.*;
 
-import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GraphMatrix extends BaseGraph {
+public class GraphMatrix extends LoadingGraph {
 
     Map<String, Map<String, Integer>> adjacencyMatrix;
 
