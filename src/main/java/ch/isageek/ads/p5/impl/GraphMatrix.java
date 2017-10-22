@@ -119,7 +119,7 @@ public class GraphMatrix extends LoadingGraph {
 
                 @Override
                 public List<Edge> getEdges() {
-                    return edges.entrySet().stream().map(entry -> toEdge(entry.getKey(), entry.getValue(), nodes)).collect(Collectors.toList());
+                    return edges.entrySet().stream().filter(entry -> entry.getValue() != 0).map(entry -> toEdge(entry.getKey(), entry.getValue(), nodes)).collect(Collectors.toList());
                 }
 
                 @Override
