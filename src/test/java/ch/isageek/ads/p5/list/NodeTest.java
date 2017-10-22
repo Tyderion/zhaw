@@ -1,5 +1,6 @@
 package ch.isageek.ads.p5.list;
 
+import ch.isageek.ads.p5.impl.GraphList;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;

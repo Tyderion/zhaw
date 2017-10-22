@@ -1,6 +1,7 @@
-package ch.isageek.ads.p5.matrix;
+package ch.isageek.ads.p5.impl;
 
 import ch.isageek.ads.p5.*;
+import ch.isageek.ads.p5.exception.NodeAlreadyDefinedException;
 
 import java.util.*;
 import java.util.stream.Collectors;

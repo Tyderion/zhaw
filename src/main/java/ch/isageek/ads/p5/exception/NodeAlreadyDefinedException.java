@@ -1,4 +1,4 @@
-package ch.isageek.ads.p5;
+package ch.isageek.ads.p5.exception;
 
 public class NodeAlreadyDefinedException extends Exception {
 

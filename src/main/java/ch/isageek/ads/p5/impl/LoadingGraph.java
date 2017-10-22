@@ -1,4 +1,9 @@
-package ch.isageek.ads.p5;
+package ch.isageek.ads.p5.impl;
+
+import ch.isageek.ads.p5.FileType;
+import ch.isageek.ads.p5.Graph;
+import ch.isageek.ads.p5.exception.GraphParseException;
+import ch.isageek.ads.p5.exception.NodeAlreadyDefinedException;
 
 import java.io.File;
 import java.io.IOException;

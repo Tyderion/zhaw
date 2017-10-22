@@ -1,7 +1,8 @@
 package ch.isageek.ads.p5;
 
-import ch.isageek.ads.p5.list.GraphList;
-import ch.isageek.ads.p5.matrix.GraphMatrix;
+import ch.isageek.ads.p5.exception.GraphParseException;
+import ch.isageek.ads.p5.impl.GraphList;
+import ch.isageek.ads.p5.impl.GraphMatrix;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
