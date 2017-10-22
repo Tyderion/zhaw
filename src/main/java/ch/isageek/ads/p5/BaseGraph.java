@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class BaseGraph implements Graph {
 
@@ -21,32 +22,32 @@ public abstract class BaseGraph implements Graph {
         Set<Edge> edges = new HashSet<>(parseInformation.numberOfEdges);
         switch (parseInformation.type) {
             case EDGELIST:
-                if (parseInformation.line.length % 2 != 0) {
+                if (parseInformation.line.size() % 2 != 0) {
                     System.err.println("Weightless edgelist must contain an even number of entries");
                     throw new GraphParseException("Weightless edgelist must contain an even number of entries");
                 }
-                for (int i = 2; i < parseInformation.line.length; i = i+2) {
-                    String first = parseInformation.line[i];
-                    String second = parseInformation.line[i+1];
+                for (int i = 0; i < parseInformation.line.size(); i = i+2) {
+                    String first = parseInformation.line.get(i);
+                    String second = parseInformation.line.get(i+1);
                     nodes.add(first);
                     nodes.add(second);
                     edges.add(new Edge(first, second));
                 }
                 break;
             case EDGELIST_WEIGHTED:
-                if ((parseInformation.line.length-2) % 3 != 0) {
+                if (parseInformation.line.size() % 3 != 0) {
                     System.err.println("Weighted edgelist must contain 3 entries for each edge");
                     throw new GraphParseException("Weighted edgelist must contain 3 entries for each edge");
                 }
-                for (int i = 2; i < parseInformation.line.length; i = i+3) {
-                    String first = parseInformation.line[i];
-                    String second = parseInformation.line[i+1];
+                for (int i = 0; i < parseInformation.line.size(); i = i+3) {
+                    String first = parseInformation.line.get(i);
+                    String second = parseInformation.line.get(i+1);
                     int cost;
                     try {
-                        cost = Integer.parseInt(parseInformation.line[i + 2]);
+                        cost = Integer.parseInt(parseInformation.line.get(i+2));
                     } catch (NumberFormatException e) {
                         System.err.println("Weights must be integers");
-                        throw new GraphParseException(String.format("All weights must be integers but %s is not.", parseInformation.line[i+2]));
+                        throw new GraphParseException(String.format("All weights must be integers but %s is not.", parseInformation.line.get(i+2)));
                     }
                     nodes.add(first);
                     nodes.add(second);
@@ -67,15 +68,25 @@ public abstract class BaseGraph implements Graph {
 
     private ParseInformation getParseInformation(File file) throws IOException, GraphParseException {
         List<String> lines = Files.readAllLines(file.toPath(), Charset.forName("UTF-8"));
-        if (lines.size() > 1) {
-            System.err.println("Please put graph on line. Reading first line as graph");
-        }
+
         if (lines.size() < 1) {
             System.err.println("One line of text is required for a graph definition");
             throw new GraphParseException("File is empty");
         }
-        FileType type = lines.get(0).startsWith("W:") ? FileType.EDGELIST_WEIGHTED : FileType.EDGELIST;
-        String[] graphInformation = lines.get(0).replace("W:", "").split(",");
+
+        String content;
+        if (lines.size() > 1) {
+            // Assuming csv
+            System.out.println("File contains multiple lines, assuming csv representation");
+            // We transform the csv to a "fake" edgelist, NodeCount and EdgeCount is not necessary to read the graph so we set it to an arbitrary number (1)
+            boolean isWeighted = lines.get(1).split(",").length  == 3;
+            content = (isWeighted ? "W:" : "") + "1,1,"+ lines.stream().collect(Collectors.joining(","));
+        } else {
+            content = lines.get(0);
+        }
+
+        FileType type = content.startsWith("W:") ? FileType.EDGELIST_WEIGHTED : FileType.EDGELIST;
+        String[] graphInformation = content.replace("W:", "").split(",");
         if (graphInformation.length < 2) {
             System.err.println("Edgelist too short, needs at least 2 entries specifying nodecount and edgecount");
             throw new GraphParseException("Edgelist too short, needs at least 2 entries specifying nodecount and edgecount");
@@ -89,7 +100,7 @@ public abstract class BaseGraph implements Graph {
             System.err.println("File does not start with 2 integers");
             throw new GraphParseException("Could not parse either node count or edge count.");
         }
-        return new ParseInformation(numberOfNodes, numberOfEdges, graphInformation, type);
+        return new ParseInformation(numberOfNodes, numberOfEdges, Arrays.stream(graphInformation).skip(2).collect(Collectors.toList()), type);
     }
 
     private static class Edge {
@@ -111,10 +122,10 @@ public abstract class BaseGraph implements Graph {
     private static class ParseInformation {
         int numberOfNodes;
         int numberOfEdges;
-        String[] line;
+        List<String> line;
         FileType type;
 
-        ParseInformation(int numberOfNodes, int numberOfEdges, String[] line, FileType type) {
+        ParseInformation(int numberOfNodes, int numberOfEdges,List<String> line, FileType type) {
             this.numberOfNodes = numberOfNodes;
             this.numberOfEdges = numberOfEdges;
             this.line = line;
