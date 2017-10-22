@@ -2,6 +2,7 @@ package ch.isageek.ads.p5;
 
 import ch.isageek.ads.p5.impl.GraphList;
 import ch.isageek.ads.p5.impl.GraphHashmapMatrix;
+import ch.isageek.ads.p5.impl.GraphMatrix;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +31,7 @@ public class GraphSearchTest {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection<Class> getClasses() {
-        return asList(GraphHashmapMatrix.class, GraphList.class);
+        return asList(GraphHashmapMatrix.class, GraphList.class, GraphMatrix.class);
     }
 
 

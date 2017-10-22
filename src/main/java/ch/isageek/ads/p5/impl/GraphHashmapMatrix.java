@@ -6,9 +6,14 @@ import ch.isageek.ads.p5.exception.NodeAlreadyDefinedException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * This class uses nested Hashmaps to simulate a matrix
+ * This is more convenient than actualy matrices (or lists in lists) when removing nodes.
+ * When we have an actual matrix (e.g. 2d array) we need to move a lot of elements around when removing nodes
+ */
 public class GraphHashmapMatrix extends LoadingGraph {
 
-    Map<String, Map<String, Integer>> adjacencyMatrix;
+    private Map<String, Map<String, Integer>> adjacencyMatrix;
 
     public GraphHashmapMatrix() {
         adjacencyMatrix = new HashMap<>(0);
