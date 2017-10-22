@@ -121,6 +121,16 @@ public class GraphMatrix extends LoadingGraph {
                 public List<Edge> getEdges() {
                     return edges.entrySet().stream().map(entry -> toEdge(entry.getKey(), entry.getValue(), nodes)).collect(Collectors.toList());
                 }
+
+                @Override
+                public int hashCode() {
+                    return Objects.hash(label, getEdges().size());
+                }
+
+                @Override
+                public boolean equals(Object obj) {
+                    return Objects.equals(this.hashCode(), obj.hashCode());
+                }
             });
         }
 
@@ -137,6 +147,16 @@ public class GraphMatrix extends LoadingGraph {
             @Override
             public int getCost() {
                 return cost;
+            }
+
+            @Override
+            public int hashCode() {
+                return Objects.hash(getDestination(), cost);
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                return Objects.equals(this.hashCode(), obj.hashCode());
             }
         };
     }
