@@ -289,15 +289,11 @@ public class GraphTest {
         graph.readFromFile(tmpFile);
     }
 
-
-
     private void writeToTmpFile(String str) throws IOException {
         tmpFile = File.createTempFile("graph", ".txt");
         BufferedWriter out = new BufferedWriter(new FileWriter(tmpFile));
         out.write(str);
         out.close();
     }
-
-
 
 }
