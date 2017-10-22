@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.unitils.reflectionassert.ReflectionComparatorMode;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static junit.framework.TestCase.assertEquals;
@@ -134,14 +136,7 @@ public class GraphTest {
 
     @Test
     public void testReadEdgeListGraph() throws Exception {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        URL path = classloader.getResource("simple_graph_edgelist.txt");
-        assertNotNull(path);
-        File file = new File(path.toURI());
-
-        Graph graph = new GraphList();
-
-        graph.readFromFile(file);
+        readGraph("simple_graph_edgelist.txt");
 
         assertEquals(2, graph.getNumberOfNodes());
         assertEquals(2, graph.getNumberOfEdges());
@@ -161,14 +156,7 @@ public class GraphTest {
 
     @Test
     public void testReadEdgeListGraphCsv() throws Exception {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        URL path = classloader.getResource("simple_graph.csv");
-        assertNotNull(path);
-        File file = new File(path.toURI());
-
-        Graph graph = new GraphList();
-
-        graph.readFromFile(file);
+        readGraph("simple_graph.csv");
 
         assertEquals(2, graph.getNumberOfNodes());
         assertEquals(2, graph.getNumberOfEdges());
@@ -187,15 +175,36 @@ public class GraphTest {
     }
 
     @Test
+    public void testReadEdgeListGraphCsvBig() throws Exception {
+        readGraph("graph_fingerübung.csv");
+
+        assertEquals(10, graph.getNumberOfNodes());
+        assertEquals(13, graph.getNumberOfEdges());
+        assertEquals(2, graph.getEdgesFor("2").size());
+        assertEquals(3, graph.getEdgesFor("1").size());
+
+        List<Edge> edges = graph.getEdgesFor("2");
+        assertReflectionEquals(
+                asList("8", "5"),
+                edges.stream().map(edge -> edge.getDestination().getValue()).collect(Collectors.toList())
+        , ReflectionComparatorMode.LENIENT_ORDER);
+        assertEquals(1, edges.get(0).getCost());
+        assertEquals(1, edges.get(1).getCost());
+
+        List<Edge> edges2 = graph.getEdgesFor("1");
+        assertReflectionEquals(
+                asList("3", "4", "7"),
+               edges2.stream().map(edge -> edge.getDestination().getValue()).collect(Collectors.toList())
+                , ReflectionComparatorMode.LENIENT_ORDER);
+
+        assertEquals(1, edges2.get(0).getCost());
+        assertEquals(1, edges2.get(1).getCost());
+        assertEquals(1, edges2.get(2).getCost());
+    }
+
+    @Test
     public void testReadEdgeListGraphWeighted() throws Exception {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        URL path = classloader.getResource("simple_graph_edgelist_weighted.txt");
-        assertNotNull(path);
-        File file = new File(path.toURI());
-
-        Graph graph = new GraphList();
-
-        graph.readFromFile(file);
+        readGraph("simple_graph_edgelist_weighted.txt");
 
         assertEquals(2, graph.getNumberOfNodes());
         assertEquals(2, graph.getNumberOfEdges());
@@ -215,14 +224,7 @@ public class GraphTest {
 
     @Test
     public void testReadEdgeListGraphWeightedCSV() throws Exception {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        URL path = classloader.getResource("simple_graph_weighted.csv");
-        assertNotNull(path);
-        File file = new File(path.toURI());
-
-        Graph graph = new GraphList();
-
-        graph.readFromFile(file);
+        readGraph("simple_graph_weighted.csv");
 
         assertEquals(2, graph.getNumberOfNodes());
         assertEquals(2, graph.getNumberOfEdges());
@@ -243,49 +245,42 @@ public class GraphTest {
     @Test(expected = GraphParseException.class)
     public void testReadGraphEmptyFile() throws Exception {
         writeToTmpFile("");
-        Graph graph = new GraphList();
         graph.readFromFile(tmpFile);
     }
 
     @Test(expected = GraphParseException.class)
     public void testReadGraphOnlyNodeCount() throws Exception {
         writeToTmpFile("1");
-        Graph graph = new GraphList();
         graph.readFromFile(tmpFile);
     }
 
     @Test(expected = GraphParseException.class)
     public void testReadGraphOnlySkippedEdgeCount() throws Exception {
         writeToTmpFile("2,Zürich,Bern");
-        Graph graph = new GraphList();
         graph.readFromFile(tmpFile);
     }
 
     @Test(expected = GraphParseException.class)
     public void testReadGraphUnevenEdges() throws Exception {
         writeToTmpFile("2,2,Zürich,Bern,Zürich");
-        Graph graph = new GraphList();
         graph.readFromFile(tmpFile);
     }
 
     @Test(expected = GraphParseException.class)
     public void testReadWeightedGraphOnlyNodeCount() throws Exception {
         writeToTmpFile("W:1");
-        Graph graph = new GraphList();
         graph.readFromFile(tmpFile);
     }
 
     @Test(expected = GraphParseException.class)
     public void testReadWeightedGraphOnlySkippedEdgeCount() throws Exception {
         writeToTmpFile("W:2,Zürich,Bern");
-        Graph graph = new GraphList();
         graph.readFromFile(tmpFile);
     }
 
     @Test(expected = GraphParseException.class)
     public void testReadWeightedGraphUnevenEdges() throws Exception {
         writeToTmpFile("W:2,2,Zürich,Bern,Zürich");
-        Graph graph = new GraphList();
         graph.readFromFile(tmpFile);
     }
 
@@ -296,4 +291,11 @@ public class GraphTest {
         out.close();
     }
 
+    private void readGraph(String name) throws Exception {
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        URL path = classloader.getResource(name);
+        assertNotNull(path);
+        File file = new File(path.toURI());
+        graph.readFromFile(file);
+    }
 }
