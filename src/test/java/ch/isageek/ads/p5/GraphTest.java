@@ -7,14 +7,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import java.io.File;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 @RunWith(Parameterized.class)
@@ -118,10 +120,56 @@ public class GraphTest {
 
     @Test
     public void testReadEdgeListGraph() throws Exception {
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        URL path = classloader.getResource("simple_edgelist.txt");
+        assertNotNull(path);
+        File file = new File(path.toURI());
 
-        Graph g = new GraphList();
-        
+        Graph graph = new GraphList();
 
+        graph.readFromFile(file);
+
+        assertEquals(2, graph.getNumberOfNodes());
+        assertEquals(2, graph.getNumberOfEdges());
+        assertEquals(1, graph.getEdgesFor("Zürich").size());
+        assertEquals(1, graph.getEdgesFor("Bern").size());
+
+        List<Edge> edges = graph.getEdgesFor("Zürich");
+        assertEquals(1, edges.size());
+        assertEquals("Bern", edges.get(0).getDestination().getValue());
+        assertEquals(1, edges.get(0).getCost());
+
+        List<Edge> edges2 = graph.getEdgesFor("Bern");
+        assertEquals(1, edges2.size());
+        assertEquals("Zürich", edges2.get(0).getDestination().getValue());
+        assertEquals(1, edges2.get(0).getCost());
+    }
+
+    @Test
+    public void testReadEdgeListGraphWeighted() throws Exception {
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        URL path = classloader.getResource("simple_edgelist_weighted.txt");
+        assertNotNull(path);
+        File file = new File(path.toURI());
+
+        Graph graph = new GraphList();
+
+        graph.readFromFile(file);
+
+        assertEquals(2, graph.getNumberOfNodes());
+        assertEquals(2, graph.getNumberOfEdges());
+        assertEquals(1, graph.getEdgesFor("Zürich").size());
+        assertEquals(1, graph.getEdgesFor("Bern").size());
+
+        List<Edge> edges = graph.getEdgesFor("Zürich");
+        assertEquals(1, edges.size());
+        assertEquals("Bern", edges.get(0).getDestination().getValue());
+        assertEquals(110, edges.get(0).getCost());
+
+        List<Edge> edges2 = graph.getEdgesFor("Bern");
+        assertEquals(1, edges.size());
+        assertEquals("Zürich", edges2.get(0).getDestination().getValue());
+        assertEquals(107, edges2.get(0).getCost());
     }
 
 

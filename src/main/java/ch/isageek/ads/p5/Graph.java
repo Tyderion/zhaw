@@ -7,17 +7,14 @@ import java.util.NoSuchElementException;
 
 public interface Graph {
 
-    enum FileType {
-        EDGELIST, NODELIST
-    }
-
     /**
-     * Constructs a graph reading the file from the path.
-     *
+     * Reads a graph from a file with a representation documented in {@link FileType}
      * @param file the file to load
-     * @param type The type of representation of the file, either an edgelist or a nodelist
+     * @throws IOException if the file cannot be opened
+     * @throws GraphParseException if the file cannot be parsed
      */
-    void readFromFile(File file, FileType type) throws IOException;
+    void readFromFile(File file) throws IOException, GraphParseException;
+
 
     int getNumberOfNodes();
 
