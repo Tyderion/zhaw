@@ -54,7 +54,7 @@ public class GraphTest {
         assertEquals(b.getValue(), edges.get(0).getDestination().getValue());
         assertEquals(1, edges.get(0).getCost());
 
-        assertReflectionEquals(asList(a.getValue(), b.getValue()), graph.getNodes().stream().map(Node::getValue).collect(Collectors.toList()));
+        assertReflectionEquals(asList(a, b), graph.getNodes());
 
     }
 
@@ -92,7 +92,8 @@ public class GraphTest {
         assertEquals(b.getValue(), edges.get(0).getDestination().getValue());
         assertEquals(1, edges.get(0).getCost());
 
-        assertReflectionEquals(asList(a.getValue(), b.getValue()), graph.getNodes().stream().map(Node::getValue).collect(Collectors.toList()));
+        assertReflectionEquals(asList(a, b), graph.getNodes());
+
     }
 
     @Test
@@ -112,7 +113,7 @@ public class GraphTest {
         List<Edge> edges = graph.getEdgesFor(A);
         assertEquals(0, edges.size());
 
-        assertReflectionEquals(Collections.singletonList(a.getValue()), graph.getNodes().stream().map(Node::getValue).collect(Collectors.toList()));
+        assertReflectionEquals(Collections.singletonList(a), graph.getNodes());
     }
 
 

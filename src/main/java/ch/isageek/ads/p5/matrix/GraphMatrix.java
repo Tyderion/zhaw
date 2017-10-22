@@ -35,7 +35,7 @@ public class GraphMatrix implements Graph {
 
     @Override
     public List<Node> getNodes() {
-        return adjacencyMatrix.keySet().stream().map(s -> (Node) () -> s).collect(Collectors.toList());
+        return adjacencyMatrix.keySet().stream().map(this::toNode).collect(Collectors.toList());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class GraphMatrix implements Graph {
                 .map(entry -> new Edge() {
                     @Override
                     public Node getDestination() {
-                        return entry::getKey;
+                        return toNode(entry.getKey());
                     }
 
                     @Override
@@ -69,13 +69,13 @@ public class GraphMatrix implements Graph {
             values.put(key, 0);
         });
         adjacencyMatrix.put(label, values);
-        return () -> label;
+        return toNode(label);
     }
 
     @Override
     public Node getNode(final String label) throws NoSuchElementException {
         if (adjacencyMatrix.containsKey(label)) {
-            return () -> label;
+            return toNode(label);
         } else {
             throw new NoSuchElementException(String.format("Node %s does not exist", label));
         }
@@ -107,5 +107,45 @@ public class GraphMatrix implements Graph {
             throw new NoSuchElementException();
         }
         adjacencyMatrix.get(src).put(dest, 0);
+    }
+
+
+    private Node toNode(String label) {
+        return toNode(label, new HashMap<>(adjacencyMatrix.size()));
+    }
+    private Node toNode(String label, Map<String, Node> nodes) {
+        if (!adjacencyMatrix.containsKey(label)) {
+            throw new NoSuchElementException(String.format("Node %s does not exist", label));
+        }
+        Map<String, Integer> edges = adjacencyMatrix.get(label);
+        if (!nodes.containsKey(label)) {
+            nodes.put(label, new Node() {
+                @Override
+                public String getValue() {
+                    return label;
+                }
+
+                @Override
+                public List<Edge> getEdges() {
+                    return edges.entrySet().stream().map(entry -> toEdge(entry.getKey(), entry.getValue(), nodes)).collect(Collectors.toList());
+                }
+            });
+        }
+
+        return nodes.get(label);
+    }
+
+    private Edge toEdge(String dest, int cost, Map<String, Node> nodes) {
+        return new Edge() {
+            @Override
+            public Node getDestination() {
+                return toNode(dest, nodes);
+            }
+
+            @Override
+            public int getCost() {
+                return cost;
+            }
+        };
     }
 }
