@@ -4,10 +4,7 @@ import ch.isageek.ads.p5.Graph;
 import ch.isageek.ads.p5.Node;
 import ch.isageek.ads.p5.exception.NodeAlreadyDefinedException;
 
-import java.util.HashMap;
-import java.util.NoSuchElementException;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 public class Dijkstra<T extends Graph> {
 
@@ -37,11 +34,7 @@ public class Dijkstra<T extends Graph> {
         graph.getNodes().forEach(node -> distances.put(node.getValue(), new DistanceObject(Integer.MAX_VALUE, 0, null)));
         distances.get(startNode.getValue()).setDistance(0);
 
-        PriorityQueue<Node> queue = new PriorityQueue<>(graph.getNumberOfNodes(), (left, right) -> {
-            DistanceObject leftDistance = distances.get(left.getValue());
-            DistanceObject rightDistance = distances.get(right.getValue());
-            return Integer.compare(leftDistance.getDistance(), rightDistance.getDistance());
-        });
+        PriorityQueue<Node> queue = new PriorityQueue<>(graph.getNumberOfNodes(), Comparator.comparingInt(left -> distances.get(left.getValue()).getDistance()));
         queue.addAll(graph.getNodes());
         while(!queue.isEmpty()) {
             final Node current = queue.poll();
