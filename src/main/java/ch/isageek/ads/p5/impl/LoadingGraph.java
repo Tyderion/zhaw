@@ -32,8 +32,8 @@ public abstract class LoadingGraph implements Graph {
                     throw new GraphParseException("Weightless edgelist must contain an even number of entries");
                 }
                 for (int i = 0; i < fileInformation.line.size(); i = i+2) {
-                    String first = fileInformation.line.get(i);
-                    String second = fileInformation.line.get(i+1);
+                    String first = fileInformation.line.get(i).trim();
+                    String second = fileInformation.line.get(i+1).trim();
                     nodes.add(first);
                     nodes.add(second);
                     edges.add(new Edge(first, second));
@@ -45,8 +45,8 @@ public abstract class LoadingGraph implements Graph {
                     throw new GraphParseException("Weighted edgelist must contain 3 entries for each edge");
                 }
                 for (int i = 0; i < fileInformation.line.size(); i = i+3) {
-                    String first = fileInformation.line.get(i);
-                    String second = fileInformation.line.get(i+1);
+                    String first = fileInformation.line.get(i).trim();
+                    String second = fileInformation.line.get(i+1).trim();
                     int cost;
                     try {
                         cost = Integer.parseInt(fileInformation.line.get(i+2).trim());
