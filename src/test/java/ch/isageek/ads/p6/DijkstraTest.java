@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
 
 import static junit.framework.TestCase.assertEquals;
 
-public class DijikstraTest {
+public class DijkstraTest {
 
     private static final Class<GraphList> GRAPH_CLASS = GraphList.class;
 
@@ -18,8 +18,8 @@ public class DijikstraTest {
     public void testOnlyTwoNodes() throws Exception {
         final String startNode = "a";
         Graph graph = graphWithTwoNodes();
-        Dijikstra dijikstra = new Dijikstra<>(graph, GRAPH_CLASS);
-        Dijikstra.Path result = dijikstra.computePath(startNode, "b");
+        Dijkstra dijkstra = new Dijkstra<>(graph, GRAPH_CLASS);
+        Dijkstra.Path result = dijkstra.computePath(startNode, "b");
         assertEquals(20, result.getLength());
 
         Node start = result.getGraph().getNode(startNode);
@@ -33,23 +33,23 @@ public class DijikstraTest {
     @Test(expected = NoSuchElementException.class)
     public void testNonexistingNode1() throws Exception {
         Graph graph = graphWithTwoNodes();
-        Dijikstra dijikstra = new Dijikstra<>(graph, GRAPH_CLASS);
-        dijikstra.computePath("a", "c");
+        Dijkstra dijkstra = new Dijkstra<>(graph, GRAPH_CLASS);
+        dijkstra.computePath("a", "c");
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testNonexistingNode2() throws Exception {
         Graph graph = graphWithTwoNodes();
-        Dijikstra dijikstra = new Dijikstra<>(graph, GRAPH_CLASS);
-        dijikstra.computePath("c", "b");
+        Dijkstra dijkstra = new Dijkstra<>(graph, GRAPH_CLASS);
+        dijkstra.computePath("c", "b");
     }
 
     @Test
     public void testThreeNodesMultiPath() throws Exception {
         final String startNode = "a";
         Graph graph = graphWithThreeNodes();
-        Dijikstra dijikstra = new Dijikstra<>(graph, GRAPH_CLASS);
-        Dijikstra.Path result = dijikstra.computePath(startNode, "c");
+        Dijkstra dijkstra = new Dijkstra<>(graph, GRAPH_CLASS);
+        Dijkstra.Path result = dijkstra.computePath(startNode, "c");
         assertEquals(40, result.getLength());
 
         Node start = result.getGraph().getNode(startNode);

@@ -1,7 +1,6 @@
 package ch.isageek.ads.p6;
 
 import ch.isageek.ads.p5.Edge;
-import ch.isageek.ads.p5.Graph;
 import ch.isageek.ads.p5.Node;
 import ch.isageek.ads.p5.exception.GraphParseException;
 
@@ -44,8 +43,8 @@ public class Exercise4 {
     public void c() throws Exception {
         final String start = "Winterthur";
         final String end = "Lugano";
-        Dijikstra dijikstra = new Dijikstra<>(graph, UndirectedGraphList.class);
-        Dijikstra.Path result = dijikstra.computePath(start, end);
+        Dijkstra dijkstra = new Dijkstra<>(graph, UndirectedGraphList.class);
+        Dijkstra.Path result = dijkstra.computePath(start, end);
 
         System.out.println(String.format("Kürzester Weg von %s nach %s ist %dkm lang.",start, end, result.getLength()));
         Node node = result.getGraph().getNode(start);

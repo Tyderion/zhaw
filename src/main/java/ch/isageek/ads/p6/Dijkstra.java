@@ -9,13 +9,13 @@ import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class Dijikstra<T extends Graph> {
+public class Dijkstra<T extends Graph> {
 
     private final Graph graph;
     private final HashMap<String, DistanceObject> distances;
     private final Class<T> graphClass;
 
-    public Dijikstra(Graph graph, Class<T> graphClass) {
+    public Dijkstra(Graph graph, Class<T> graphClass) {
         this.graph = graph;
         this.distances = new HashMap<>(graph.getNumberOfNodes());
         this.graphClass = graphClass;
