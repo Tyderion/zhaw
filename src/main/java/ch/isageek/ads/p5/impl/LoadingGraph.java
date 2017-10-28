@@ -49,7 +49,7 @@ public abstract class LoadingGraph implements Graph {
                     String second = fileInformation.line.get(i+1);
                     int cost;
                     try {
-                        cost = Integer.parseInt(fileInformation.line.get(i+2));
+                        cost = Integer.parseInt(fileInformation.line.get(i+2).trim());
                     } catch (NumberFormatException e) {
                         System.err.println("Weights must be integers");
                         throw new GraphParseException(String.format("All weights must be integers but %s is not.", fileInformation.line.get(i+2)));
