@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class Exercise4 {
     private static final String FILENAME = "swiss_cities.csv";
-    final UndirectedGraphList graph;
+    private final UndirectedGraphList graph;
     public static void main(String[] args) throws FileNotFoundException, URISyntaxException {
         // Load file into graph
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
@@ -41,12 +41,14 @@ public class Exercise4 {
         System.out.println(String.format("Total Distance: %dkm", computeTotalDistance()));
     }
 
-    public void c() {
-        Dijikstra dijikstra = new Dijikstra(graph);
-        Dijikstra.Path result = dijikstra.computePath("Winterthur", "Lugano");
+    public void c() throws Exception {
+        final String start = "Winterthur";
+        final String end = "Lugano";
+        Dijikstra dijikstra = new Dijikstra<>(graph, UndirectedGraphList.class);
+        Dijikstra.Path result = dijikstra.computePath(start, end);
 
-        System.out.println(String.format("Kürzester Weg von Winterthur nach Lugano ist %dkm lang.", result.getLength()));
-        Node node = result.getStart();
+        System.out.println(String.format("Kürzester Weg von %s nach %s ist %dkm lang.",start, end, result.getLength()));
+        Node node = result.getGraph().getNode(start);
         while (node.getEdges().size() > 0) {
             Edge toNext = node.getEdges().get(0);
             System.out.println(String.format("%s -> %s: %d", node.getValue(), toNext.getDestination().getValue(), toNext.getCost()));

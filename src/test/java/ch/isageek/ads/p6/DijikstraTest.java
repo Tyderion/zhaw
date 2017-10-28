@@ -12,11 +12,13 @@ import static junit.framework.TestCase.assertEquals;
 
 public class DijikstraTest {
 
+    private static final Class<GraphList> GRAPH_CLASS = GraphList.class;
+
     @Test
     public void testOnlyTwoNodes() throws Exception {
         final String startNode = "a";
         Graph graph = graphWithTwoNodes();
-        Dijikstra dijikstra = new Dijikstra(graph);
+        Dijikstra dijikstra = new Dijikstra<>(graph, GRAPH_CLASS);
         Dijikstra.Path result = dijikstra.computePath(startNode, "b");
         assertEquals(20, result.getLength());
 
@@ -31,14 +33,14 @@ public class DijikstraTest {
     @Test(expected = NoSuchElementException.class)
     public void testNonexistingNode1() throws Exception {
         Graph graph = graphWithTwoNodes();
-        Dijikstra dijikstra = new Dijikstra(graph);
+        Dijikstra dijikstra = new Dijikstra<>(graph, GRAPH_CLASS);
         dijikstra.computePath("a", "c");
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testNonexistingNode2() throws Exception {
         Graph graph = graphWithTwoNodes();
-        Dijikstra dijikstra = new Dijikstra(graph);
+        Dijikstra dijikstra = new Dijikstra<>(graph, GRAPH_CLASS);
         dijikstra.computePath("c", "b");
     }
 
@@ -46,7 +48,7 @@ public class DijikstraTest {
     public void testThreeNodesMultiPath() throws Exception {
         final String startNode = "a";
         Graph graph = graphWithThreeNodes();
-        Dijikstra dijikstra = new Dijikstra(graph);
+        Dijikstra dijikstra = new Dijikstra<>(graph, GRAPH_CLASS);
         Dijikstra.Path result = dijikstra.computePath(startNode, "c");
         assertEquals(40, result.getLength());
 
