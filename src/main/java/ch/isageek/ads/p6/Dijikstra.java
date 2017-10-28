@@ -42,6 +42,7 @@ public class Dijikstra<T extends Graph> {
             DistanceObject rightDistance = distances.get(right.getValue());
             return Integer.compare(leftDistance.getDistance(), rightDistance.getDistance());
         });
+        queue.addAll(graph.getNodes());
         while(!queue.isEmpty()) {
             final Node current = queue.poll();
             current.getEdges().forEach(edge -> {
@@ -49,9 +50,9 @@ public class Dijikstra<T extends Graph> {
                 DistanceObject currDistance = distances.get(current.getValue());
                 DistanceObject nextDistance = distances.get(next.getValue());
                 if (currDistance.getDistance() + edge.getCost() < nextDistance.getDistance()) {
-                    nextDistance.setDistance(currDistance.getDistance() + nextDistance.getDistance());
+                    nextDistance.setDistance(currDistance.getDistance() + edge.getCost());
                     nextDistance.setDistanceToPredecessor(edge.getCost());
-                    nextDistance.setPredecessor(next.getValue());
+                    nextDistance.setPredecessor(current.getValue());
                 }
             });
         }
@@ -62,7 +63,7 @@ public class Dijikstra<T extends Graph> {
     private Path createResultPath(String start, String end) throws IllegalAccessException, InstantiationException, NodeAlreadyDefinedException {
         Graph graph = graphClass.newInstance();
         DistanceObject current = this.distances.get(end);
-        String currentNode = start;
+        String currentNode = end;
         graph.addNode(currentNode);
         while (current.getPredecessor() != null) {
             graph.addNode(current.getPredecessor());
