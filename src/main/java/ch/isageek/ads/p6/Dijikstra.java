@@ -4,6 +4,7 @@ import ch.isageek.ads.p5.Graph;
 import ch.isageek.ads.p5.Node;
 
 import java.util.NoSuchElementException;
+import java.util.PriorityQueue;
 
 public class Dijikstra {
 
@@ -18,24 +19,25 @@ public class Dijikstra {
      *
      * @param start The value of the start node
      * @param end The value of the end node
-     * @return A path which contains toatl length and th estart node with just one edge leading to other nodes with one edge until the final node which is the end
+     * @return A graph which contains just the path from start to end
      * @throws NoSuchElementException if either start or end node does not exist
      */
     public Path computePath(String start, String end) throws NoSuchElementException {
+        PriorityQueue<Node> unsettledNodes;
         return null;
     }
 
     public static class Path {
-        private Node start;
+        private Graph path;
         private int length;
 
-        public Path(Node start, int length) {
-            this.start = start;
+        public Path(Graph path, int length) {
+            this.path = path;
             this.length = length;
         }
 
-        public Node getStart() {
-            return start;
+        public Graph getGraph() {
+            return path;
         }
 
         public int getLength() {

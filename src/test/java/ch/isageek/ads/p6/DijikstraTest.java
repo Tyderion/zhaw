@@ -14,14 +14,15 @@ public class DijikstraTest {
 
     @Test
     public void testOnlyTwoNodes() throws Exception {
+        final String startNode = "a";
         Graph graph = graphWithTwoNodes();
         Dijikstra dijikstra = new Dijikstra(graph);
-        Dijikstra.Path result = dijikstra.computePath("a", "b");
+        Dijikstra.Path result = dijikstra.computePath(startNode, "b");
         assertEquals(20, result.getLength());
 
-        Node start = result.getStart();
+        Node start = result.getGraph().getNode(startNode);
         assertEquals(1, start.getEdges().size());
-        assertEquals("a", start.getValue());
+        assertEquals(startNode, start.getValue());
         assertEquals(20, start.getEdges().get(0).getCost());
         assertEquals("b", start.getEdges().get(0).getDestination().getValue());
         assertEquals(0, start.getEdges().get(0).getDestination().getEdges().size());
@@ -43,14 +44,15 @@ public class DijikstraTest {
 
     @Test
     public void testThreeNodesMultiPath() throws Exception {
+        final String startNode = "a";
         Graph graph = graphWithThreeNodes();
         Dijikstra dijikstra = new Dijikstra(graph);
-        Dijikstra.Path result = dijikstra.computePath("a", "c");
+        Dijikstra.Path result = dijikstra.computePath(startNode, "c");
         assertEquals(40, result.getLength());
 
-        Node start = result.getStart();
+        Node start = result.getGraph().getNode(startNode);
         assertEquals(1, start.getEdges().size());
-        assertEquals("a", start.getValue());
+        assertEquals(startNode, start.getValue());
         assertEquals(20, start.getEdges().get(0).getCost());
 
         Node b = start.getEdges().get(0).getDestination();
