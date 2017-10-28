@@ -27,6 +27,12 @@ public class Exercise4Test {
         assertEquals(25 + 126 + 277 + 54 + 121 + 16 + 155 + 363 + 206 + 152 + 146 + 97 + 102 + 41, exercise.computeTotalDistance());
     }
 
+    @Test
+    public void doExercises() throws Exception {
+        exercise.a();
+        exercise.c();
+    }
+
     private File loadFile(String name) throws Exception {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         URL path = classloader.getResource(FILENAME);

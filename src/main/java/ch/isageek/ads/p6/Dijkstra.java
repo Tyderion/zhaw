@@ -37,7 +37,7 @@ public class Dijkstra<T extends Graph> {
         graph.getNodes().forEach(node -> distances.put(node.getValue(), new DistanceObject(Integer.MAX_VALUE, 0, null)));
         distances.get(startNode.getValue()).setDistance(0);
 
-        Queue<Node> queue = new PriorityQueue<>(graph.getNumberOfNodes(), (left, right) -> {
+        PriorityQueue<Node> queue = new PriorityQueue<>(graph.getNumberOfNodes(), (left, right) -> {
             DistanceObject leftDistance = distances.get(left.getValue());
             DistanceObject rightDistance = distances.get(right.getValue());
             return Integer.compare(leftDistance.getDistance(), rightDistance.getDistance());
@@ -53,6 +53,9 @@ public class Dijkstra<T extends Graph> {
                     nextDistance.setDistance(currDistance.getDistance() + edge.getCost());
                     nextDistance.setDistanceToPredecessor(edge.getCost());
                     nextDistance.setPredecessor(current.getValue());
+                    if (queue.remove(next)) {
+                        queue.add(next);
+                    }
                 }
             });
         }

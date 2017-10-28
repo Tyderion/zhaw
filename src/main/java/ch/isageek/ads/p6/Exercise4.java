@@ -9,7 +9,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Exercise4 {
@@ -46,12 +49,17 @@ public class Exercise4 {
         Dijkstra dijkstra = new Dijkstra<>(graph, UndirectedGraphList.class);
         Dijkstra.Path result = dijkstra.computePath(start, end);
 
-        System.out.println(String.format("Kürzester Weg von %s nach %s ist %dkm lang.",start, end, result.getLength()));
+        System.out.println(String.format("Shortest path from %s to %s is %dkm long.",start, end, result.getLength()));
         Node node = result.getGraph().getNode(start);
-        while (node.getEdges().size() > 0) {
-            Edge toNext = node.getEdges().get(0);
+        final Set<String> visited = new HashSet<>(result.getGraph().getNumberOfNodes());
+        List<Edge> edges = node.getEdges();
+        while (edges.size() > 0) {
+            Edge toNext = edges.get(0);
             System.out.println(String.format("%s -> %s: %d", node.getValue(), toNext.getDestination().getValue(), toNext.getCost()));
+            visited.add(node.getValue());
             node = toNext.getDestination();
+            // Undirected graphs contain edges back to the predessor
+            edges = node.getEdges().stream().filter(edge -> !visited.contains(edge.getDestination().getValue())).collect(Collectors.toList());
         }
     }
 

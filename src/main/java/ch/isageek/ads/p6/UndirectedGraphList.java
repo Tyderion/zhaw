@@ -19,4 +19,9 @@ public class UndirectedGraphList extends GraphList {
         super.removeEdge(src, dest);
         super.removeEdge(dest, src);
     }
+
+    @Override
+    public int getNumberOfEdges() {
+        return super.getNumberOfEdges() / 2;
+    }
 }

@@ -73,6 +73,7 @@ public class GraphList extends LoadingGraph {
         return getNode(label).getEdges();
     }
 
+
     private static class EdgeL implements Edge {
         final private NodeL destination;
         final private int cost;
@@ -90,6 +91,11 @@ public class GraphList extends LoadingGraph {
         @Override
         public int getCost() {
             return cost;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("-> %s: %d", destination.label, cost);
         }
     }
 
@@ -127,6 +133,11 @@ public class GraphList extends LoadingGraph {
 
         @Override
         public String getValue() {
+            return label;
+        }
+
+        @Override
+        public String toString() {
             return label;
         }
     }
