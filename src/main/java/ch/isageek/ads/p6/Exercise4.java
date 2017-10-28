@@ -3,6 +3,7 @@ package ch.isageek.ads.p6;
 import ch.isageek.ads.p5.Edge;
 import ch.isageek.ads.p5.Node;
 import ch.isageek.ads.p5.exception.GraphParseException;
+import ch.isageek.ads.p5.impl.GraphList;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,20 +47,17 @@ public class Exercise4 {
     public void c() throws Exception {
         final String start = "Winterthur";
         final String end = "Lugano";
-        Dijkstra dijkstra = new Dijkstra<>(graph, UndirectedGraphList.class);
+        // The path is directional from start to end so we use a directed graph for representation
+        Dijkstra dijkstra = new Dijkstra<>(graph, GraphList.class);
         Dijkstra.Path result = dijkstra.computePath(start, end);
+        System.out.println("Exercise 4b)");
 
         System.out.println(String.format("Shortest path from %s to %s is %dkm long.",start, end, result.getLength()));
         Node node = result.getGraph().getNode(start);
-        final Set<String> visited = new HashSet<>(result.getGraph().getNumberOfNodes());
-        List<Edge> edges = node.getEdges();
-        while (edges.size() > 0) {
-            Edge toNext = edges.get(0);
-            System.out.println(String.format("%s -> %s: %d", node.getValue(), toNext.getDestination().getValue(), toNext.getCost()));
-            visited.add(node.getValue());
+        while (node.getEdges().size() > 0) {
+            Edge toNext = node.getEdges().get(0);
+            System.out.println(String.format("%s -> %s: %dkm", node.getValue(), toNext.getDestination().getValue(), toNext.getCost()));
             node = toNext.getDestination();
-            // Undirected graphs contain edges back to the predessor
-            edges = node.getEdges().stream().filter(edge -> !visited.contains(edge.getDestination().getValue())).collect(Collectors.toList());
         }
     }
 
