@@ -121,7 +121,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     private int find(@NotNull T element, int idx) {
         for (int count = 0; count < this.table.length; count++) {
-            // If table[idx] is null it has never been allocated so no probing ever go to this position
+            // If table[idx] is null it has never been allocated so no probing ever got to this position
             if (this.table[idx] == null) {
                 return -1;
             }
