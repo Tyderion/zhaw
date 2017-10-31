@@ -100,10 +100,14 @@ public class AdsHashTableTest {
         int count = 0;
         while (it.hasNext()) {
             CustomHashCode next = it.next();
-            assertEquals(elements.get(count), next);
+            if (count == 0 || count == 5 || count == 17) {
+                assertEquals(elements.get(count == 0 ? 0 : count == 5 ? 1 : 2), next);
+            } else {
+                assertNull(next);
+            }
             count++;
         }
-        assertEquals(3, count);
+        assertEquals(20, count);
     }
 
     @Test

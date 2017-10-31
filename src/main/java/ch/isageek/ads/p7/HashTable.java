@@ -47,7 +47,8 @@ public interface HashTable<T> {
     void setLoadFactorForResize(float loadfactor);
 
     /**
-     * Returns an {@link Iterator} over all elements in the hashtable.
+     * Returns an {@link Iterator} over the array backing the hashtable
+     * Empty buckets (either from removing an element or never adding one there) will be returned as <b>null</b>
      * The {@link Iterator} iterates over the elements in the order they are stored.
      * @return An {@link Iterator} over all elements in the hashtable
      */
@@ -55,6 +56,7 @@ public interface HashTable<T> {
 
     /**
      * Returns a {@link Stream} of  all elements in the table
+     * Empty buckets (either from removing an element or never adding one there) will be returned as <b>null</b>
      * @return a {@link Stream} of all elements
      */
     Stream<T> stream();

@@ -6,6 +6,7 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class AdsHashTable<T> implements HashTable<T> {
@@ -36,7 +37,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public int size() {
-        return (int) stream().count();
+        return (int) stream().filter(Objects::nonNull).count();
     }
 
     @Override
@@ -86,7 +87,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public Stream<T> stream() {
-        return Arrays.stream(table).filter(ele -> ele != null && ele.value != null).map(ele -> ele.value);
+        return Arrays.stream(table).map(ele -> ele != null ? ele.value : null);
     }
 
     @Override
