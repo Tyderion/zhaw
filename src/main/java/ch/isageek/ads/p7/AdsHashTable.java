@@ -33,13 +33,13 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     public AdsHashTable(int initialSize, ProbingMode probingMode) {
         this.probingMode = probingMode;
-        allocateTable(initialSize);
+        this.allocateTable(initialSize);
         this.loadFactor = 0.8f;
     }
 
     @Override
     public int size() {
-        return (int) stream().filter(Objects::nonNull).count();
+        return (int) this.stream().filter(Objects::nonNull).count();
     }
 
     @Override
@@ -49,30 +49,30 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public void add(@NotNull T element) {
-        if (currentLoadFactor() >= loadFactor) {
+        if (getCurrentLoad() >= loadFactor) {
             grow();
         }
-        int index = index(element);
+        int index = this.generateIndex(element);
 
         int count = 0;
-        while (!insertAt(element, index)) {
-            index = getNextPossibleIndex(index, count);
+        while (!this.insertAt(element, index)) {
+            index = this.getNextPossibleIndex(index, count);
             count++;
         }
     }
 
     @Override
     public boolean contains(@NotNull T element) {
-        final int index = this.index(element);
-        return find(element, index) != -1;
+        final int index = this.generateIndex(element);
+        return this.find(element, index) != -1;
     }
 
     @Override
     public boolean remove(@NotNull T element) {
-        final int index = index(element);
-        int found = find(element, index);
+        final int index = this.generateIndex(element);
+        int found = this.find(element, index);
         if (found != -1) {
-            table[found].value = null;
+            this.table[found].value = null;
             return true;
         }
         return false;
@@ -85,12 +85,12 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return stream().iterator();
+        return this.stream().iterator();
     }
 
     @Override
     public Stream<T> stream() {
-        return Arrays.stream(table).map(ele -> ele != null ? ele.value : null);
+        return Arrays.stream(this.table).map(ele -> ele != null ? ele.value : null);
     }
 
     @Override
@@ -98,37 +98,37 @@ public class AdsHashTable<T> implements HashTable<T> {
         elements.forEach(this::add);
     }
 
-    private float currentLoadFactor() {
-        return size() / (float) table.length;
+    private float getCurrentLoad() {
+        return this.size() / (float) this.table.length;
     }
 
     private void grow() {
         Element<T>[] existing = this.table;
-        allocateTable(this.table.length * 2);
+        this.allocateTable(this.table.length * 2);
 
         this.addAll(Arrays.stream(existing).filter(Element::notEmpty).map(ele -> ele.value).collect(Collectors.toList()));
     }
 
-    private int index(T element) {
+    private int generateIndex(T element) {
         return element.hashCode() % table.length;
     }
 
     private boolean insertAt(T element, final int index) {
-        final int idx = index % table.length;
-        if (Element.isEmpty(table[idx])) {
-            table[idx] = new Element<>(element);
+        final int idx = index % this.table.length;
+        if (Element.isEmpty(this.table[idx])) {
+            this.table[idx] = new Element<>(element);
             return true;
         }
         return false;
     }
 
     private int find(T element, int idx) {
-        for (int count = 0; count < table.length; count++) {
+        for (int count = 0; count < this.table.length; count++) {
             // If table[idx] is null it has never been allocated so no probing ever go to this position
-            if (table[idx] == null) {
+            if (this.table[idx] == null) {
                 return -1;
             }
-            if (table[idx].contains(element)) {
+            if (this.table[idx].contains(element)) {
                 return idx;
             }
             idx = getNextPossibleIndex(idx, count);
@@ -137,7 +137,7 @@ public class AdsHashTable<T> implements HashTable<T> {
     }
 
     private int getNextPossibleIndex(int current, int iteration) {
-        return probingMode.nextInt(current, iteration) % table.length;
+        return this.probingMode.nextInt(current, iteration) % this.table.length;
     }
 
     @SuppressWarnings("unchecked")
