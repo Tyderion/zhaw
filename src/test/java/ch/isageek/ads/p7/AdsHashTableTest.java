@@ -77,7 +77,7 @@ public class AdsHashTableTest {
     @Test
     public void testRemoveElementWithSameHashCode() {
         HashTable<CustomHashCode> hashTable = new AdsHashTable<>(10);
-        final List<CustomHashCode> elements = generateObjects(3, 0,0,0);
+        final List<CustomHashCode> elements = generateObjects(3, 0, 0, 0);
 
         hashTable.addAll(elements);
         elements.forEach(ele -> assertTrue(hashTable.contains(ele)));
@@ -181,7 +181,7 @@ public class AdsHashTableTest {
 
         Field table = AdsHashTable.class.getDeclaredField("table");
         table.setAccessible(true);
-        Object[] actualTable = (Object[])table.get(hashTable);
+        Object[] actualTable = (Object[]) table.get(hashTable);
         assertNotEquals(10, actualTable.length);
         assertTrue(actualTable.length > 10);
     }
@@ -190,7 +190,7 @@ public class AdsHashTableTest {
     public void testLinearProbing() throws Exception {
         HashTable<CustomHashCode> hashTable = new AdsHashTable<>(5, AdsHashTable.ProbingMode.LINEAR);
         hashTable.setLoadFactorForResize(1);
-        final List<CustomHashCode> elements = generateObjects(3, 0,0,0);
+        final List<CustomHashCode> elements = generateObjects(3, 0, 0, 0);
         final List<CustomHashCode> resultingList = asList(
                 elements.get(0),
                 elements.get(1),
@@ -207,7 +207,7 @@ public class AdsHashTableTest {
     public void testLinearProbingMiddle() throws Exception {
         HashTable<CustomHashCode> hashTable = new AdsHashTable<>(5, AdsHashTable.ProbingMode.LINEAR);
         hashTable.setLoadFactorForResize(1);
-        final List<CustomHashCode> elements = generateObjects(3, 1,1,1);
+        final List<CustomHashCode> elements = generateObjects(3, 1, 1, 1);
         final List<CustomHashCode> resultingList = asList(
                 null,
                 elements.get(0),
@@ -220,11 +220,13 @@ public class AdsHashTableTest {
         assertReflectionEquals(resultingList, hashTable.stream().collect(Collectors.toList()));
     }
 
+    /**
+     *  Quadratic for 2 collisions is: 3, 7, see {@link QuadraticProbe}
+     *  */
     @Test
     public void testQuadraticProbing() throws Exception {
         HashTable<CustomHashCode> hashTable = new AdsHashTable<>(10, AdsHashTable.ProbingMode.QUADRATIC);
-        final List<CustomHashCode> elements = generateObjects(3, 0,0,0);
-        // Quadratic for 2 collisions is: 3, 7
+        final List<CustomHashCode> elements = generateObjects(3, 0, 0, 0);
         final List<CustomHashCode> resultingList = asList(
                 elements.get(0), // no collision
                 null,
@@ -243,11 +245,14 @@ public class AdsHashTableTest {
         assertReflectionEquals(resultingList, hashTable.stream().collect(Collectors.toList()));
     }
 
+
+    /**
+     *  Quadratic for 2 collisions is: 3, 7, see {@link QuadraticProbe}
+     *  */
     @Test
     public void testQuadraticProbingMiddle() throws Exception {
         HashTable<CustomHashCode> hashTable = new AdsHashTable<>(12, AdsHashTable.ProbingMode.QUADRATIC);
-        final List<CustomHashCode> elements = generateObjects(3, 2,2,2);
-        // Quadratic for 2 collisions is: 3, 7
+        final List<CustomHashCode> elements = generateObjects(3, 2, 2, 2);
         final List<CustomHashCode> resultingList = asList(
                 null,
                 null,
@@ -275,7 +280,7 @@ public class AdsHashTableTest {
     private List<CustomHashCode> generateObjects(int amount, int... hashcodes) {
         int defaultHashcode = hashcodes.length > 0 ? hashcodes[0] : amount;
         return IntStream.range(0, amount)
-                .mapToObj(i -> new CustomHashCode(Character.toString((char)(i+65)), hashcodes.length > i ? hashcodes[i] : defaultHashcode))
+                .mapToObj(i -> new CustomHashCode(Character.toString((char) (i + 65)), hashcodes.length > i ? hashcodes[i] : defaultHashcode))
                 .collect(Collectors.toList());
     }
 
@@ -283,6 +288,7 @@ public class AdsHashTableTest {
     private static class CustomHashCode {
         String value;
         int hash;
+
         public CustomHashCode(String value, int hash) {
             this.value = value;
             this.hash = hash;
@@ -295,7 +301,7 @@ public class AdsHashTableTest {
 
         @Override
         public boolean equals(Object obj) {
-            return obj instanceof CustomHashCode && ((CustomHashCode)obj).value == value;
+            return obj instanceof CustomHashCode && ((CustomHashCode) obj).value == value;
         }
     }
 }
