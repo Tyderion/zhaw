@@ -2,8 +2,12 @@ package ch.isageek.ads.p7;
 
 import org.junit.Test;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
@@ -17,6 +21,7 @@ public class AdsHashTableTest {
 
         assertTrue(hashTable.contains(1));
         assertFalse(hashTable.contains(2));
+        assertEquals(1, hashTable.size());
     }
 
     @Test
@@ -26,6 +31,7 @@ public class AdsHashTableTest {
         hashTable.add(1);
 
         assertTrue(hashTable.contains(1));
+        assertEquals(1, hashTable.size());
         hashTable.remove(1);
         assertFalse(hashTable.contains(1));
     }
@@ -37,6 +43,7 @@ public class AdsHashTableTest {
         hashTable.add(15);
 
         assertTrue(hashTable.contains(15));
+        assertEquals(1, hashTable.size());
         hashTable.remove(15);
         assertFalse(hashTable.contains(15));
     }
@@ -53,6 +60,7 @@ public class AdsHashTableTest {
 
         assertTrue(hashTable.contains(a));
         assertTrue(hashTable.contains(b));
+        assertEquals(2, hashTable.size());
 
 
         final List<CustomHashCode> elements = asList(a, b);
@@ -83,6 +91,7 @@ public class AdsHashTableTest {
         assertTrue(hashTable.contains(a));
         assertTrue(hashTable.contains(b));
         assertTrue(hashTable.contains(c));
+        assertEquals(3, hashTable.size());
 
 
         final List<CustomHashCode> elements = asList(a, b, c);
@@ -98,7 +107,7 @@ public class AdsHashTableTest {
     }
 
     @Test
-    public void testAddMoreElementsThanInitialSize() {
+    public void testGrowWithLoadfactorOne() {
         HashTable<CustomHashCode> hashTable = new AdsHashTable<>(2);
         hashTable.setLoadFactorForResize(1);
 
@@ -113,6 +122,7 @@ public class AdsHashTableTest {
         assertTrue(hashTable.contains(a));
         assertTrue(hashTable.contains(b));
         assertTrue(hashTable.contains(c));
+        assertEquals(3, hashTable.size());
 
 
         final List<CustomHashCode> elements = asList(a, b, c);
@@ -127,8 +137,42 @@ public class AdsHashTableTest {
         assertEquals(3, count);
     }
 
+    @Test
+    public void testAddAll() {
+        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(2);
+        List<CustomHashCode> objects = generateObjects(2);
+        hashTable.addAll(objects);
+
+        assertEquals(2, hashTable.size());
+    }
+
+    @Test
+    public void testGrowWithLoadfactorHalf() throws Exception {
+        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(10);
+        hashTable.setLoadFactorForResize(0.5f);
+        final List<CustomHashCode> elements = generateObjects(6);
+        hashTable.addAll(elements.subList(0, 5));
+
+        assertEquals(5, hashTable.size());
+
+        hashTable.add(elements.get(5));
+
+        assertEquals(6, hashTable.size());
+
+        Field table = AdsHashTable.class.getDeclaredField("table");
+        table.setAccessible(true);
+        Object[] actualTable = (Object[])table.get(hashTable);
+        assertNotEquals(10, actualTable.length);
+        assertTrue(actualTable.length > 10);
+    }
 
 
+    private List<CustomHashCode> generateObjects(int amount, int... hashcodes) {
+        int defaultHashcode = hashcodes.length > 0 ? hashcodes[0] : amount;
+        return IntStream.range(0, amount)
+                .mapToObj(i -> new CustomHashCode(Character.toString((char)(i+65)), hashcodes.length > i ? hashcodes[i] : defaultHashcode))
+                .collect(Collectors.toList());
+    }
 
 
     private static class CustomHashCode {

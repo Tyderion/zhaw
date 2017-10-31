@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 public interface HashTable<T> {
 
@@ -51,6 +52,12 @@ public interface HashTable<T> {
      * @return An {@link Iterator} over all elements in the hashtable
      */
     Iterator<T> iterator();
+
+    /**
+     * Returns a {@link Stream} of  all elements in the table
+     * @return a {@link Stream} of all elements
+     */
+    Stream<T> stream();
 
     /**
      * Add all elements of the given {@link Collection} to the hashtable
