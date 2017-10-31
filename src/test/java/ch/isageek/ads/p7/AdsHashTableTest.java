@@ -76,6 +76,20 @@ public class AdsHashTableTest {
     }
 
     @Test
+    public void testRemoveElementWithSameHashCode() {
+        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(10);
+        final List<CustomHashCode> elements = generateObjects(3, 0,0,0);
+
+        hashTable.addAll(elements);
+        elements.forEach(ele -> assertTrue(hashTable.contains(ele)));
+        hashTable.remove(elements.get(1));
+
+        assertTrue(hashTable.contains(elements.get(0)));
+        assertTrue(hashTable.contains(elements.get(2)));
+        assertFalse(hashTable.contains(elements.get(1)));
+    }
+
+    @Test
     public void testAddLessElementsThanInitialSize() {
         HashTable<CustomHashCode> hashTable = new AdsHashTable<>(20);
         hashTable.setLoadFactorForResize(1);

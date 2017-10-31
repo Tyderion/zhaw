@@ -2,15 +2,12 @@ package ch.isageek.ads.p7;
 
 import com.sun.istack.internal.NotNull;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Arrays.asList;
 
 public class AdsHashTable<T> implements HashTable<T> {
 
@@ -69,14 +66,15 @@ public class AdsHashTable<T> implements HashTable<T> {
     @Override
     public boolean contains(@NotNull T element) {
         final int index = this.index(element);
-        return find(element, index);
+        return find(element, index) != -1;
     }
 
     @Override
     public boolean remove(@NotNull T element) {
         final int index = index(element);
-        if (table[index] != null && element.equals(table[index].value)) {
-            table[index].value = null;
+        int found = find(element, index);
+        if (found != -1) {
+            table[found].value = null;
             return true;
         }
         return false;
@@ -106,7 +104,6 @@ public class AdsHashTable<T> implements HashTable<T> {
         return size() / (float)table.length;
     }
 
-
     private void grow(T overflowingElement) {
         Element<T>[] existing = this.table;
         createTable(this.table.length * 2);
@@ -128,18 +125,18 @@ public class AdsHashTable<T> implements HashTable<T> {
         return false;
     }
 
-    private boolean find(T element, int idx) {
+    private int find(T element, int idx) {
         int count = 0;
         while (table[idx] != null && !element.equals(table[idx].value)) {
             idx = nextIndex(idx, count);
             if (count >= table.length) {
                 // If the table is full we won't end the loop at an empty element
-                return false;
+                return -1;
             }
             count++;
         }
-        ;
-        return table[idx] != null && element.equals(table[idx].value);
+
+        return table[idx] != null && element.equals(table[idx].value) ? idx : -1 ;
     }
 
     private int nextIndex(int current, int iteration) {
@@ -156,7 +153,6 @@ public class AdsHashTable<T> implements HashTable<T> {
     private void createTable(int size) {
         this.table =  new Element[size];
     }
-
 
     public enum ProbingMode {
         LINEAR, QUADRATIC;
