@@ -57,7 +57,6 @@ public class AdsHashTable<T> implements HashTable<T> {
         int count = 0;
         while (!this.insertAt(element, index)) {
             index = this.getNextPossibleIndex(originalIndex, count);
-            System.out.println(String.format("Trying to insert at: %d count: %d", index, count));
             count++;
         }
     }

@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -86,7 +87,7 @@ public class AdsHashTableTest {
 
     @Test
     public void testRemoveElementWithSameHashCode() {
-        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(10);
+        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(10, AdsHashTable.ProbingMode.LINEAR);
         final List<CustomHashCode> elements = generateObjects(3, 0, 0, 0);
 
         hashTable.addAll(elements);
@@ -283,6 +284,26 @@ public class AdsHashTableTest {
         assertReflectionEquals(resultingList, hashTable.stream().collect(Collectors.toList()));
     }
 
+    @Test
+    public void testAddManyElementsLinear() throws Exception {
+        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(100, AdsHashTable.ProbingMode.LINEAR);
+        final List<CustomHashCode> elements = generateObjects(5000);
+
+        hashTable.addAll(elements);
+
+        assertEquals(5000, hashTable.size());
+    }
+
+    @Test
+    public void testAddManyElementsQuadratic() throws Exception {
+        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(100, AdsHashTable.ProbingMode.LINEAR);
+        final List<CustomHashCode> elements = generateObjects(5000);
+
+        hashTable.addAll(elements);
+
+        assertEquals(5000, hashTable.size());
+    }
+
     private void assertReflectionEquals(List<CustomHashCode> elements, List<CustomHashCode> collect) {
     }
 
@@ -290,7 +311,7 @@ public class AdsHashTableTest {
     private List<CustomHashCode> generateObjects(int amount, int... hashcodes) {
         int defaultHashcode = hashcodes.length > 0 ? hashcodes[0] : amount;
         return IntStream.range(0, amount)
-                .mapToObj(i -> new CustomHashCode(Character.toString((char) (i + 65)), hashcodes.length > i ? hashcodes[i] : defaultHashcode))
+                .mapToObj(i -> new CustomHashCode(UUID.randomUUID().toString(), hashcodes.length > i ? hashcodes[i] : defaultHashcode))
                 .collect(Collectors.toList());
     }
 
