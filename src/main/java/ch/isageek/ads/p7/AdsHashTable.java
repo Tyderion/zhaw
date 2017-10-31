@@ -2,7 +2,6 @@ package ch.isageek.ads.p7;
 
 import com.sun.istack.internal.NotNull;
 
-import javax.swing.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -34,7 +33,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     public AdsHashTable(int initialSize, ProbingMode probingMode) {
         this.probingMode = probingMode;
-        createTable(initialSize);
+        allocateTable(initialSize);
         this.loadFactor = 0.8f;
     }
 
@@ -57,7 +56,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
         int count = 0;
         while (!insertAt(element, index)) {
-            index = probingMode.nextInt(index, count) % table.length;
+            index = getNextPossibleIndex(index, count);
             count++;
         }
     }
@@ -105,9 +104,9 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     private void grow() {
         Element<T>[] existing = this.table;
-        createTable(this.table.length * 2);
+        allocateTable(this.table.length * 2);
 
-        this.addAll(Arrays.stream(existing).filter(ele -> ele != null && ele.value != null).map(ele -> ele.value).collect(Collectors.toList()));
+        this.addAll(Arrays.stream(existing).filter(Element::notEmpty).map(ele -> ele.value).collect(Collectors.toList()));
     }
 
     private int index(T element) {
@@ -116,7 +115,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     private boolean insertAt(T element, final int index) {
         final int idx = index % table.length;
-        if (table[idx] == null || table[idx].value == null) {
+        if (Element.isEmpty(table[idx])) {
             table[idx] = new Element<>(element);
             return true;
         }
@@ -124,25 +123,21 @@ public class AdsHashTable<T> implements HashTable<T> {
     }
 
     private int find(T element, int idx) {
-        int count = 0;
-        while (table[idx] != null && !element.equals(table[idx].value)) {
-            idx = nextIndex(idx, count);
-            if (count >= table.length) {
-                // If the table is full we won't end the loop at an empty element
-                return -1;
+        for (int count = 0; count < table.length; count++) {
+            if (Element.notEmpty(table[idx]) && table[idx].contains(element)) {
+                return idx;
             }
-            count++;
+            idx = getNextPossibleIndex(idx, count);
         }
-
-        return table[idx] != null && element.equals(table[idx].value) ? idx : -1;
+        return -1;
     }
 
-    private int nextIndex(int current, int iteration) {
+    private int getNextPossibleIndex(int current, int iteration) {
         return probingMode.nextInt(current, iteration) % table.length;
     }
 
     @SuppressWarnings("unchecked")
-    private void createTable(int size) {
+    private void allocateTable(int size) {
         this.table = new Element[size];
     }
 
@@ -164,8 +159,20 @@ public class AdsHashTable<T> implements HashTable<T> {
     private static class Element<T> {
         T value;
 
-        public Element(T value) {
+        Element(T value) {
             this.value = value;
+        }
+
+        boolean contains(T value) {
+            return value.equals(this.value);
+        }
+
+        static boolean isEmpty(Element ele) {
+            return ele == null || ele.value == null;
+        }
+
+        static boolean notEmpty(Element ele) {
+            return !isEmpty(ele);
         }
     }
 }
