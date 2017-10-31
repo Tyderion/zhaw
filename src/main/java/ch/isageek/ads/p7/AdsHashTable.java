@@ -2,6 +2,7 @@ package ch.isageek.ads.p7;
 
 import com.sun.istack.internal.NotNull;
 
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -50,17 +51,14 @@ public class AdsHashTable<T> implements HashTable<T> {
     @Override
     public void add(@NotNull T element) {
         if (currentLoadFactor() >= loadFactor) {
-            grow(element);
-        } else {
-            int index = index(element);
-            if (!insertAt(element, index)) {
-                for (int current = 0; current < table.length; current++) {
-                    index = nextIndex(index, current);
-                    if (insertAt(element, index)) {
-                        return;
-                    }
-                }
-            }
+            grow();
+        }
+        int index = index(element);
+
+        int count = 0;
+        while (!insertAt(element, index)) {
+            index = probingMode.nextInt(index, count) % table.length;
+            count++;
         }
     }
 
@@ -102,15 +100,14 @@ public class AdsHashTable<T> implements HashTable<T> {
     }
 
     private float currentLoadFactor() {
-        return size() / (float)table.length;
+        return size() / (float) table.length;
     }
 
-    private void grow(T overflowingElement) {
+    private void grow() {
         Element<T>[] existing = this.table;
         createTable(this.table.length * 2);
 
         this.addAll(Arrays.stream(existing).filter(ele -> ele != null && ele.value != null).map(ele -> ele.value).collect(Collectors.toList()));
-        this.add(overflowingElement);
     }
 
     private int index(T element) {
@@ -137,7 +134,7 @@ public class AdsHashTable<T> implements HashTable<T> {
             count++;
         }
 
-        return table[idx] != null && element.equals(table[idx].value) ? idx : -1 ;
+        return table[idx] != null && element.equals(table[idx].value) ? idx : -1;
     }
 
     private int nextIndex(int current, int iteration) {
@@ -146,11 +143,11 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @SuppressWarnings("unchecked")
     private void createTable(int size) {
-        this.table =  new Element[size];
+        this.table = new Element[size];
     }
 
     public enum ProbingMode {
-        LINEAR(i -> i+1),
+        LINEAR(i -> i + 1),
         QUADRATIC(i -> QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(i % QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.size()));
 
         private Function<Integer, Integer> generator;
