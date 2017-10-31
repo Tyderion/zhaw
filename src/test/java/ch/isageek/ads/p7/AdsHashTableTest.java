@@ -67,7 +67,36 @@ public class AdsHashTableTest {
         assertEquals(2, count);
     }
 
-    
+    @Test
+    public void testAddMoreElementsThanInitialSize() {
+        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(2);
+        hashTable.setLoadFactorForResize(1);
+
+        CustomHashCode a = new CustomHashCode("a", 0);
+        CustomHashCode b = new CustomHashCode("b", 1);
+        CustomHashCode c = new CustomHashCode("c", 2);
+
+        hashTable.add(a);
+        hashTable.add(b);
+        hashTable.add(c);
+
+        assertTrue(hashTable.contains(a));
+        assertTrue(hashTable.contains(b));
+        assertTrue(hashTable.contains(c));
+
+
+        final List<CustomHashCode> elements = asList(a, b, c);
+        Iterator<CustomHashCode> it = hashTable.iterator();
+        assertNotNull(it);
+        int count = 0;
+        while (it.hasNext()) {
+            CustomHashCode next = it.next();
+            assertEquals(elements.get(count), next);
+            count++;
+        }
+        assertEquals(3, count);
+    }
+
 
 
 
