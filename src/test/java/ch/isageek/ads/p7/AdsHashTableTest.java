@@ -135,10 +135,13 @@ public class AdsHashTableTest {
         int count = 0;
         while (it.hasNext()) {
             CustomHashCode next = it.next();
-            assertEquals(elements.get(count), next);
+            if (count <= 2) {
+                assertEquals(elements.get(count), next);
+            } else {
+                assertNull(next);
+            }
             count++;
         }
-        assertEquals(3, count);
     }
 
     @Test

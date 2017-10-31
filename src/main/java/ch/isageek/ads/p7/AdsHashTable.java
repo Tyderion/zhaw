@@ -7,7 +7,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Arrays.asList;
 
 public class AdsHashTable<T> implements HashTable<T> {
 
@@ -16,6 +19,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     private final ProbingMode probingMode;
     private Element<T>[] table;
+    private float loadFactor;
 
     public AdsHashTable() {
         this(DEFAULT_SIZE, DEFAULT_MODE);
@@ -29,10 +33,10 @@ public class AdsHashTable<T> implements HashTable<T> {
         this(DEFAULT_SIZE, probingMode);
     }
 
-    @SuppressWarnings("unchecked")
     public AdsHashTable(int initialSize, ProbingMode probingMode) {
         this.probingMode = probingMode;
-        this.table = new Element[initialSize];
+        createTable(initialSize);
+        this.loadFactor = 0.8f;
     }
 
     @Override
@@ -47,15 +51,18 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public void add(@NotNull T element) {
-        int index = index(element);
-        if (!insertAt(element, index)) {
-            for (int current = 0; current < table.length; current++) {
-                index = nextIndex(index, current);
-                if (insertAt(element, index)) {
-                    return;
+        if (currentLoadFactor() >= loadFactor) {
+            grow(element);
+        } else {
+            int index = index(element);
+            if (!insertAt(element, index)) {
+                for (int current = 0; current < table.length; current++) {
+                    index = nextIndex(index, current);
+                    if (insertAt(element, index)) {
+                        return;
+                    }
                 }
             }
-            // TODO: Grow and insert element because we did not insert it yet
         }
     }
 
@@ -76,8 +83,8 @@ public class AdsHashTable<T> implements HashTable<T> {
     }
 
     @Override
-    public void setLoadFactorForResize(float loadfactor) {
-
+    public void setLoadFactorForResize(float loadFactor) {
+        this.loadFactor = loadFactor;
     }
 
     @Override
@@ -95,7 +102,18 @@ public class AdsHashTable<T> implements HashTable<T> {
         elements.forEach(this::add);
     }
 
+    private float currentLoadFactor() {
+        return size() / (float)table.length;
+    }
 
+
+    private void grow(T overflowingElement) {
+        Element<T>[] existing = this.table;
+        createTable(this.table.length * 2);
+
+        this.addAll(Arrays.stream(existing).filter(ele -> ele != null && ele.value != null).map(ele -> ele.value).collect(Collectors.toList()));
+        this.add(overflowingElement);
+    }
 
     private int index(T element) {
         return element.hashCode() % table.length;
@@ -133,6 +151,12 @@ public class AdsHashTable<T> implements HashTable<T> {
         }
         return current + 1;
     }
+
+    @SuppressWarnings("unchecked")
+    private void createTable(int size) {
+        this.table =  new Element[size];
+    }
+
 
     public enum ProbingMode {
         LINEAR, QUADRATIC;
