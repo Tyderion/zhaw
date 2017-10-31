@@ -28,6 +28,17 @@ public class AdsHashTableTest {
     }
 
     @Test
+    public void testAddElementBigInitialSize() {
+
+        HashTable<Integer> hashTable = new AdsHashTable<>(10);
+        hashTable.add(15);
+
+        assertTrue(hashTable.contains(15));
+        hashTable.remove(15);
+        assertFalse(hashTable.contains(15));
+    }
+
+    @Test
     public void testAddMultipleElementsWithSameHashCode() {
         HashTable<CustomHashCode> hashTable = new AdsHashTable<>(2);
 

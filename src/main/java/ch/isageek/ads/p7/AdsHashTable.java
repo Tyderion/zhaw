@@ -42,17 +42,53 @@ public class AdsHashTable<T> implements HashTable<T> {
     @Override
     public void add(@NotNull T element) {
         int index = index(element);
-        if (table[index] == null || table[index].value == null) {
-            table[index] = new Element(element);
-        } else {
-            // TODO: Probing
+        if (!insertAt(element, index)) {
+            for (int current = 0; current < table.length; current ++) {
+                index = nextIndex(index, current);
+                if (insertAt(element, index)) {
+                    return;
+                }
+            }
+            // TODO: Grow and insert element because we did not insert it yet
         }
+    }
+
+    private boolean insertAt(T element,final int index) {
+        final int idx = index % table.length;
+        if (table[idx] == null || table[idx].value == null) {
+            table[idx] = new Element(element);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean contains(@NotNull T element) {
-        final int index = index(element);
-        return table[index] != null && element.equals(table[index].value);
+        final int index = this.index(element);
+        return find(element, index);
+    }
+
+    private boolean find(T element, int idx) {
+        int count = 0;
+        while(table[idx] != null && !element.equals(table[idx].value)) {
+            idx = nextIndex(idx, count);
+            if (count >= table.length) {
+                // If the table is full we won't end the loop at an empty element
+                return false;
+            }
+            count++;
+        } ;
+        return table[idx] != null && element.equals(table[idx].value);
+    }
+
+    private int nextIndex(int current, int iteration) {
+        switch (probingMode) {
+            case QUADRATIC:
+                return QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(iteration % QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.size()) % table.length;
+            case LINEAR:
+                return ++current % table.length;
+        }
+        return current+1;
     }
 
     @Override
