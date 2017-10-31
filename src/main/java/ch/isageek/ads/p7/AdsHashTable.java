@@ -51,8 +51,8 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public void add(@NotNull T element) {
-        if (getCurrentLoad() >= loadFactor) {
-            grow();
+        if (this.getCurrentLoad() >= this.loadFactor) {
+            this.grow();
         }
 
         int index = this.generateIndex(element);
