@@ -1,6 +1,8 @@
 package ch.isageek.ads.p7;
 
-import com.sun.istack.internal.NotNull;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -52,8 +54,8 @@ public class AdsHashTable<T> implements HashTable<T> {
         if (getCurrentLoad() >= loadFactor) {
             grow();
         }
-        int index = this.generateIndex(element);
 
+        int index = this.generateIndex(element);
         int count = 0;
         while (!this.insertAt(element, index)) {
             index = this.getNextPossibleIndex(index, count);
@@ -94,7 +96,7 @@ public class AdsHashTable<T> implements HashTable<T> {
     }
 
     @Override
-    public void addAll(Collection<T> elements) {
+    public void addAll(@NotNull Collection<T> elements) {
         elements.forEach(this::add);
     }
 
@@ -109,11 +111,11 @@ public class AdsHashTable<T> implements HashTable<T> {
         this.addAll(Arrays.stream(existing).filter(Element::notEmpty).map(ele -> ele.value).collect(Collectors.toList()));
     }
 
-    private int generateIndex(T element) {
+    private int generateIndex(@NotNull T element) {
         return element.hashCode() % table.length;
     }
 
-    private boolean insertAt(T element, final int index) {
+    private boolean insertAt(@NotNull T element, final int index) {
         final int idx = index % this.table.length;
         if (Element.isEmpty(this.table[idx])) {
             this.table[idx] = new Element<>(element);
@@ -122,7 +124,7 @@ public class AdsHashTable<T> implements HashTable<T> {
         return false;
     }
 
-    private int find(T element, int idx) {
+    private int find(@NotNull T element, int idx) {
         for (int count = 0; count < this.table.length; count++) {
             // If table[idx] is null it has never been allocated so no probing ever go to this position
             if (this.table[idx] == null) {
@@ -167,15 +169,15 @@ public class AdsHashTable<T> implements HashTable<T> {
             this.value = value;
         }
 
-        boolean contains(T value) {
+        boolean contains(@NotNull T value) {
             return value.equals(this.value);
         }
 
-        static boolean isEmpty(Element ele) {
+        static boolean isEmpty(@Nullable Element ele) {
             return ele == null || ele.value == null;
         }
 
-        static boolean notEmpty(Element ele) {
+        static boolean notEmpty(@Nullable Element ele) {
             return !isEmpty(ele);
         }
     }

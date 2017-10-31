@@ -1,6 +1,6 @@
 package ch.isageek.ads.p7;
 
-import com.sun.istack.internal.NotNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -65,5 +65,5 @@ public interface HashTable<T> {
      * Add all elements of the given {@link Collection} to the hashtable
      * @param elements the {@link Collection} of elements to add
      */
-    void addAll(Collection<T> elements);
+    void addAll(@NotNull Collection<T> elements);
 }
