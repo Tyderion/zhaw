@@ -119,7 +119,8 @@ public class AdsHashTable<T> implements HashTable<T> {
         return false;
     }
 
-    private int find(@NotNull T element, int idx) {
+    private int find(@NotNull T element, final int originalIndex) {
+        int idx = originalIndex;
         for (int count = 0; count < this.table.length; count++) {
             // If table[idx] is null it has never been allocated so no probing ever got to this position
             if (this.table[idx] == null) {
@@ -128,13 +129,13 @@ public class AdsHashTable<T> implements HashTable<T> {
             if (this.table[idx].contains(element)) {
                 return idx;
             }
-            idx = getNextPossibleIndex(idx, count);
+            idx = getNextPossibleIndex(originalIndex, count);
         }
         return -1;
     }
 
     private int getNextPossibleIndex(int current, int iteration) {
-        return this.probingMode.nextInt(current, iteration) % this.table.length;
+        return current + this.probingMode.stepSize(iteration) % this.table.length;
     }
 
     private T unpackElement(Element<T> element) {
@@ -156,8 +157,8 @@ public class AdsHashTable<T> implements HashTable<T> {
             this.generator = generator;
         }
 
-        private int nextInt(int value, int iteration) {
-            return value + this.generator.apply(iteration);
+        private int stepSize(int iteration) {
+            return this.generator.apply(iteration);
         }
     }
 
