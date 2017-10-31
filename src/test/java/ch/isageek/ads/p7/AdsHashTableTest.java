@@ -14,6 +14,16 @@ import static org.junit.Assert.*;
 public class AdsHashTableTest {
 
     @Test
+    public void testIsEmpty() {
+        HashTable<Integer> hashTable = new AdsHashTable<>(1);
+        assertTrue(hashTable.isEmpty());
+        hashTable.add(1);
+        assertFalse(hashTable.isEmpty());
+        hashTable.remove(1);
+        assertTrue(hashTable.isEmpty());
+    }
+
+    @Test
     public void testAddContainsElement() {
         HashTable<Integer> hashTable = new AdsHashTable<>(1);
         hashTable.add(1);
