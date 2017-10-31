@@ -57,6 +57,7 @@ public interface HashTable<T> {
     /**
      * Returns a {@link Stream} of  all elements in the table
      * Empty buckets (either from removing an element or never adding one there) will be returned as <b>null</b>
+     * The {@link Stream} contains the elements in the order they are stored
      * @return a {@link Stream} of all elements
      */
     Stream<T> stream();
