@@ -2,7 +2,6 @@ package ch.isageek.ads.p7;
 
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
@@ -185,6 +184,91 @@ public class AdsHashTableTest {
         Object[] actualTable = (Object[])table.get(hashTable);
         assertNotEquals(10, actualTable.length);
         assertTrue(actualTable.length > 10);
+    }
+
+    @Test
+    public void testLinearProbing() throws Exception {
+        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(5, AdsHashTable.ProbingMode.LINEAR);
+        hashTable.setLoadFactorForResize(1);
+        final List<CustomHashCode> elements = generateObjects(3, 0,0,0);
+        final List<CustomHashCode> resultingList = asList(
+                elements.get(0),
+                elements.get(1),
+                elements.get(2),
+                null,
+                null
+        );
+        hashTable.addAll(elements);
+
+        assertReflectionEquals(resultingList, hashTable.stream().collect(Collectors.toList()));
+    }
+
+    @Test
+    public void testLinearProbingMiddle() throws Exception {
+        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(5, AdsHashTable.ProbingMode.LINEAR);
+        hashTable.setLoadFactorForResize(1);
+        final List<CustomHashCode> elements = generateObjects(3, 1,1,1);
+        final List<CustomHashCode> resultingList = asList(
+                null,
+                elements.get(0),
+                elements.get(1),
+                elements.get(2),
+                null
+        );
+        hashTable.addAll(elements);
+
+        assertReflectionEquals(resultingList, hashTable.stream().collect(Collectors.toList()));
+    }
+
+    @Test
+    public void testQuadraticProbing() throws Exception {
+        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(10, AdsHashTable.ProbingMode.QUADRATIC);
+        final List<CustomHashCode> elements = generateObjects(3, 0,0,0);
+        // Quadratic for 2 collisions is: 3, 7
+        final List<CustomHashCode> resultingList = asList(
+                elements.get(0), // no collision
+                null,
+                null,
+                elements.get(1), // first collision + 3
+                null,
+                null,
+                null,
+                elements.get(2), // second collision + 7
+                null,
+                null
+        );
+
+        hashTable.addAll(elements);
+
+        assertReflectionEquals(resultingList, hashTable.stream().collect(Collectors.toList()));
+    }
+
+    @Test
+    public void testQuadraticProbingMiddle() throws Exception {
+        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(12, AdsHashTable.ProbingMode.QUADRATIC);
+        final List<CustomHashCode> elements = generateObjects(3, 2,2,2);
+        // Quadratic for 2 collisions is: 3, 7
+        final List<CustomHashCode> resultingList = asList(
+                null,
+                null,
+                elements.get(0), // no collision
+                null,
+                null,
+                elements.get(1), // first collision + 3
+                null,
+                null,
+                null,
+                elements.get(2), // second collision + 7
+                null,
+                null
+        );
+
+        hashTable.addAll(elements);
+
+        assertReflectionEquals(resultingList, hashTable.stream().collect(Collectors.toList()));
+    }
+
+    private void assertReflectionEquals(List<CustomHashCode> elements, List<CustomHashCode> collect) {
     }
 
 

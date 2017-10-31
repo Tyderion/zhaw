@@ -2,10 +2,10 @@ package ch.isageek.ads.p7;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 
  class QuadraticProbe {
-	 
 	 public static final List<Integer> QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST
             = Collections.unmodifiableList(Arrays.asList(3,
                                                          7,
