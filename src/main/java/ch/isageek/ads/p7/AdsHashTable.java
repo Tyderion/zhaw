@@ -4,10 +4,7 @@ package ch.isageek.ads.p7;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -65,14 +62,12 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public boolean contains(@NotNull T element) {
-        final int index = this.generateIndex(element);
-        return this.find(element, index) != -1;
+        return this.find(element, this.generateIndex(element)) != -1;
     }
 
     @Override
     public boolean remove(@NotNull T element) {
-        final int index = this.generateIndex(element);
-        int found = this.find(element, index);
+        int found = this.find(element, this.generateIndex(element));
         if (found != -1) {
             this.table[found].value = null;
             return true;
@@ -92,7 +87,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public Stream<T> stream() {
-        return Arrays.stream(this.table).map(ele -> ele != null ? ele.value : null);
+        return Arrays.stream(this.table).map(this::unpackElement);
     }
 
     @Override
@@ -105,10 +100,9 @@ public class AdsHashTable<T> implements HashTable<T> {
     }
 
     private void grow() {
-        Element<T>[] existing = this.table;
+        List<T> elements = this.stream().filter(Objects::nonNull).collect(Collectors.toList());
         this.allocateTable(this.table.length * 2);
-
-        this.addAll(Arrays.stream(existing).filter(Element::notEmpty).map(ele -> ele.value).collect(Collectors.toList()));
+        this.addAll(elements);
     }
 
     private int generateIndex(@NotNull T element) {
@@ -140,6 +134,10 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     private int getNextPossibleIndex(int current, int iteration) {
         return this.probingMode.nextInt(current, iteration) % this.table.length;
+    }
+
+    private T unpackElement(Element<T> element) {
+        return element == null ? null : element.value;
     }
 
     @SuppressWarnings("unchecked")
