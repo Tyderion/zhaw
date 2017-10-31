@@ -44,7 +44,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return this.size() == 0;
     }
 
     @Override
