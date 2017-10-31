@@ -2,8 +2,11 @@ package ch.isageek.ads.p7;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import java.util.Iterator;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.junit.Assert.*;
 
 public class AdsHashTableTest {
 
@@ -42,20 +45,37 @@ public class AdsHashTableTest {
     public void testAddMultipleElementsWithSameHashCode() {
         HashTable<CustomHashCode> hashTable = new AdsHashTable<>(2);
 
-        CustomHashCode a = new CustomHashCode(1, 1);
-        CustomHashCode b = new CustomHashCode(2, 1);
+        CustomHashCode a = new CustomHashCode("a", 0);
+        CustomHashCode b = new CustomHashCode("b", 0);
 
         hashTable.add(a);
         hashTable.add(b);
 
         assertTrue(hashTable.contains(a));
         assertTrue(hashTable.contains(b));
+
+
+        final List<CustomHashCode> elements = asList(a, b);
+        Iterator<CustomHashCode> it = hashTable.iterator();
+        assertNotNull(it);
+        int count = 0;
+        while (it.hasNext()) {
+            CustomHashCode next = it.next();
+            assertEquals(elements.get(count), next);
+            count++;
+        }
+        assertEquals(2, count);
     }
 
+    
+
+
+
+
     private static class CustomHashCode {
-        int value;
+        String value;
         int hash;
-        public CustomHashCode(int value, int hash) {
+        public CustomHashCode(String value, int hash) {
             this.value = value;
             this.hash = hash;
         }

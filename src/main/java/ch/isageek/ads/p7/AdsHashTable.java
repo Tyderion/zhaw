@@ -1,6 +1,8 @@
 package ch.isageek.ads.p7;
 import com.sun.istack.internal.NotNull;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -10,7 +12,7 @@ public class AdsHashTable<T> implements HashTable<T> {
     private final static ProbingMode DEFAULT_MODE = ProbingMode.LINEAR;
 
     private final ProbingMode probingMode;
-    private Element[] table;
+    private Element<T>[] table;
 
     public AdsHashTable() {
         this(DEFAULT_SIZE, DEFAULT_MODE);
@@ -24,6 +26,7 @@ public class AdsHashTable<T> implements HashTable<T> {
         this(DEFAULT_SIZE, probingMode);
     }
 
+    @SuppressWarnings("unchecked")
     public AdsHashTable(int initialSize, ProbingMode probingMode) {
         this.probingMode = probingMode;
         this.table = new Element[initialSize];
@@ -36,7 +39,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return  false;
     }
 
     @Override
@@ -56,7 +59,7 @@ public class AdsHashTable<T> implements HashTable<T> {
     private boolean insertAt(T element,final int index) {
         final int idx = index % table.length;
         if (table[idx] == null || table[idx].value == null) {
-            table[idx] = new Element(element);
+            table[idx] = new Element<>(element);
             return true;
         }
         return false;
@@ -108,7 +111,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return Arrays.stream(table).filter(ele -> ele != null && ele.value != null).map(ele -> ele.value).iterator();
     }
 
     @Override
@@ -120,14 +123,14 @@ public class AdsHashTable<T> implements HashTable<T> {
         return element.hashCode() % table.length;
     }
 
-    public static enum ProbingMode {
+    public enum ProbingMode {
         LINEAR, QUADRATIC;
     }
 
-    private static class Element {
-        Object value;
+    private static class Element<T> {
+        T value;
 
-        public Element(Object value) {
+        public Element(T value) {
             this.value = value;
         }
     }
