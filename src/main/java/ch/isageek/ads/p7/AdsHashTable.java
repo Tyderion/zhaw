@@ -124,7 +124,11 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     private int find(T element, int idx) {
         for (int count = 0; count < table.length; count++) {
-            if (Element.notEmpty(table[idx]) && table[idx].contains(element)) {
+            // If table[idx] is null it has never been allocated so no probing ever go to this position
+            if (table[idx] == null) {
+                return -1;
+            }
+            if (table[idx].contains(element)) {
                 return idx;
             }
             idx = getNextPossibleIndex(idx, count);
