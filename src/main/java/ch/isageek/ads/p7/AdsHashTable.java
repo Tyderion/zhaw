@@ -52,10 +52,12 @@ public class AdsHashTable<T> implements HashTable<T> {
             this.grow();
         }
 
-        int index = this.generateIndex(element);
+        final int originalIndex = this.generateIndex(element);
+        int index = originalIndex;
         int count = 0;
         while (!this.insertAt(element, index)) {
-            index = this.getNextPossibleIndex(index, count);
+            index = this.getNextPossibleIndex(originalIndex, count);
+            System.out.println(String.format("Trying to insert at: %d count: %d", index, count));
             count++;
         }
     }
