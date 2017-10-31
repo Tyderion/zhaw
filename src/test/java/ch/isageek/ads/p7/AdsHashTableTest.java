@@ -26,4 +26,37 @@ public class AdsHashTableTest {
         hashTable.remove(1);
         assertFalse(hashTable.contains(1));
     }
+
+    @Test
+    public void testAddMultipleElementsWithSameHashCode() {
+        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(2);
+
+        CustomHashCode a = new CustomHashCode(1, 1);
+        CustomHashCode b = new CustomHashCode(2, 1);
+
+        hashTable.add(a);
+        hashTable.add(b);
+
+        assertTrue(hashTable.contains(a));
+        assertTrue(hashTable.contains(b));
+    }
+
+    private static class CustomHashCode {
+        int value;
+        int hash;
+        public CustomHashCode(int value, int hash) {
+            this.value = value;
+            this.hash = hash;
+        }
+
+        @Override
+        public int hashCode() {
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof CustomHashCode && ((CustomHashCode)obj).value == value;
+        }
+    }
 }

@@ -1,5 +1,7 @@
 package ch.isageek.ads.p7;
 
+import com.sun.istack.internal.NotNull;
+
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -21,21 +23,21 @@ public interface HashTable<T> {
      * Adds an element to the table
      * @param element The object to add
      */
-    void add(T element);
+    void add(@NotNull T element);
 
     /**
      * Tests whether the element exists in the table
      * @param element The element to find
      * @return true if the hashtable contains the element, false otherwise
      */
-    boolean contains(T element);
+    boolean contains(@NotNull T element);
 
     /**
      * Removes the given element from the hashtable
      * @param element the element to remove
      * @return true if the element was in the table, false otherwise
      */
-    boolean remove(T element);
+    boolean remove(@NotNull T element);
 
     /**
      * Set the loadfactor which the table uses to grow

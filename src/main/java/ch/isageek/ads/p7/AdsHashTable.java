@@ -1,4 +1,5 @@
 package ch.isageek.ads.p7;
+import com.sun.istack.internal.NotNull;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -9,11 +10,7 @@ public class AdsHashTable<T> implements HashTable<T> {
     private final static ProbingMode DEFAULT_MODE = ProbingMode.LINEAR;
 
     private final ProbingMode probingMode;
-    private Object[] table;
-
-    public static enum ProbingMode {
-        LINEAR, QUADRATIC;
-    }
+    private Element[] table;
 
     public AdsHashTable() {
         this(DEFAULT_SIZE, DEFAULT_MODE);
@@ -29,7 +26,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     public AdsHashTable(int initialSize, ProbingMode probingMode) {
         this.probingMode = probingMode;
-        this.table = new Object[initialSize];
+        this.table = new Element[initialSize];
     }
 
     @Override
@@ -43,17 +40,28 @@ public class AdsHashTable<T> implements HashTable<T> {
     }
 
     @Override
-    public void add(T element) {
-
+    public void add(@NotNull T element) {
+        int index = index(element);
+        if (table[index] == null || table[index].value == null) {
+            table[index] = new Element(element);
+        } else {
+            // TODO: Probing
+        }
     }
 
     @Override
-    public boolean contains(T element) {
-        return false;
+    public boolean contains(@NotNull T element) {
+        final int index = index(element);
+        return table[index] != null && element.equals(table[index].value);
     }
 
     @Override
-    public boolean remove(T element) {
+    public boolean remove(@NotNull T element) {
+        final int index = index(element);
+        if (table[index] != null && element.equals(table[index].value)) {
+            table[index].value = null;
+            return true;
+        }
         return false;
     }
 
@@ -70,5 +78,21 @@ public class AdsHashTable<T> implements HashTable<T> {
     @Override
     public void addAll(Collection<T> elements) {
         elements.forEach(this::add);
+    }
+
+    private int index(T element) {
+        return element.hashCode() % table.length;
+    }
+
+    public static enum ProbingMode {
+        LINEAR, QUADRATIC;
+    }
+
+    private static class Element {
+        Object value;
+
+        public Element(Object value) {
+            this.value = value;
+        }
     }
 }
