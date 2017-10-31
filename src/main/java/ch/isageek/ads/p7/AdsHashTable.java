@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -140,13 +141,7 @@ public class AdsHashTable<T> implements HashTable<T> {
     }
 
     private int nextIndex(int current, int iteration) {
-        switch (probingMode) {
-            case QUADRATIC:
-                return QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(iteration % QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.size()) % table.length;
-            case LINEAR:
-                return ++current % table.length;
-        }
-        return current + 1;
+        return probingMode.nextInt(current, iteration) % table.length;
     }
 
     @SuppressWarnings("unchecked")
@@ -155,7 +150,18 @@ public class AdsHashTable<T> implements HashTable<T> {
     }
 
     public enum ProbingMode {
-        LINEAR, QUADRATIC;
+        LINEAR(i -> i+1),
+        QUADRATIC(i -> QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(i % QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.size()));
+
+        private Function<Integer, Integer> generator;
+
+        ProbingMode(Function<Integer, Integer> generator) {
+            this.generator = generator;
+        }
+
+        private int nextInt(int value, int iteration) {
+            return value + this.generator.apply(iteration);
+        }
     }
 
     private static class Element<T> {
