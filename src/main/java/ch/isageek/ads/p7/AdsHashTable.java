@@ -12,11 +12,12 @@ import java.util.stream.Stream;
 public class AdsHashTable<T> implements HashTable<T> {
 
     private final static int DEFAULT_SIZE = 10;
+    private final static int GROW_FACTOR = 2;
     private final static ProbingMode DEFAULT_MODE = ProbingMode.LINEAR;
 
     private final ProbingMode probingMode;
     private Element<T>[] table;
-    private float loadFactor;
+    private float loadFactorForResize;
 
     public AdsHashTable() {
         this(DEFAULT_SIZE, DEFAULT_MODE);
@@ -33,7 +34,7 @@ public class AdsHashTable<T> implements HashTable<T> {
     public AdsHashTable(int initialSize, ProbingMode probingMode) {
         this.probingMode = probingMode;
         this.allocateTable(initialSize);
-        this.loadFactor = 0.8f;
+        this.loadFactorForResize = 0.8f;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public void add(@NotNull T element) {
-        if (this.getCurrentLoad() >= this.loadFactor) {
+        if (this.getCurrentLoad() >= this.loadFactorForResize) {
             this.grow();
         }
 
@@ -78,7 +79,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public void setLoadFactorForResize(float loadFactor) {
-        this.loadFactor = loadFactor;
+        this.loadFactorForResize = loadFactor;
     }
 
     @Override
@@ -102,7 +103,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     private void grow() {
         List<T> elements = this.stream().filter(Objects::nonNull).collect(Collectors.toList());
-        this.allocateTable(this.table.length * 2);
+        this.allocateTable(this.table.length * GROW_FACTOR);
         this.addAll(elements);
     }
 
