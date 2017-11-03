@@ -101,7 +101,7 @@ public class AdsHashTable<T> implements HashTable<T> {
     }
 
     private float getCurrentLoad() {
-        return (this.size()+1) / (float) this.table.length;
+        return this.size() / (float) this.table.length;
     }
 
     private void grow() {
