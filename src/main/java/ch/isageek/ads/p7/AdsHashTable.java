@@ -14,11 +14,21 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     private final static int DEFAULT_SIZE = 10;
     private final static int GROW_FACTOR = 2;
+    /**
+     * According to https://cathyatseneca.gitbooks.io/data-structures-and-algorithms/tables/quadratic_probing_and_double_hashing.html
+     * quadratic probing only works correctly when the table is filled less than 50%.
+     * If this is written in the text on peruseall, I didn't see it.
+     * 0^2, 1^2, 2^2, ..., 6^2 [all % 7] DOES NOT HIT EVERY INDEX! [hits: 0, 1, 4, 2, 2, 4, 1]
+     * It's only guaranteed to hit a free cell if the above condition is true.
+     */
+    private final static float DEFAULT_LOADFACTOR = 0.5f;
     private final static ProbingMode DEFAULT_MODE = ProbingMode.LINEAR;
 
     private final ProbingMode probingMode;
     private Element<T>[] table;
     private float loadFactorForResize;
+
+    private Set<Integer> probed = new HashSet<>();
 
     public AdsHashTable() {
         this(DEFAULT_SIZE, DEFAULT_MODE);
@@ -35,7 +45,7 @@ public class AdsHashTable<T> implements HashTable<T> {
     public AdsHashTable(int initialSize, ProbingMode probingMode) {
         this.probingMode = probingMode;
         this.allocateTable(initialSize == 0 ? 1 : initialSize);
-        this.loadFactorForResize = 0.8f;
+        this.loadFactorForResize = DEFAULT_LOADFACTOR;
     }
 
     @Override
@@ -82,6 +92,9 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public void setLoadFactorForResize(float loadFactor) {
+        if (loadFactor > 0.5f && probingMode == ProbingMode.QUADRATIC) {
+            System.out.print("WARNING: Quadratic Probing is only guaranteed to work when the table is less than half full. See: https://cathyatseneca.gitbooks.io/data-structures-and-algorithms/tables/quadratic_probing_and_double_hashing.html");
+        }
         this.loadFactorForResize = loadFactor;
     }
 
