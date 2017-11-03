@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class AdsHashTable<T> implements HashTable<T> {
@@ -33,7 +34,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     public AdsHashTable(int initialSize, ProbingMode probingMode) {
         this.probingMode = probingMode;
-        this.allocateTable(initialSize);
+        this.allocateTable(initialSize == 0 ? 1 : initialSize);
         this.loadFactorForResize = 0.8f;
     }
 
@@ -49,16 +50,18 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public void add(@NotNull T element) {
-        if (this.getCurrentLoad() >= this.loadFactorForResize) {
-            this.grow();
-        }
-
         final int originalIndex = this.generateIndex(element);
         int index = originalIndex;
         int count = 0;
         while (!this.insertAt(element, index)) {
             index = this.getNextPossibleIndex(originalIndex, count);
             count++;
+            if (count > table.length*2) {
+              throw new RuntimeException("Probing does not hit all elements!");
+            }
+        }
+        if (this.getCurrentLoad() >= this.loadFactorForResize) {
+            this.grow();
         }
     }
 
@@ -98,7 +101,7 @@ public class AdsHashTable<T> implements HashTable<T> {
     }
 
     private float getCurrentLoad() {
-        return this.size() / (float) this.table.length;
+        return (this.size()+1) / (float) this.table.length;
     }
 
     private void grow() {
@@ -135,8 +138,8 @@ public class AdsHashTable<T> implements HashTable<T> {
         return -1;
     }
 
-    private int getNextPossibleIndex(int current, int iteration) {
-        return current + this.probingMode.stepSize(iteration) % this.table.length;
+    private int getNextPossibleIndex(final int original, final int iteration) {
+        return (original + this.probingMode.stepSize(iteration)) % this.table.length;
     }
 
     private T unpackElement(Element<T> element) {
@@ -145,21 +148,34 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @SuppressWarnings("unchecked")
     private void allocateTable(int size) {
-        this.table = new Element[size];
+        this.table = new Element[this.probingMode.tableSize(size)];
     }
 
     public enum ProbingMode {
-        LINEAR(i -> i + 1),
-        QUADRATIC(i -> QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(i % QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.size()));
+        LINEAR(i -> i + 1, minSize -> minSize),
+        QUADRATIC(i -> (int)Math.pow(i+1, 2), minSize -> {
+            for (int i = 0; i < QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.size(); i++) {
+                if (QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(i) > minSize) {
+                    return QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(i);
+                }
+            }
+            throw new RuntimeException(String.format("AdsHashTable only supports up to %d elements", QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.size()-1)));
+        });
 
-        private Function<Integer, Integer> generator;
+        private Function<Integer, Integer> step;
+        private Function<Integer, Integer> table;
 
-        ProbingMode(Function<Integer, Integer> generator) {
-            this.generator = generator;
+        ProbingMode(Function<Integer, Integer> step, Function<Integer, Integer> table) {
+            this.step = step;
+            this.table = table;
         }
 
         private int stepSize(int iteration) {
-            return this.generator.apply(iteration);
+            return this.step.apply(iteration);
+        }
+
+        private int tableSize(int minSize) {
+            return this.table.apply(minSize);
         }
     }
 
