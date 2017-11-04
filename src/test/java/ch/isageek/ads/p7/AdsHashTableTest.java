@@ -1,6 +1,7 @@
 package ch.isageek.ads.p7;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -233,47 +234,47 @@ public class AdsHashTableTest {
     @Test
     public void testQuadraticProbing() throws Exception {
         HashTable<CustomHashCode> hashTable = new AdsHashTable<>(10, AdsHashTable.ProbingMode.QUADRATIC);
-        final List<CustomHashCode> elements = generateObjects(4, 0, 0, 0, 0);
+        final List<CustomHashCode> elements = generateObjects(5, 0, 0, 0, 0,0);
         final List<CustomHashCode> resultingList = asList(
                 elements.get(0), // no collision
-                elements.get(1), // + 1
+                elements.get(1), // +1
                 null,
                 null,
-                elements.get(2), // + 4
+                elements.get(3), // + 4
                 null,
                 null,
+                elements.get(4), // -4
                 null,
                 null,
-                elements.get(3) // +9
+                elements.get(2) // - 1
         );
 
         hashTable.addAll(elements);
 
-        assertReflectionEquals(resultingList, hashTable.stream().limit(10).collect(Collectors.toList()));
+        assertReflectionEquals(resultingList, hashTable.stream().collect(Collectors.toList()));
     }
 
     @Test
     public void testQuadraticProbingMiddle() throws Exception {
-        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(12, AdsHashTable.ProbingMode.QUADRATIC);
-        final List<CustomHashCode> elements = generateObjects(4, 2, 2, 2, 2);
+        HashTable<CustomHashCode> hashTable = new AdsHashTable<>(10, AdsHashTable.ProbingMode.QUADRATIC);
+        final List<CustomHashCode> elements = generateObjects(5, 2, 2, 2, 2, 2);
         final List<CustomHashCode> resultingList = asList(
                 null,
-                null,
+                elements.get(2), // - 1
                 elements.get(0), // no collision
-                elements.get(1), // + 1
+                elements.get(1), // +1
                 null,
                 null,
-                elements.get(2), // + 4
+                elements.get(3), // + 4
                 null,
                 null,
-                null,
-                null,
-                elements.get(3) // +9
+                elements.get(4), // -4
+                null
         );
 
         hashTable.addAll(elements);
 
-        assertReflectionEquals(resultingList, hashTable.stream().limit(12).collect(Collectors.toList()));
+        assertReflectionEquals(resultingList, hashTable.stream().collect(Collectors.toList()));
     }
 
     @Test

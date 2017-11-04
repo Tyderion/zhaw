@@ -14,14 +14,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     private final static int DEFAULT_SIZE = 10;
     private final static int GROW_FACTOR = 2;
-    /**
-     * According to https://cathyatseneca.gitbooks.io/data-structures-and-algorithms/tables/quadratic_probing_and_double_hashing.html
-     * quadratic probing only works correctly when the table is filled less than 50%.
-     * If this is written in the text on peruseall, I didn't see it.
-     * 0^2, 1^2, 2^2, ..., 6^2 [all % 7] DOES NOT HIT EVERY INDEX! [hits: 0, 1, 4, 2, 2, 4, 1]
-     * It's only guaranteed to hit a free cell if the above condition is true.
-     */
-    private final static float DEFAULT_LOADFACTOR = 0.5f;
+    private final static float DEFAULT_LOADFACTOR = 0.8f;
     private final static ProbingMode DEFAULT_MODE = ProbingMode.LINEAR;
 
     private final ProbingMode probingMode;
@@ -66,9 +59,6 @@ public class AdsHashTable<T> implements HashTable<T> {
         while (!this.insertAt(element, index)) {
             index = this.getNextPossibleIndex(originalIndex, count);
             count++;
-            if (count > table.length*2) {
-              throw new RuntimeException("Probing does not hit all elements!");
-            }
         }
         if (this.getCurrentLoad() >= this.loadFactorForResize) {
             this.grow();
@@ -92,9 +82,6 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public void setLoadFactorForResize(float loadFactor) {
-        if (loadFactor > 0.5f && probingMode == ProbingMode.QUADRATIC) {
-            System.out.print("WARNING: Quadratic Probing is only guaranteed to work when the table is less than half full. See: https://cathyatseneca.gitbooks.io/data-structures-and-algorithms/tables/quadratic_probing_and_double_hashing.html");
-        }
         this.loadFactorForResize = loadFactor;
     }
 
@@ -152,7 +139,7 @@ public class AdsHashTable<T> implements HashTable<T> {
     }
 
     private int getNextPossibleIndex(final int original, final int iteration) {
-        return (original + this.probingMode.stepSize(iteration)) % this.table.length;
+        return Math.floorMod(original + this.probingMode.stepSize(iteration), this.table.length);
     }
 
     private T unpackElement(Element<T> element) {
@@ -166,7 +153,14 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     public enum ProbingMode {
         LINEAR(i -> i + 1, minSize -> minSize),
-        QUADRATIC(i -> (int)Math.pow(i+1, 2), minSize -> {
+        QUADRATIC(i -> {
+            if (i % 2 == 0) {
+                return (int)Math.pow(i/2 + 1, 2);
+            } else {
+                return (int)-Math.pow(i/2 + 1, 2);
+            }
+
+        }, minSize -> {
             for (int i = 0; i < QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.size(); i++) {
                 if (QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(i) > minSize) {
                     return QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(i);
