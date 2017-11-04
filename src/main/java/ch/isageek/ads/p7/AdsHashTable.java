@@ -63,15 +63,15 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public void add(@NotNull T element) {
+        if (this.getCurrentLoad() >= this.loadFactorForResize) {
+            this.grow();
+        }
         final int originalIndex = this.generateIndex(element);
         int index = originalIndex;
         int count = 0;
         while (!this.insertAt(element, index)) {
             index = this.getNextPossibleIndex(originalIndex, count);
             count++;
-        }
-        if (this.getCurrentLoad() >= this.loadFactorForResize) {
-            this.grow();
         }
     }
 
