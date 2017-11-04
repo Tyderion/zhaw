@@ -17,7 +17,7 @@ public class AdsHashTable<T> implements HashTable<T> {
     private final static float DEFAULT_LOADFACTOR = 0.8f;
     private final static float MIN_LOADFACTOR = 0.01f;
     private final static float MAX_LOADFACTOR = 1.0f;
-    private final static ProbingMode DEFAULT_MODE = ProbingMode.LINEAR;
+    private final static ProbingMode DEFAULT_MODE = ProbingMode.QUADRATIC;
 
     private final ProbingMode probingMode;
     private Element<T>[] table;
