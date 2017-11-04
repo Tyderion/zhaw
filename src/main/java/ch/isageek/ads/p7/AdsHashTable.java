@@ -23,8 +23,6 @@ public class AdsHashTable<T> implements HashTable<T> {
     private Element<T>[] table;
     private float loadFactorForResize;
 
-    private Set<Integer> probed = new HashSet<>();
-
     public AdsHashTable() {
         this(DEFAULT_SIZE, DEFAULT_MODE);
     }

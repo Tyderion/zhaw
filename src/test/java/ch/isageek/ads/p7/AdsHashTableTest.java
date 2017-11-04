@@ -25,7 +25,7 @@ public class AdsHashTableTest {
     }
 
     @Parameterized.Parameters(name = "{0}")
-    public static Collection<AdsHashTable.ProbingMode> getClasses() {
+    public static Collection<AdsHashTable.ProbingMode> getModes() {
         return asList(AdsHashTable.ProbingMode.LINEAR, AdsHashTable.ProbingMode.QUADRATIC);
     }
 
