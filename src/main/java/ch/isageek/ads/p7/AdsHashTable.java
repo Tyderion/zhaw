@@ -15,6 +15,8 @@ public class AdsHashTable<T> implements HashTable<T> {
     private final static int DEFAULT_SIZE = 10;
     private final static int GROW_FACTOR = 2;
     private final static float DEFAULT_LOADFACTOR = 0.8f;
+    private final static float MIN_LOADFACTOR = 0.01f;
+    private final static float MAX_LOADFACTOR = 1.0f;
     private final static ProbingMode DEFAULT_MODE = ProbingMode.LINEAR;
 
     private final ProbingMode probingMode;
@@ -139,7 +141,7 @@ public class AdsHashTable<T> implements HashTable<T> {
 
     @Override
     public void setLoadFactorForResize(float loadFactor) {
-        this.loadFactorForResize = loadFactor;
+        this.loadFactorForResize = Math.max(MIN_LOADFACTOR, Math.min(MAX_LOADFACTOR, loadFactor));
     }
 
     @Override

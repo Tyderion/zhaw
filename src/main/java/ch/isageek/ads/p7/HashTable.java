@@ -42,7 +42,7 @@ public interface HashTable<T> {
 
     /**
      * Set the loadfactor which the table uses to grow
-     * @param loadfactor the loadfactor, should be between 0 and 1 (values above will be 1, values below will be 0)
+     * @param loadfactor the loadfactor, should be between 0.01 and 1 (values above will be 1, values below will be 0.01)
      */
     void setLoadFactorForResize(float loadfactor);
 
