@@ -27,6 +27,17 @@ public class AdsHashTable<T> implements HashTable<T> {
         this(DEFAULT_SIZE, DEFAULT_MODE);
     }
 
+    public AdsHashTable(int initialSize, ProbingMode probingMode) {
+        this.probingMode = probingMode;
+        this.allocateTable(initialSize == 0 ? 1 : initialSize);
+        this.loadFactorForResize = DEFAULT_LOADFACTOR;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void allocateTable(int size) {
+        this.table = new Element[this.probingMode.tableSize(size)];
+    }
+
     public AdsHashTable(int initialSize) {
         this(initialSize, DEFAULT_MODE);
     }
@@ -35,10 +46,9 @@ public class AdsHashTable<T> implements HashTable<T> {
         this(DEFAULT_SIZE, probingMode);
     }
 
-    public AdsHashTable(int initialSize, ProbingMode probingMode) {
-        this.probingMode = probingMode;
-        this.allocateTable(initialSize == 0 ? 1 : initialSize);
-        this.loadFactorForResize = DEFAULT_LOADFACTOR;
+    @Override
+    public boolean isEmpty() {
+        return this.size() == 0;
     }
 
     @Override
@@ -47,8 +57,8 @@ public class AdsHashTable<T> implements HashTable<T> {
     }
 
     @Override
-    public boolean isEmpty() {
-        return this.size() == 0;
+    public Stream<T> stream() {
+        return Arrays.stream(this.table).map(this::unpackElement);
     }
 
     @Override
@@ -65,9 +75,56 @@ public class AdsHashTable<T> implements HashTable<T> {
         }
     }
 
+    private int generateIndex(@NotNull T element) {
+        return element.hashCode() % table.length;
+    }
+
+    private boolean insertAt(@NotNull T element, final int index) {
+        final int idx = index % this.table.length;
+        if (Element.isEmpty(this.table[idx])) {
+            this.table[idx] = new Element<>(element);
+            return true;
+        }
+        return false;
+    }
+
+    private int getNextPossibleIndex(final int original, final int iteration) {
+        return Math.floorMod(original + this.probingMode.stepSize(iteration), this.table.length);
+    }
+
+    private float getCurrentLoad() {
+        return this.size() / (float) this.table.length;
+    }
+
+    private void grow() {
+        List<T> elements = this.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        this.allocateTable(this.table.length * GROW_FACTOR);
+        this.addAll(elements);
+    }
+
+    @Override
+    public void addAll(@NotNull Collection<T> elements) {
+        elements.forEach(this::add);
+    }
+
     @Override
     public boolean contains(@NotNull T element) {
         return this.find(element, this.generateIndex(element)) != -1;
+    }
+
+    private int find(@NotNull T element, final int originalIndex) {
+        int idx = originalIndex;
+        for (int count = 0; count < this.table.length; count++) {
+            // If table[idx] is null it has never been allocated so no probing ever got to this position
+            if (this.table[idx] == null) {
+                return -1;
+            }
+            if (this.table[idx].contains(element)) {
+                return idx;
+            }
+            idx = getNextPossibleIndex(originalIndex, count);
+        }
+        return -1;
     }
 
     @Override
@@ -90,84 +147,22 @@ public class AdsHashTable<T> implements HashTable<T> {
         return this.stream().iterator();
     }
 
-    @Override
-    public Stream<T> stream() {
-        return Arrays.stream(this.table).map(this::unpackElement);
-    }
-
-    @Override
-    public void addAll(@NotNull Collection<T> elements) {
-        elements.forEach(this::add);
-    }
-
-    private float getCurrentLoad() {
-        return this.size() / (float) this.table.length;
-    }
-
-    private void grow() {
-        List<T> elements = this.stream().filter(Objects::nonNull).collect(Collectors.toList());
-        this.allocateTable(this.table.length * GROW_FACTOR);
-        this.addAll(elements);
-    }
-
-    private int generateIndex(@NotNull T element) {
-        return element.hashCode() % table.length;
-    }
-
-    private boolean insertAt(@NotNull T element, final int index) {
-        final int idx = index % this.table.length;
-        if (Element.isEmpty(this.table[idx])) {
-            this.table[idx] = new Element<>(element);
-            return true;
-        }
-        return false;
-    }
-
-    private int find(@NotNull T element, final int originalIndex) {
-        int idx = originalIndex;
-        for (int count = 0; count < this.table.length; count++) {
-            // If table[idx] is null it has never been allocated so no probing ever got to this position
-            if (this.table[idx] == null) {
-                return -1;
-            }
-            if (this.table[idx].contains(element)) {
-                return idx;
-            }
-            idx = getNextPossibleIndex(originalIndex, count);
-        }
-        return -1;
-    }
-
-    private int getNextPossibleIndex(final int original, final int iteration) {
-        return Math.floorMod(original + this.probingMode.stepSize(iteration), this.table.length);
-    }
-
     private T unpackElement(Element<T> element) {
         return element == null ? null : element.value;
     }
 
-    @SuppressWarnings("unchecked")
-    private void allocateTable(int size) {
-        this.table = new Element[this.probingMode.tableSize(size)];
-    }
-
     public enum ProbingMode {
         LINEAR(i -> i + 1, minSize -> minSize),
-        QUADRATIC(i -> {
-            if (i % 2 == 0) {
-                return (int)Math.pow(i/2 + 1, 2);
-            } else {
-                return (int)-Math.pow(i/2 + 1, 2);
-            }
-
-        }, minSize -> {
-            for (int i = 0; i < QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.size(); i++) {
-                if (QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(i) > minSize) {
-                    return QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(i);
-                }
-            }
-            throw new RuntimeException(String.format("AdsHashTable only supports up to %d elements", QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.size()-1)));
-        });
+        QUADRATIC(
+                i -> (i % 2 == 0 ? 1 : -1) * (int) Math.pow(i / 2 + 1, 2),
+                minSize -> {
+                    for (int i = 0; i < QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.size(); i++) {
+                        if (QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(i) > minSize) {
+                            return QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(i);
+                        }
+                    }
+                    throw new RuntimeException(String.format("AdsHashTable only supports up to %d elements", QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.get(QuadraticProbe.QUADRATIC_PROBING_HASH_TABLE_SIZE_LIST.size() - 1)));
+                });
 
         private Function<Integer, Integer> step;
         private Function<Integer, Integer> table;
@@ -193,16 +188,16 @@ public class AdsHashTable<T> implements HashTable<T> {
             this.value = value;
         }
 
-        boolean contains(@NotNull T value) {
-            return value.equals(this.value);
+        static boolean notEmpty(@Nullable Element ele) {
+            return !isEmpty(ele);
         }
 
         static boolean isEmpty(@Nullable Element ele) {
             return ele == null || ele.value == null;
         }
 
-        static boolean notEmpty(@Nullable Element ele) {
-            return !isEmpty(ele);
+        boolean contains(@NotNull T value) {
+            return value.equals(this.value);
         }
     }
 }
