@@ -4,12 +4,17 @@ import static java.util.Arrays.asList;
 import static java.util.Arrays.sort;
 import static org.junit.Assert.*;
 
+import com.sun.xml.internal.bind.v2.model.annotation.Quick;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Random;
 
 @RunWith(Parameterized.class)
 public class SorterTest {
@@ -18,7 +23,7 @@ public class SorterTest {
 
 	@Parameterized.Parameters(name = "{0}")
 	public static Collection<Sorter> getSorters() {
-		return asList(new InsertionSort(), new Quicksort(), new QuicksortMedian(), new QuicksortTurbo());
+		return asList(new InsertionSort(), new Quicksort(), new QuicksortMedian());//, new QuicksortTurbo());
 	}
 
 	public SorterTest(Sorter sorter) {
@@ -31,7 +36,6 @@ public class SorterTest {
 		sorter.sort(parameter);
 		assertNull(parameter);
 	}
-	
 
 	@Test
 	public void shouldNotDoAnythingForSingleElement() {
@@ -92,7 +96,7 @@ public class SorterTest {
 
 	@Test
 	public void shouldSortRandomArray() {
-		int size = 1000;
+		int size = 100000;
 		int[] parameter = randomArray(size);
 
 		int[] expeced = new int[size];
