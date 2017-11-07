@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Quicksort implements Sorter {
+public class QuickSortClassic implements Sorter {
     @Override
     public void sort(int[] numbers) {
         if (numbers == null) {
@@ -30,12 +30,14 @@ public class Quicksort implements Sorter {
         if (low >= high) {
             return;
         }
+
         int partitionIndex = partition(numbers, low, high, getPivot(numbers, low, high));
         quicksort(numbers, low, partitionIndex - 1);
         quicksort(numbers, partitionIndex, high);
     }
 
-    protected int partition(int numbers[], int left, int right, int pivotIndex) {
+    // Done differently than in book, I couldn't make it work with very big arrays with the other way
+    int partition(int numbers[], int left, int right, int pivotIndex) {
         int i = left, j = right;
         int pivot = numbers[pivotIndex];
 
@@ -52,7 +54,6 @@ public class Quicksort implements Sorter {
                 j--;
             }
         }
-        ;
 
         return i;
     }

@@ -6,7 +6,7 @@ public class InsertionSort implements Sorter {
         if (numbers == null) {
             return;
         }
-        sort(numbers, 0, numbers.length);
+        sort(numbers, 0, numbers.length - 1);
     }
 
     @Override
@@ -15,7 +15,7 @@ public class InsertionSort implements Sorter {
             return;
         }
         int i = low + 1;
-        while (i < high) {
+        while (i <= high) {
             int ele = numbers[i];
             int j = i - 1;
             while (j >= 0 && numbers[j] > ele) {
