@@ -4,14 +4,11 @@ import static java.util.Arrays.asList;
 import static java.util.Arrays.sort;
 import static org.junit.Assert.*;
 
-import com.sun.xml.internal.bind.v2.model.annotation.Quick;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;

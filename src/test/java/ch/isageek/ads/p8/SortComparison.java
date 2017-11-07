@@ -11,10 +11,10 @@ public class SortComparison {
 
     private static final long SEED = 102300303923L;
     private static final int NUMBER_OF_ELEMENTS = 10_000_000;
-    private static final int RANDOM_REPEATS = 5;
+    private static final int RANDOM_REPEATS = 10;
     private Random randomGenerator = new Random(SEED);
 
-    private static final Collection<Integer> SIZES = IntStream.range(0, 8).map(i -> (int)Math.pow(10, i)).boxed().collect(Collectors.toList());
+    private static final Collection<Integer> SIZES = IntStream.range(0, 7).map(i -> (int)Math.pow(10, i)).boxed().collect(Collectors.toList());
 
     private static final Collection<Integer> CUTOFFS = IntStream.range(0, 50).boxed().collect(Collectors.toList());
 
@@ -42,7 +42,6 @@ public class SortComparison {
     }
 
     @Test
-    @Ignore
     public void compareCutoffs() {
         System.out.println(String.format("Sorting %d elements %d times in ascending, descending and random order.", NUMBER_OF_ELEMENTS, RANDOM_REPEATS));
         List<CutoffRun> runtimes = new ArrayList<>(CUTOFFS.size());
