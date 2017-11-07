@@ -1,8 +1,17 @@
 package ch.isageek.ads.p8;
 
-public class QuicksortMedian implements Sorter {
+public class QuicksortMedian extends Quicksort {
     @Override
-    public void sort(int[] numbers) {
+    protected int getPivot(int[] numbers, int low, int high) {
+        int middle = (low + high) / 2;
+        if (numbers[low] < numbers[high] && numbers[low] > numbers[middle]) {
+            return low;
+        }
 
+        if (numbers[high] < numbers[low] && numbers[high] > numbers[middle]) {
+            return high;
+        }
+        return middle;
+//        return super.getPivot(numbers, low, high);
     }
 }
