@@ -11,15 +11,22 @@ public class Quicksort implements Sorter {
         if (numbers == null) {
             return;
         }
-        quicksort(numbers, 0, numbers.length - 1);
+        sort(numbers, 0, numbers.length - 1);
     }
 
+    @Override
+    public void sort(int[] numbers, int low, int high) {
+        if (numbers == null) {
+            return;
+        }
+        quicksort(numbers, low, high);
+    }
 
     protected int getPivot(int[] numbers, int low, int high) {
         return (low + high) / 2;
     }
 
-    private void quicksort(int[] numbers, int low, int high) {
+    protected void quicksort(int[] numbers, int low, int high) {
         if (low >= high) {
             return;
         }
@@ -28,18 +35,19 @@ public class Quicksort implements Sorter {
         quicksort(numbers, partitionIndex, high);
     }
 
-
-    int partition(int arr[], int left, int right, int pivotIndex) {
+    protected int partition(int numbers[], int left, int right, int pivotIndex) {
         int i = left, j = right;
-        int pivot = arr[pivotIndex];
+        int pivot = numbers[pivotIndex];
 
         while (i <= j) {
-            while (arr[i] < pivot)
+            while (numbers[i] < pivot) {
                 i++;
-            while (arr[j] > pivot)
+            }
+            while (numbers[j] > pivot) {
                 j--;
+            }
             if (i <= j) {
-                swap(arr, i, j);
+                swap(numbers, i, j);
                 i++;
                 j--;
             }

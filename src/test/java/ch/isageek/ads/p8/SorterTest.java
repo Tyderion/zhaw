@@ -23,7 +23,7 @@ public class SorterTest {
 
 	@Parameterized.Parameters(name = "{0}")
 	public static Collection<Sorter> getSorters() {
-		return asList(new InsertionSort(), new Quicksort(), new QuicksortMedian());//, new QuicksortTurbo());
+		return asList(new InsertionSort(), new Quicksort(), new QuicksortMedian(), new QuicksortTurbo());
 	}
 
 	public SorterTest(Sorter sorter) {
@@ -96,7 +96,7 @@ public class SorterTest {
 
 	@Test
 	public void shouldSortRandomArray() {
-		int size = 100000;
+		int size = sorter instanceof InsertionSort ? 100000 : 100000000;
 		int[] parameter = randomArray(size);
 
 		int[] expeced = new int[size];
