@@ -50,8 +50,7 @@ public class Quicksort implements Sorter {
             }
         }
         System.out.println(String.format("LeftIs: %b, RightIs: %b", leftIsPivot, rightIsPivot));
-        int pivotLocation =
-                leftIsPivot ? right : rightIsPivot ? left : Math.max(0, left-1);//Math.max(0, left >= right ? left : left -1);;
+        int pivotLocation = rightIsPivot ? left :  left-1;
         System.out.println(String.format("After: %s. Pivot at: %d", Arrays.toString(numbers), pivotLocation));
         System.out.println("---------------------------------------------------------------");
         return pivotLocation;
