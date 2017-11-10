@@ -1,10 +1,5 @@
 package ch.isageek.ads.p8;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class QuickSortClassic implements Sorter {
     @Override
     public void sort(int[] numbers) {
@@ -30,7 +25,6 @@ public class QuickSortClassic implements Sorter {
         if (low >= high) {
             return;
         }
-
         int partitionIndex = partition(numbers, low, high, getPivot(numbers, low, high));
         quicksort(numbers, low, partitionIndex - 1);
         quicksort(numbers, partitionIndex, high);
