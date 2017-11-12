@@ -6,6 +6,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static java.util.Arrays.asList;
+
 public class SortComparison {
 
     private static final long SEED = 102300303923L;
@@ -13,10 +15,11 @@ public class SortComparison {
     private static final int RANDOM_REPEATS = 10;
     private Random randomGenerator = new Random(SEED);
 
-    private static final Collection<Integer> SIZES_INSERTION = IntStream.range(0, 7).map(i -> (int)Math.pow(10, i)).boxed().collect(Collectors.toList());
-    private static final Collection<Integer> SIZES_QUICKSORT = IntStream.range(0, 9).map(i -> (int)Math.pow(10, i)).boxed().collect(Collectors.toList());
+    private static final Collection<Integer> SIZES_INSERTION = IntStream.range(0, 7).map(i -> (int) Math.pow(10, i)).boxed().collect(Collectors.toList());
+    private static final Collection<Integer> SIZES_QUICKSORT = IntStream.range(0, 9).map(i -> (int) Math.pow(10, i)).boxed().collect(Collectors.toList());
 
-    private static final Collection<Integer> CUTOFFS = IntStream.range(0, 50).boxed().collect(Collectors.toList());
+//    private static final Collection<Integer> CUTOFFS = IntStream.range(80, 120).boxed().collect(Collectors.toList());
+    private static final Collection<Integer> CUTOFFS = asList(76, 77, 72, 54, 60, 52, 74, 78, 69, 85, 51, 66, 75, 53, 65, 55, 70, 86, 71, 79, 87, 105, 64, 49);
 
 
     @Test
@@ -24,7 +27,7 @@ public class SortComparison {
         System.out.println("Comparing InsertionSort to QuicksortClassic");
         QuickSortBase classic = new QuickSortClassic();
         InsertionSort insertion = new InsertionSort();
-        System.out.println("Length\tQuicksort\tInsertionsort");
+        System.out.println("Length\tQuicksort(ms)\tInsertionsort(ms)");
         testRuntimes(classic, insertion, SIZES_INSERTION);
     }
 
@@ -33,28 +36,28 @@ public class SortComparison {
         System.out.println("Comparing QuicksortClassic to QuicksortMedian");
         QuickSortBase classic = new QuickSortClassic();
         QuicksortMedian median = new QuicksortMedian();
-        System.out.println("Length\tQuicksortClassic\tQuicksortMedian");
+        System.out.println("Length\tQuicksortClassic(ms)\tQuicksortMedian(ms)");
         testRuntimes(classic, median, SIZES_QUICKSORT);
     }
 
     private void testRuntimes(Sorter a, Sorter b, Collection<Integer> sizes) {
         for (Integer size : sizes) {
             long startA = System.currentTimeMillis();
-            sortAscending(a, size);
-            sortDescending(a, size);
             for (int i = 0; i < 5; i++) {
+                sortAscending(a, size);
+                sortDescending(a, size);
                 sortRandom(a, size);
             }
             long durationA = System.currentTimeMillis() - startA;
 
             long startB = System.currentTimeMillis();
-            sortAscending(b, size);
-            sortDescending(b, size);
             for (int i = 0; i < 5; i++) {
+                sortAscending(b, size);
+                sortDescending(b, size);
                 sortRandom(b, size);
             }
             long durationB = System.currentTimeMillis() - startB;
-            System.out.println(String.format("%d\t%dms\t%dms",size, durationA, durationB));
+            System.out.println(String.format("%d\t%d\t%d", size, durationA, durationB));
         }
     }
 
@@ -75,13 +78,13 @@ public class SortComparison {
             }
 
             long end = System.currentTimeMillis();
-            System.out.println(String.format("%d\t%dms",cutoff, end - start ));
+            System.out.println(String.format("%d\t%d", cutoff, end - start));
             runtimes.add(new CutoffRun(end - start, cutoff));
         }
 
         runtimes.sort(Comparator.comparingLong(o -> o.duration));
         System.out.println("Runtimes top 20%");
-        for (int i = 0; i < 0.2*runtimes.size(); i++) {
+        for (int i = 0; i < 0.2 * runtimes.size(); i++) {
             System.out.println(runtimes.get(i));
         }
     }

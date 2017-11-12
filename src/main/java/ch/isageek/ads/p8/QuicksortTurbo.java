@@ -6,7 +6,7 @@ public class QuicksortTurbo extends QuicksortMedian {
     private InsertionSort insertionSort = new InsertionSort();
 
     public QuicksortTurbo() {
-        this(15);
+        this(76);
     }
 
     public QuicksortTurbo(int cutoff) {
