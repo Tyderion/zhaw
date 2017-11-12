@@ -20,7 +20,7 @@ public class SorterTest {
 
 	@Parameterized.Parameters(name = "{0}")
 	public static Collection<Sorter> getSorters() {
-		return asList(new InsertionSort(), new Quicksort(), new QuicksortMedian(), new QuicksortTurbo());
+		return asList(new InsertionSort(), new QuickSortClassic(), new QuicksortMedian(), new QuicksortTurbo());
 	}
 
 	public SorterTest(Sorter sorter) {
