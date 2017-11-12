@@ -1,6 +1,5 @@
 package ch.isageek.ads.p8;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -14,7 +13,8 @@ public class SortComparison {
     private static final int RANDOM_REPEATS = 10;
     private Random randomGenerator = new Random(SEED);
 
-    private static final Collection<Integer> SIZES = IntStream.range(0, 7).map(i -> (int)Math.pow(10, i)).boxed().collect(Collectors.toList());
+    private static final Collection<Integer> SIZES_INSERTION = IntStream.range(0, 7).map(i -> (int)Math.pow(10, i)).boxed().collect(Collectors.toList());
+    private static final Collection<Integer> SIZES_QUICKSORT = IntStream.range(0, 9).map(i -> (int)Math.pow(10, i)).boxed().collect(Collectors.toList());
 
     private static final Collection<Integer> CUTOFFS = IntStream.range(0, 50).boxed().collect(Collectors.toList());
 
@@ -25,7 +25,7 @@ public class SortComparison {
         QuickSortClassic classic = new QuickSortClassic();
         InsertionSort insertion = new InsertionSort();
         System.out.println("Length\tQuicksort\tInsertionsort");
-        testRuntimes(classic, insertion);
+        testRuntimes(classic, insertion, SIZES_INSERTION);
     }
 
     @Test
@@ -34,21 +34,21 @@ public class SortComparison {
         QuickSortClassic classic = new QuickSortClassic();
         QuicksortMedian median = new QuicksortMedian();
         System.out.println("Length\tQuicksortClassic\tQuicksortMedian");
-        testRuntimes(classic, median);
+        testRuntimes(classic, median, SIZES_QUICKSORT);
     }
 
-    private void testRuntimes(Sorter a, Sorter b) {
-        for (Integer size : SIZES) {
+    private void testRuntimes(Sorter a, Sorter b, Collection<Integer> sizes) {
+        for (Integer size : sizes) {
             long start = System.currentTimeMillis();
-            turboSortAscending(a, size);
-            turboSortDescending(a, size);
-            turboSortRandom(a, size);
+            sortAscending(a, size);
+            sortDescending(a, size);
+            sortRandom(a, size);
             long end = System.currentTimeMillis();
 
             long startInsertion = System.currentTimeMillis();
-            turboSortAscending(b, size);
-            turboSortDescending(b, size);
-            turboSortRandom(b, size);
+            sortAscending(b, size);
+            sortDescending(b, size);
+            sortRandom(b, size);
             long endInsertion = System.currentTimeMillis();
             System.out.println(String.format("%d\t%dms\t%dms",size, end - start, endInsertion - startInsertion ));
         }
@@ -65,9 +65,9 @@ public class SortComparison {
             QuicksortTurbo sorter = new QuicksortTurbo(cutoff);
             long start = System.currentTimeMillis();
             for (int i = 0; i < RANDOM_REPEATS; i++) {
-                turboSortAscending(sorter, NUMBER_OF_ELEMENTS);
-                turboSortDescending(sorter, NUMBER_OF_ELEMENTS);
-                turboSortRandom(sorter, NUMBER_OF_ELEMENTS);
+                sortAscending(sorter, NUMBER_OF_ELEMENTS);
+                sortDescending(sorter, NUMBER_OF_ELEMENTS);
+                sortRandom(sorter, NUMBER_OF_ELEMENTS);
             }
 
             long end = System.currentTimeMillis();
@@ -82,17 +82,17 @@ public class SortComparison {
         }
     }
 
-    public void turboSortAscending(Sorter sorter, int size) {
+    public void sortAscending(Sorter sorter, int size) {
         int[] array = ascending(size);
         sorter.sort(array);
     }
 
-    public void turboSortRandom(Sorter sorter, int size) {
+    public void sortRandom(Sorter sorter, int size) {
         int[] array = random(size);
         sorter.sort(array);
     }
 
-    public void turboSortDescending(Sorter sorter, int size) {
+    public void sortDescending(Sorter sorter, int size) {
         int[] array = descending(size);
         sorter.sort(array);
     }
