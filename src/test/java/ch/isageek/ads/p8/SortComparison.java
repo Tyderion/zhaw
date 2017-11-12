@@ -25,21 +25,35 @@ public class SortComparison {
         QuickSortClassic classic = new QuickSortClassic();
         InsertionSort insertion = new InsertionSort();
         System.out.println("Length\tQuicksort\tInsertionsort");
+        testRuntimes(classic, insertion);
+    }
+
+    @Test
+    public void compareMedianWithClassic() {
+        System.out.println("Comparing QuicksortClassic to QuicksortMedian");
+        QuickSortClassic classic = new QuickSortClassic();
+        QuicksortMedian median = new QuicksortMedian();
+        System.out.println("Length\tQuicksortClassic\tQuicksortMedian");
+        testRuntimes(classic, median);
+    }
+
+    private void testRuntimes(Sorter a, Sorter b) {
         for (Integer size : SIZES) {
             long start = System.currentTimeMillis();
-                turboSortAscending(classic, size);
-                turboSortDescending(classic, size);
-                turboSortRandom(classic, size);
+            turboSortAscending(a, size);
+            turboSortDescending(a, size);
+            turboSortRandom(a, size);
             long end = System.currentTimeMillis();
 
             long startInsertion = System.currentTimeMillis();
-            turboSortAscending(insertion, size);
-            turboSortDescending(insertion, size);
-            turboSortRandom(insertion, size);
+            turboSortAscending(b, size);
+            turboSortDescending(b, size);
+            turboSortRandom(b, size);
             long endInsertion = System.currentTimeMillis();
             System.out.println(String.format("%d\t%dms\t%dms",size, end - start, endInsertion - startInsertion ));
         }
     }
+
 
     @Test
     public void compareCutoffs() {
