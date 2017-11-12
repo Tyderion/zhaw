@@ -39,18 +39,18 @@ public class SortComparison {
 
     private void testRuntimes(Sorter a, Sorter b, Collection<Integer> sizes) {
         for (Integer size : sizes) {
-            long start = System.currentTimeMillis();
+            long startA = System.currentTimeMillis();
             sortAscending(a, size);
             sortDescending(a, size);
             sortRandom(a, size);
-            long end = System.currentTimeMillis();
+            long durationA = System.currentTimeMillis() - startA;
 
-            long startInsertion = System.currentTimeMillis();
+            long startB = System.currentTimeMillis();
             sortAscending(b, size);
             sortDescending(b, size);
             sortRandom(b, size);
-            long endInsertion = System.currentTimeMillis();
-            System.out.println(String.format("%d\t%dms\t%dms",size, end - start, endInsertion - startInsertion ));
+            long durationB = System.currentTimeMillis() - startB;
+            System.out.println(String.format("%d\t%dms\t%dms",size, durationA, durationB));
         }
     }
 
