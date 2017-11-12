@@ -4,14 +4,13 @@ public class QuicksortMedian extends QuickSortClassic {
     @Override
     protected int getPivot(int[] numbers, int low, int high) {
         int middle = (low + high) / 2;
-        if (numbers[low] < numbers[high] && numbers[low] > numbers[middle]) {
+        if (numbers[low] < numbers[high] && numbers[low] > numbers[middle] || numbers[low] > numbers[high] && numbers[low] < numbers[middle]) {
             return low;
         }
 
-        if (numbers[high] < numbers[low] && numbers[high] > numbers[middle]) {
+        if (numbers[high] < numbers[low] && numbers[high] > numbers[middle] || numbers[high] > numbers[low] && numbers[high] < numbers[middle]) {
             return high;
         }
         return middle;
-//        return super.getPivot(numbers, low, high);
     }
 }
