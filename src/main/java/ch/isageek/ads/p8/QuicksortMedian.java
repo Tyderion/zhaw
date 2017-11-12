@@ -1,6 +1,6 @@
 package ch.isageek.ads.p8;
 
-public class QuicksortMedian extends QuickSortClassic {
+public class QuicksortMedian extends QuickSortBase {
     @Override
     protected int getPivot(int[] numbers, int low, int high) {
         int middle = (low + high) / 2;

@@ -22,7 +22,7 @@ public class SortComparison {
     @Test
     public void compareInsertionSortWithClassic() {
         System.out.println("Comparing InsertionSort to QuicksortClassic");
-        QuickSortClassic classic = new QuickSortClassic();
+        QuickSortBase classic = new QuickSortClassic();
         InsertionSort insertion = new InsertionSort();
         System.out.println("Length\tQuicksort\tInsertionsort");
         testRuntimes(classic, insertion, SIZES_INSERTION);
@@ -31,7 +31,7 @@ public class SortComparison {
     @Test
     public void compareMedianWithClassic() {
         System.out.println("Comparing QuicksortClassic to QuicksortMedian");
-        QuickSortClassic classic = new QuickSortClassic();
+        QuickSortBase classic = new QuickSortClassic();
         QuicksortMedian median = new QuicksortMedian();
         System.out.println("Length\tQuicksortClassic\tQuicksortMedian");
         testRuntimes(classic, median, SIZES_QUICKSORT);
@@ -42,13 +42,17 @@ public class SortComparison {
             long startA = System.currentTimeMillis();
             sortAscending(a, size);
             sortDescending(a, size);
-            sortRandom(a, size);
+            for (int i = 0; i < 5; i++) {
+                sortRandom(a, size);
+            }
             long durationA = System.currentTimeMillis() - startA;
 
             long startB = System.currentTimeMillis();
             sortAscending(b, size);
             sortDescending(b, size);
-            sortRandom(b, size);
+            for (int i = 0; i < 5; i++) {
+                sortRandom(b, size);
+            }
             long durationB = System.currentTimeMillis() - startB;
             System.out.println(String.format("%d\t%dms\t%dms",size, durationA, durationB));
         }
