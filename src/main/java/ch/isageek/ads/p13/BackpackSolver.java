@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface BackpackSolver {
 
-    Solution solve(final List<Thing> things, final int maxWeight);
-
     Solution solve(final int[] weights, final int[] values, final int maxWeight);
 
     class Solution {

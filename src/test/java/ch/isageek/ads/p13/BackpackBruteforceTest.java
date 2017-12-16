@@ -29,11 +29,6 @@ public class BackpackBruteforceTest {
         solver.solve(new int[]{1,2,3}, new int[]{1,2,3}, -10);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowIfMaxValueBelowZeroListMethod() throws Exception {
-        solver.solve(Collections.emptyList(), -10);
-    }
-
     @Test
     public void shouldSolveSimpleBackpackingProblem_1() {
         int[] weights = new int[]{1, 2, 5};

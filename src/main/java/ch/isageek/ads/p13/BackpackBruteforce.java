@@ -10,22 +10,26 @@ import java.util.stream.Collectors;
 public class BackpackBruteforce implements BackpackSolver {
 
     @Override
-    public Solution solve(final List<Thing> things, final int maxWeight) throws IllegalArgumentException {
+    public Solution solve(final int[] weights, final int[] values, final int maxValue) throws IllegalArgumentException {
+        if (weights.length != values.length) {
+            throw new IllegalArgumentException("We need a weight for each value");
+        }
+        List<Thing> things = new ArrayList<>();
+        for (int i = 0; i < weights.length; i++) {
+            things.add(new Thing(weights[i], values[i]));
+        }
+        return solve(things, maxValue);
+    }
+
+    private Solution solve(final List<Thing> things, final int maxWeight) throws IllegalArgumentException {
         if (maxWeight <= 0) {
             throw new IllegalArgumentException("MaxWeight should be positive.");
         }
         final List<Thing> allThings = Collections.unmodifiableList(things);
         final int maxItems = allThings.size();
-//
-//        for (int i = 1; i < 5; i++) {
-//            List<int[]> subsets = getKCombinations(i, 5);
-//            System.out.println(subsets.stream().map(Arrays::toString).collect(Collectors.joining(", ")));
-//        }
-
-//        return null;
 
         // For each possible length of a subselection of the things
-        // Try every combination
+        // Try every combination and save the best valid one
         final Solution[] bestSolution = {null};
         for (int size = 1; size < maxItems; size++) {
             forEachKCombinations(size, maxItems, indeces -> {
@@ -65,23 +69,11 @@ public class BackpackBruteforce implements BackpackSolver {
                     break;
                 }
                 combination[pos]++;                    // increment this item
-                for (int rest = pos +1; rest < k; rest++) {
+                for (int rest = pos + 1; rest < k; rest++) {
                     combination[rest] = combination[rest - 1] + 1;
                 }
                 action.accept(combination.clone());
             }
         }
-    }
-
-    @Override
-    public Solution solve(final int[] weights, final int[] values, final int maxValue) throws IllegalArgumentException {
-        if (weights.length != values.length) {
-            throw new IllegalArgumentException("We need a weight for each value");
-        }
-        List<Thing> things = new ArrayList<>();
-        for (int i = 0; i < weights.length; i++) {
-            things.add(new Thing(weights[i], values[i]));
-        }
-        return solve(things, maxValue);
     }
 }

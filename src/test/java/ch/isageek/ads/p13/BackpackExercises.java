@@ -17,7 +17,6 @@ public class BackpackExercises {
     public void Exercise1_c() throws Exception {
         BackpackBruteforce solver = new BackpackBruteforce();
 
-
         System.out.println(String.format("Packing Things with weights %s \nand values %s \ninto a backpack with a max weight of %d",
                 Arrays.toString(EXERCISE_WEIGHTS), Arrays.toString(EXERCISE_VALUES), EXERCISE_MAX_WEIGHT
         ));
@@ -28,12 +27,12 @@ public class BackpackExercises {
     }
 
     @Test
-    public void Exercise1_d() throws Exception {
+    public void Exercise1_d() {
         BackpackBruteforce solver = new BackpackBruteforce();
 
         IntStream.range(1, 1000).forEach(size -> {
             double start = System.currentTimeMillis();
-            BackpackSolver.Solution solution = solver.solve(IntStream.range(0, size).toArray(), IntStream.range(0, size).toArray(), size*2);
+            solver.solve(IntStream.range(0, size).toArray(), IntStream.range(0, size).toArray(), size * 2);
             double stop = System.currentTimeMillis();
             double timeInSeconds = (stop - start)/1000;
             System.out.println(String.format("%d\t%.3f", size, timeInSeconds));
