@@ -14,7 +14,7 @@ public class BackpackExercises {
     private static final int EXERCISE_MAX_WEIGHT = 645;
 
     @Test
-    public void Exercise1_c() throws Exception {
+    public void Exercise1_c() {
         BackpackBruteforce solver = new BackpackBruteforce();
 
         System.out.println(String.format("Packing Things with weights %s \nand values %s \ninto a backpack with a max weight of %d",
@@ -34,7 +34,7 @@ public class BackpackExercises {
             double start = System.currentTimeMillis();
             solver.solve(IntStream.range(0, size).toArray(), IntStream.range(0, size).toArray(), size * 2);
             double stop = System.currentTimeMillis();
-            double timeInSeconds = (stop - start)/1000;
+            double timeInSeconds = (stop - start) / 1000;
             System.out.println(String.format("%d\t%.3f", size, timeInSeconds));
             if (timeInSeconds > 120) {
                 throw new RuntimeException(String.format("computation with %d elements already takes %s seconds. Longer is not feasible.", size, timeInSeconds));

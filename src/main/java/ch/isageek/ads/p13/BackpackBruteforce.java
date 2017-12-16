@@ -1,11 +1,9 @@
 package ch.isageek.ads.p13;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class BackpackBruteforce implements BackpackSolver {
 
@@ -43,11 +41,12 @@ public class BackpackBruteforce implements BackpackSolver {
     }
 
     /**
-     * Exectues an action for each k-combination of the form [0, 1, 2}, [0, 1, 3], [0, 2, 3], [1, 2, 3]
-     * This method allocates only one int array of size k, so the space requirements are k.
+     * Executes an action for each k-combination of the form [0, 1, 2}, [0, 1, 3], [0, 2, 3], [1, 2, 3]
+     * This method allocates only 1 (+ one for the consumer call but this can be deallocated right after) int array of size k, so the space requirements are k.
      *
      * @param k        The size of the combinations
      * @param maxIndex The max value for each position
+     * @param action   The action to take for each combination.
      */
     private void forEachKCombinations(int k, int maxIndex, Consumer<int[]> action) {
         int[] combination = new int[k];                  // here we'll keep indices
@@ -68,7 +67,9 @@ public class BackpackBruteforce implements BackpackSolver {
                 if (pos < 0) {
                     break;
                 }
-                combination[pos]++;                    // increment this item
+                // increment this item
+                combination[pos]++;
+                // fill up the rest
                 for (int rest = pos + 1; rest < k; rest++) {
                     combination[rest] = combination[rest - 1] + 1;
                 }
