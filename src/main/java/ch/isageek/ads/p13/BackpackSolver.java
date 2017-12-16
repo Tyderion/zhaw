@@ -1,6 +1,7 @@
 package ch.isageek.ads.p13;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public interface BackpackSolver {
@@ -48,6 +49,12 @@ public interface BackpackSolver {
             return things.stream().mapToInt(Thing::getWeight).sum();
         }
 
+        public static Solution fromIndeces(int[] indeces, final List<Thing> things, final int maxWeight) {
+            Solution current = new Solution(maxWeight);
+            Arrays.stream(indeces).forEach(index -> current.addThing(things.get(index)));
+            return current;
+        }
+
     }
 
     class Thing {
@@ -65,6 +72,11 @@ public interface BackpackSolver {
 
         public int getValue() {
             return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("(W: %d, V: %d)", weight, value);
         }
     }
 }
