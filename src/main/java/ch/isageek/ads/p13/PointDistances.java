@@ -61,5 +61,38 @@ public class PointDistances {
         VALID, INVALID, SOLUTION
     }
 
+    private class Try {
+        private Try lastTry;
+        private HashMap<Integer, Try> nextTries;
+        private List<Integer> selectedPoints;
+        private Result result;
+        public Try(Try lastTry, List<Integer> selectedPoints, Result result) {
+            this.lastTry = lastTry;
+            this.selectedPoints = selectedPoints;
+            this.result = result;
+            this.nextTries = new HashMap<>();
+        }
+
+        public List<Integer> getSelectedPoints() {
+            return new ArrayList<>(selectedPoints);
+        }
+
+        public Try getLastTry() {
+            return lastTry;
+        }
+
+        public Result getResult() {
+            return result;
+        }
+
+        public boolean hasTry(int number) {
+            return nextTries.containsKey(number);
+        }
+
+        public void addTry(int number, Try aTry) {
+            this.nextTries.put(number, aTry);
+        }
+    }
+
 
 }
