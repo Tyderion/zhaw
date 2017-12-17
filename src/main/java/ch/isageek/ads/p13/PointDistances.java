@@ -30,7 +30,19 @@ public class PointDistances {
     }
 
     private Result validate(List<Integer> selectedPoints) {
-        return Result.INVALID;
+        List<Integer> distances = computeDistances(selectedPoints);
+        List<Integer> selectedDistances = new ArrayList<>();
+        for (Integer distance : distances) {
+            if (this.distances.contains(distance)) {
+                selectedDistances.add(distance);
+            } else {
+                return Result.INVALID;
+            }
+        }
+        if (selectedDistances.size() == this.distances.size()) {
+            return Result.SOLUTION;
+        }
+        return Result.VALID;
     }
 
     private List<Integer> computeDistances(List<Integer> selectedPoints) {
@@ -45,7 +57,7 @@ public class PointDistances {
         return distances;
     }
 
-    private enum Result {
+    public enum Result {
         VALID, INVALID, SOLUTION
     }
 
