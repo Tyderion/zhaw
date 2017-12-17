@@ -34,6 +34,11 @@ public class PointDistancesTest {
     }
 
     @Test
+    public void testValidateFullMoreComplex() throws Exception {
+        assertEquals(PointDistances.Result.SOLUTION, callValidate(new int[]{2, 3, 1}, asList(0, 2, 3)));
+    }
+
+    @Test
     public void testValidateFullExerciseExample() throws Exception {
         assertEquals(PointDistances.Result.SOLUTION, callValidate(new int[]{2, 5, 7, 7, 9, 9, 14, 14, 16, 23}, asList(0, 7, 9, 14, 23)));
     }
@@ -56,6 +61,24 @@ public class PointDistancesTest {
     @Test
     public void testValidatePartialInValidExerciseExample() throws Exception {
         assertEquals(PointDistances.Result.INVALID, callValidate(new int[]{2, 5, 7, 7, 9, 9, 14, 14, 16, 23}, asList(0, 7, 9, 14, 15)));
+    }
+
+    @Test
+    public void testSimpleSolution() {
+        int[] points = PointDistances.findPoints(new int[]{2});
+        assertReflectionEquals(new int[] {0, 2}, points, ReflectionComparatorMode.LENIENT_ORDER);
+    }
+
+    @Test
+    public void testMultipleDistancesSolution() {
+        int[] points = PointDistances.findPoints(new int[]{2, 3, 1});
+        assertReflectionEquals(new int[] {0, 2, 3}, points, ReflectionComparatorMode.LENIENT_ORDER);
+    }
+
+    @Test
+    public void testExerciseSolution() {
+        int[] points = PointDistances.findPoints(new int[]{2, 5, 7, 7, 9, 9, 14, 14, 16, 23});
+        assertReflectionEquals(new int[] {0, 7, 9, 14, 23}, points, ReflectionComparatorMode.LENIENT_ORDER);
     }
 
     @SuppressWarnings("unchecked")
