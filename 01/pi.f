@@ -5,10 +5,10 @@
   real*4 pointX, pointY, pi, tmp
   integer*4 iterations, count, i
   ! -----------------------------------------------Input
-  !print*, "Enter the number of iterations to compute Pi ..."
-  !read*, iterations
+  print*, "Enter the number of iterations to compute Pi ..."
+  read*, iterations
   ! -----------------------------------------------Compute
-  iterations = 5E7
+  !iterations = 5E7
   count = 0
   do i=0, iterations
     pointX = rand(0)

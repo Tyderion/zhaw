@@ -8,10 +8,10 @@
   integer*4, parameter :: numthreads = 4
 
   ! -----------------------------------------------Input
-  !print*, "Enter the number of iterations to compute Pi ..."
-  !read*, iterations
+  print*, "Enter the number of iterations to compute Pi ..."
+  read*, iterations
   ! -----------------------------------------------Compute
-  iterations = 1E6
+  !iterations = 1E6
   count=0
   !$omp parallel private(count_local,tid,i) num_threads(numthreads)
     tid = omp_get_thread_num()

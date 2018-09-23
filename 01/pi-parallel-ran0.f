@@ -22,10 +22,10 @@
 
 
   ! -----------------------------------------------Input
-  !print*, "Enter the number of iterations to compute Pi ..."
-  !read*, iterations
+  print*, "Enter the number of iterations to compute Pi ..."
+  read*, iterations
   ! -----------------------------------------------Compute
-  iterations = 5E7
+  !iterations = 5E7
   count=0
   !$omp parallel private(count_local,tid,i) num_threads(numthreads)
     tid = omp_get_thread_num()
