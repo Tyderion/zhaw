@@ -19,13 +19,23 @@ public class Scanner {
         for (; ; ) {
             switch (state) {
                 case 0:
+                    if (ch == '.') {
+                        t.str += ch;
+                        nextCh();
+                        state = 1;
+                    } else if (ch >= '0' && ch <= '9') {
+                        t.str += ch;
+                        nextCh();
+                    } else state = 2;
+                    break;
+                case 1:
                     if (ch >= '0' && ch <= '9') {
                         t.str += ch;
                         nextCh();
-                    } else state = 1;
+                    } else state = 2;
                     break;
-                case 1:
-                    t.val = Integer.parseInt(t.str);
+                case 2:
+                    t.val = Double.parseDouble(t.str);
                     return;
             }
         }
@@ -100,7 +110,7 @@ public class Scanner {
 
     /* Test */
     public static void main(String[] args) {
-        init("45 + (32)*78+45-56");
+        init("45.5 + (32)*78+45-56");
         Token t = next();
         while (t.kind != Token.EOF) {
             System.out.println("<" + Token.names[t.kind] + ":" + t.val + ">");
