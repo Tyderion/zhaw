@@ -139,7 +139,7 @@ public class Scanner {
 
     /* Test */
     public static void main(String[] args) {
-        init("ES+1");
+        init("E+1");
         Token t = next();
         while (t.kind != Token.EOF) {
             boolean isIDent = t.kind == Token.IDENT || t.kind == Token.NONE;
