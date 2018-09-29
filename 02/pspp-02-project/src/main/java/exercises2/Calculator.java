@@ -54,12 +54,19 @@ class Calculator {
         } else if (Scanner.la == Token.NUMBER) {
             Scanner.scan();
             push(Scanner.token.val);
+        } else if (Scanner.la == Token.IDENT) {
+            Scanner.scan();
+            if (Scanner.token.str.equals("E")) {
+                push(Math.E);
+            } else if (Scanner.token.str.equals("PI")) {
+                push(Math.PI);
+            }
         }
     }
 
 
     public static void main(String[] args) throws Exception {
-        Scanner.init("3+2-4*(2+ 1 *3)/(2 * (3 + 4))");
+        Scanner.init("PI + 2 * E");
         Scanner.scan();
         expr();
         System.out.println("result=" + pop());

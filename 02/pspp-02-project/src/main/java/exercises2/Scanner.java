@@ -7,7 +7,7 @@ public class Scanner {
     static final char EOF = '\u0080';
     static int line;
     static int col;
-    final static String[] CONSTANTS = {"E", "PI", "G"};
+    final static String[] CONSTANTS = {"E", "PI"};
 
     private static void readConstant(Token t, String word) {
         int state = 0;
@@ -33,8 +33,8 @@ public class Scanner {
     }
 
     /*
-        Die Aufgabenstellung spezifiziert keine Fehlerbehandlung wenn nicht registrierte / erkannte Konstanten im Code vorkommen.
-        Da auch sonst (noch) keine Fehlerbehandlung implementiert ist, wird der Scanner in einem Loop stecken bleiben.
+        Die Aufgabenstellung spezifiziert keine Fehlerbehandlung wenn nicht registrierte Konstanten im Code vorkommen.
+        Da auch sonst (noch) keine Fehlerbehandlung implementiert ist, wird der Scanner ein Token vom Typ None für jeden Buchstaben parsen.
      */
     private static void readName(Token t) {
         for (String word : CONSTANTS) {
