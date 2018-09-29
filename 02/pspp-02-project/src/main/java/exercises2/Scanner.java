@@ -7,9 +7,10 @@ public class Scanner {
     static final char EOF = '\u0080';
     static int line;
     static int col;
+    
     /*
         No error handling is specified in the exercise despcription.
-        If it encounters a unknown word, it scans a token of type none
+        If it encounters a unknown word, it scans never ends
      */
     private static void readName(Token t) {
         t.kind = Token.IDENT;
@@ -23,42 +24,19 @@ public class Scanner {
                     if (ch == 'E') {
                         t.str += ch;
                         nextCh();
-                        state = 2;
-                        break;
+                        return;
                     } else if (ch == 'P') {
                         t.str += ch;
                         nextCh();
                         state = 1;
-                        break;
-                    } else {
-                        state = 3;
                         break;
                     }
                 case 1:
                     if (ch == 'I') {
                         t.str += ch;
                         nextCh();
-                        state = 2;
-                        break;
-                    } else {
-                        state = 3;
-                        break;
-                    }
-                case 2:
-                    // End of constant case
-                    if (Character.isLetter(ch)) {
-                        state = 3;
-                        break;
-                    } else {
-                        // Constant correct
                         return;
                     }
-                case 3:
-                    // Error case
-                    t.str += ch;
-                    t.kind = Token.NONE;
-                    return;
-
             }
         }
     }
