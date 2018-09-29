@@ -7,9 +7,39 @@ public class Scanner {
     static final char EOF = '\u0080';
     static int line;
     static int col;
+    final static String[] CONSTANTS = {"E", "PI", "G"};
 
+    private static void readConstant(Token t, String word) {
+        int state = 0;
+
+        for (; ; ) {
+            switch (state) {
+                case 0:
+                    if (ch == word.charAt(0)) {
+                        t.kind = Token.IDENT;
+                        t.str = "" + ch;
+                        nextCh();
+                        state = 1;
+                        break;
+                    } else return;
+                default:
+                    if (word.length() >= state + 1 && ch == word.charAt(state)) {
+                        t.str += ch;
+                        nextCh();
+                    } else return;
+
+            }
+        }
+    }
+
+    /*
+        Die Aufgabenstellung spezifiziert keine Fehlerbehandlung wenn nicht registrierte / erkannte Konstanten im Code vorkommen.
+        Da auch sonst (noch) keine Fehlerbehandlung implementiert ist, wird der Scanner in einem Loop stecken bleiben.
+     */
     private static void readName(Token t) {
-
+        for (String word : CONSTANTS) {
+            readConstant(t, word);
+        }
     }
 
     private static void readNumber(Token t) {
@@ -110,11 +140,16 @@ public class Scanner {
 
     /* Test */
     public static void main(String[] args) {
-        init("45.5 + (32)*78+45-56");
+        init("43.12 + E+ PI * G + (32)*78+45-56");
         Token t = next();
         while (t.kind != Token.EOF) {
-            System.out.println("<" + Token.names[t.kind] + ":" + t.val + ">");
+            boolean isIDent = t.kind == Token.IDENT;
+            System.out.println("<" + Token.names[t.kind] + ":" + (isIDent ? t.str : t.val) + ">");
             t = next();
+//            if (t.kind == Token.NONE) {
+//                System.out.println("Parse error");
+//                break;
+//            }
         }
         System.out.println();
 
