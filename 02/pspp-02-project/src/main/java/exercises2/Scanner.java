@@ -7,38 +7,59 @@ public class Scanner {
     static final char EOF = '\u0080';
     static int line;
     static int col;
-    final static String[] CONSTANTS = {"E", "PI"};
+    /*
+        No error handling is specified in the exercise despcription.
+        If it encounters a unknown word, it scans a token of type none
+     */
+    private static void readName(Token t) {
+        t.kind = Token.IDENT;
+        t.str = "";
 
-    private static void readConstant(Token t, String word) {
         int state = 0;
 
         for (; ; ) {
             switch (state) {
                 case 0:
-                    if (ch == word.charAt(0)) {
-                        t.kind = Token.IDENT;
-                        t.str = "" + ch;
+                    if (ch == 'E') {
+                        t.str += ch;
+                        nextCh();
+                        state = 2;
+                        break;
+                    } else if (ch == 'P') {
+                        t.str += ch;
                         nextCh();
                         state = 1;
                         break;
-                    } else return;
-                default:
-                    if (word.length() >= state + 1 && ch == word.charAt(state)) {
+                    } else {
+                        state = 3;
+                        break;
+                    }
+                case 1:
+                    if (ch == 'I') {
                         t.str += ch;
                         nextCh();
-                    } else return;
+                        state = 2;
+                        break;
+                    } else {
+                        state = 3;
+                        break;
+                    }
+                case 2:
+                    // End of constant case
+                    if (Character.isLetter(ch)) {
+                        state = 3;
+                        break;
+                    } else {
+                        // Constant correct
+                        return;
+                    }
+                case 3:
+                    // Error case
+                    t.str += ch;
+                    t.kind = Token.NONE;
+                    return;
 
             }
-        }
-    }
-
-    /*
-        Die Aufgabenstellung spezifiziert keine Fehlerbehandlung wenn nicht registrierte Konstanten im Code vorkommen.
-        Da auch sonst (noch) keine Fehlerbehandlung implementiert ist, wird der Scanner ein Token vom Typ None für jeden Buchstaben parsen.
-     */
-    private static void readName(Token t) {
-        for (String word : CONSTANTS) {
-            readConstant(t, word);
         }
     }
 
@@ -140,16 +161,16 @@ public class Scanner {
 
     /* Test */
     public static void main(String[] args) {
-        init("43.12 + E+ PI * G + (32)*78+45-56");
+        init("ES+1");
         Token t = next();
         while (t.kind != Token.EOF) {
-            boolean isIDent = t.kind == Token.IDENT;
+            boolean isIDent = t.kind == Token.IDENT || t.kind == Token.NONE;
             System.out.println("<" + Token.names[t.kind] + ":" + (isIDent ? t.str : t.val) + ">");
             t = next();
-//            if (t.kind == Token.NONE) {
-//                System.out.println("Parse error");
-//                break;
-//            }
+            if (t.kind == Token.NONE) {
+                System.out.println("Parse error");
+                break;
+            }
         }
         System.out.println();
 

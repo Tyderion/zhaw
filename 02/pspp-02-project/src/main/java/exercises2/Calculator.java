@@ -66,7 +66,7 @@ class Calculator {
 
 
     public static void main(String[] args) throws Exception {
-        Scanner.init("PI + 2 * E");
+        Scanner.init("PIS + 2");
         Scanner.scan();
         expr();
         System.out.println("result=" + pop());
