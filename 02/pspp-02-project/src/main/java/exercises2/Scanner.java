@@ -20,7 +20,7 @@ public class Scanner {
 
         for (; ; ) {
             switch (state) {
-                case 0:
+                case 0: //current ''
                     if (ch == 'E') {
                         t.str += ch;
                         nextCh();
@@ -31,7 +31,7 @@ public class Scanner {
                         state = 1;
                         break;
                     }
-                case 1:
+                case 1: //current 'P'
                     if (ch == 'I') {
                         t.str += ch;
                         nextCh();
