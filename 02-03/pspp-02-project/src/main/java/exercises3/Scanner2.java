@@ -1,11 +1,9 @@
 package exercises3;
 
-import de.inetsoftware.jwebassembly.JWebAssembly;
-
 import java.util.Hashtable;
 
 
-public class Scanner {
+public class Scanner2 {
 	public static int pos;
 	static String input;
 	static char ch;
@@ -264,7 +262,7 @@ public class Scanner {
 
 	public static void scan() {
 		token = laToken;
-		laToken = Scanner.next();
+		laToken = Scanner2.next();
 		la = laToken.kind;
 	}
 
@@ -278,13 +276,12 @@ public class Scanner {
 	}
 
 	public static void error(String msg) throws Exception {
-		throw new Exception(msg + " at " + Scanner.laToken.pos);
+		throw new Exception(msg + " at " + Scanner2.laToken.pos);
 	}
 
 	/* Test */
 	public static void main(String[] args) {
-//		init("if (a) {z = u}");
-		init("x = 1;");
+		init("if (a) {z = u}");
 		Token t = next();
 
 		while (t.kind != Token.EOF) {
@@ -293,6 +290,7 @@ public class Scanner {
 			t = next();
 		}
 		System.out.println();
+		Factorial.factorial(10);
 //		JWebAssembly.emitCode();
 	}
 

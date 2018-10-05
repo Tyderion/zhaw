@@ -1,3 +1,4 @@
+package exercises3;
 
 public class Token {
 	public static final int NONE = 0;
@@ -20,8 +21,8 @@ public class Token {
 	public static final int RETURN = 17;
 	public static final int EOF = 18;
 	public static String[] names = {
-		"none", "number", "+", "-", "*", "/", "(", ")", "=", "ident", "!",
-		"while", "if", "{", "}", ";", "else", "return", "eof"};
+			"none", "number", "+", "-", "*", "/", "(", ")", "=", "ident", "!",
+			"while", "if", "{", "}", ";", "else", "return", "eof"};
 
 	public int kind; // token code
 	public int pos; // position
