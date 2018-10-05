@@ -6,12 +6,19 @@ import de.inetsoftware.jwebassembly.module.*;
 import java.util.HashMap;
 import java.util.Map;
 
+interface IProgram {
+    double run(double arg);
+}
+
 /**
  * User: Karl Rege
  */
 
 
 class Program implements Emitter {
+    private static boolean debug = true;
+    private static Map<String, ValueType> variables = new HashMap<>();
+
     static void expr() throws Exception {
         term();
         while (Scanner.la == Token.PLUS
@@ -20,14 +27,20 @@ class Program implements Emitter {
             int op = Scanner.token.kind;
             term();
             if (op == Token.PLUS) {
-                System.out.println("Emitting Add");
+                debug("Emitting Add");
                 JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.add, ValueType.f64, 0));
             } else {
-                System.out.println("Emitting Sub");
+                debug("Emitting Sub");
                 JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.sub, ValueType.f64, 0));
             }
         }
 
+    }
+
+    private static void debug(String value) {
+        if (debug) {
+            System.out.println(value);
+        }
     }
 
     static void term() throws Exception {
@@ -37,10 +50,10 @@ class Program implements Emitter {
             int op = Scanner.token.kind;
             factor();
             if (op == Token.TIMES) {
-                System.out.println("Emitting Mul");
+                debug("Emitting Mul");
                 JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.mul, ValueType.f64, 0));
             } else {
-                System.out.println("Emitting Div");
+                debug("Emitting Div");
                 JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.div, ValueType.f64, 0));
             }
         }
@@ -53,17 +66,15 @@ class Program implements Emitter {
             Scanner.check(Token.RBRACK);
         } else if (Scanner.la == Token.NUMBER) {
             Scanner.scan();
-            System.out.println("Emitting Const: " + Scanner.token.val);
+            debug("Emitting Const: " + Scanner.token.val);
             JWebAssembly.il.add(new WasmConstInstruction(Scanner.token.val, 0));
         } else if (Scanner.la == Token.IDENT) {
             Scanner.scan();
-            System.out.println("Emitting Load Variable " + Scanner.token.str);
+            debug("Emitting Load Variable " + Scanner.token.str);
             JWebAssembly.il.add(new WasmLoadStoreInstruction(true,
                     JWebAssembly.local(variables.getOrDefault(Scanner.token.str, ValueType.f64), Scanner.token.str), 0));
         }
     }
-
-    private static Map<String, ValueType> variables = new HashMap<>();
 
     static void assigment() throws Exception {
         if (Scanner.token.kind != Token.IDENT || Scanner.la != Token.EQUAL) {
@@ -75,7 +86,7 @@ class Program implements Emitter {
         expr();
         Scanner.check(Token.SCOLON);
         Scanner.scan();
-        System.out.println("Emitting Variable " + name);
+        debug("Emitting Variable " + name);
         JWebAssembly.il.add(new WasmLoadStoreInstruction(false, JWebAssembly.local(ValueType.f64, name), 0));
     }
 
@@ -89,20 +100,11 @@ class Program implements Emitter {
             statement();
         }
 
-        System.out.println("Emitting Load variable 'value'");
+        debug("Emitting Load variable 'value'");
         JWebAssembly.il.add(new WasmLoadStoreInstruction(true, JWebAssembly.local(ValueType.f64, "value"), 0));
 
-        System.out.println("Emitting return");
+        debug("Emitting return");
         JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.RETURN, null, 0));
-    }
-
-    @Override
-    public void emit() {
-        try {
-            statementSequence();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public static void main(String[] args) throws Exception {
@@ -115,9 +117,14 @@ class Program implements Emitter {
         JWebAssembly.emitCode(IProgram.class, new Program());
     }
 
+    @Override
+    public void emit() {
+        try {
+            statementSequence();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-}
 
-interface IProgram {
-    double run(double arg);
 }
