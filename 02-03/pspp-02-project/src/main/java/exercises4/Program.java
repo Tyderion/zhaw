@@ -137,7 +137,6 @@ class Program implements Emitter {
         Scanner.scan();
         expr();
         Scanner.check(Token.SCOLON);
-        Scanner.scan();
         debug("Emitting Return statement");
         JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.RETURN, null, 0));
     }
@@ -158,10 +157,10 @@ class Program implements Emitter {
         JWebAssembly.il.add(new WasmConstInstruction(0, 0));
         if (inverted) {
             debug("Emitting not-equal");
-            JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.eq, ValueType.i32, 0));
+            JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.ne, ValueType.i32, 0));
         } else {
             debug("Emitting equal");
-            JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.ne, ValueType.i32, 0));
+            JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.eq, ValueType.i32, 0));
         }
         Scanner.check(Token.RBRACK);
     }
@@ -180,12 +179,9 @@ class Program implements Emitter {
             debug("Emitting else block start");
             JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.ELSE, 0));
             statement();
-            debug("Emitting else block end");
-            JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.END, 0));
-        } else {
-            debug("Emitting if block end");
-            JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.END, 0));
         }
+        debug("Emitting else block end");
+        JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.END, 0));
     }
 
 
@@ -214,10 +210,11 @@ class Program implements Emitter {
 //        Scanner.init("a = 2" +
 //                "if (a - 2) { value = 2 } else { value = 1 }");
 
-        Scanner.init("n = $arg0; i = 15;"+
-                "if (n) i = 1;" +
-                "else i = 2;" +
-                "return i;");
+        Scanner.init("m = $arg0 - 42; if (!m) { return 7; } "+
+//                "else { "+
+                "return 666; "
+//                + "}"
+        );
 
 
 //        Scanner.init("i = 5; " +
@@ -233,11 +230,15 @@ class Program implements Emitter {
     @Override
     public void emit() {
         try {
-
-//            JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.IF, 0));
-
             Scanner.scan();
             statementSequence();
+
+            // Emit dummy const so that there is *always* something on the stack at the end of the emitted code.
+            // IF not, it can trigger a validation error when running in firefox.
+            // "m = $arg - 42; if (!m) { return 7; } else { return 666; }" triggers the error
+            // "m = $arg - 42; if (!m) { return 7; }  return 666; " does not
+            // Due to no statement after this one, the value is completely ignored
+            JWebAssembly.il.add(new WasmConstInstruction(5.0, 0));
         } catch (Exception e) {
             e.printStackTrace();
         }
