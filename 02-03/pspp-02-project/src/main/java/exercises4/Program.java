@@ -175,14 +175,15 @@ class Program implements Emitter {
         debug("Emitting if block start");
         JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.IF, 0));
         statement();
-        debug("Emitting if block end");
-        JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.END, 0));
         if (Scanner.la == Token.ELSE) {
             Scanner.scan();
             debug("Emitting else block start");
             JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.ELSE, 0));
             statement();
             debug("Emitting else block end");
+            JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.END, 0));
+        } else {
+            debug("Emitting if block end");
             JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.END, 0));
         }
     }
@@ -214,8 +215,8 @@ class Program implements Emitter {
 //                "if (a - 2) { value = 2 } else { value = 1 }");
 
         Scanner.init("n = $arg0; i = 15;"+
-                "if (n) { i = 1; }" +
-//                "else { i = 2; }" +
+                "if (n) i = 1;" +
+                "else i = 2;" +
                 "return i;");
 
 
