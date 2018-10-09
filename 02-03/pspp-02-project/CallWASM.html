@@ -7,17 +7,19 @@
 		.then(response => response.arrayBuffer())
 		.then(bytes => WebAssembly.instantiate(bytes, {imports: {}}))
 		.then(results => {
-		  document.getElementById("demo").innerHTML = results.instance.exports.run(5);
+		  document.getElementById("demo").innerHTML = results.instance.exports.run(0);
 		})
-		.catch(err => console.log(err));
+		.catch(err => {
+          console.log(err); //debugger;
+      });
 
-      fetch("TestAdder2.wasm")
-          .then(response => response.arrayBuffer())
-      .then(bytes => WebAssembly.instantiate(bytes, {imports: {}}))
-      .then(results => {
-          document.getElementById("demo2").innerHTML = results.instance.exports.add(1.5, 2.2);
-      })
-      .catch(err => console.log(err));
+      // fetch("TestAdder2.wasm")
+      //     .then(response => response.arrayBuffer())
+      // .then(bytes => WebAssembly.instantiate(bytes, {imports: {}}))
+      // .then(results => {
+      //     document.getElementById("demo2").innerHTML = results.instance.exports.add(1.5, 2.2);
+      // })
+      // .catch(err => console.log(err));
   </script>
   <h1>Test WASM<h1>
   <p id="demo"></p>
