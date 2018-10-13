@@ -1,8 +1,8 @@
 package exercises3;
 
-import de.inetsoftware.jwebassembly.api.annotation.Export;
-import de.inetsoftware.jwebassembly.api.annotation.Import;
-import de.inetsoftware.jwebassembly.*;
+        import de.inetsoftware.jwebassembly.api.annotation.Export;
+        import de.inetsoftware.jwebassembly.api.annotation.Import;
+        import de.inetsoftware.jwebassembly.*;
 
 public class Factorial {
     @Export

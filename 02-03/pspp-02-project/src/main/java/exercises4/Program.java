@@ -90,7 +90,6 @@ class Program implements Emitter {
         Scanner.scan();
         expr();
         Scanner.check(Token.SCOLON);
-//        Scanner.scan();
         debug("Emitting Variable " + name);
         JWebAssembly.il.add(new WasmLoadStoreInstruction(false, JWebAssembly.local(ValueType.f64, name), 0));
     }
@@ -108,14 +107,19 @@ class Program implements Emitter {
                     ifStatement();
                 } catch (Exception g) {
                     debug(g.getMessage());
-                    block();
+                    try {
+                        whileStatemnt();
+                    } catch (Exception h) {
+                        debug(h.getMessage());
+                        block();
+                    }
                 }
             }
         }
     }
 
     static void block() throws Exception {
-        if (Scanner.la != Token.LCBRACK ) {
+        if (Scanner.la != Token.LCBRACK) {
             throw new Exception("block must start with '{'");
         }
         Scanner.scan();
@@ -125,9 +129,6 @@ class Program implements Emitter {
         Scanner.check(Token.RCBRACK);
         debug("Emitting block end");
         JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.END, 0));
-//        Scanner.scan();
-//        Scanner.scan();
-
     }
 
     static void returnStatement() throws Exception {
@@ -142,7 +143,7 @@ class Program implements Emitter {
     }
 
     static void condition() throws Exception {
-        if (Scanner.la != Token.LBRACK ) {
+        if (Scanner.la != Token.LBRACK) {
             throw new Exception("condition must start with '('");
         }
         Scanner.scan();
@@ -157,10 +158,10 @@ class Program implements Emitter {
         JWebAssembly.il.add(new WasmConstInstruction(0, 0));
         if (inverted) {
             debug("Emitting not-equal");
-            JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.ne, ValueType.i32, 0));
+            JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.eq, ValueType.i32, 0));
         } else {
             debug("Emitting equal");
-            JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.eq, ValueType.i32, 0));
+            JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.ne, ValueType.i32, 0));
         }
         Scanner.check(Token.RBRACK);
     }
@@ -186,6 +187,21 @@ class Program implements Emitter {
 
 
     static void whileStatemnt() throws Exception {
+        if (Scanner.la != Token.WHILE) {
+            throw new Exception("while must start with 'while'");
+        }
+        Scanner.scan();
+        JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.LOOP, 0));
+        condition();
+        debug("Emitting if block start");
+        JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.IF, 0));
+        statement();
+        JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.BR,1,0));
+        debug("Emitting if block end");
+        JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.END, 0));
+        debug("Emitting loop block end");
+        JWebAssembly.il.add(new WasmBlockInstruction(WasmBlockOperator.END, 0));
+
 
     }
 
@@ -199,32 +215,28 @@ class Program implements Emitter {
                 break;
             }
         }
-
-//        Scanner.scan();
-
-//        debug("Emitting Load variable 'value'");
-//        JWebAssembly.il.add(new WasmLoadStoreInstruction(true, JWebAssembly.local(ValueType.f64, "value"), 0));
     }
 
     public static void main(String[] args) throws Exception {
 //        Scanner.init("a = 2" +
 //                "if (a - 2) { value = 2 } else { value = 1 }");
 
-        Scanner.init("m = $arg0 - 42; if (!m) { return 7; } "+
-//                "else { "+
-                "return 666; "
+//        Scanner.init("m = $arg0 - 42; if (!m) { return 7; } " +
+//                "else { " +
+//                "return 666; "
 //                + "}"
-        );
+//        );
 
+        Scanner.init(
+                "m = $arg0;" +
+                " s = 1;" +
+                " while (m) {" +
+                " s = s * m;" +
+                " m = m - 1;" +
+                " }" +
+                " return s;");
 
-//        Scanner.init("i = 5; " +
-//                "if (i-5) { i = 15; }" +
-//                "return i;");
-
-//        Scanner.init("return 1;");
         JWebAssembly.emitCode(IProgram.class, new Program());
-
-//        Test.test();
     }
 
     @Override
@@ -233,12 +245,40 @@ class Program implements Emitter {
             Scanner.scan();
             statementSequence();
 
+
+
             // Emit dummy const so that there is *always* something on the stack at the end of the emitted code.
             // IF not, it can trigger a validation error when running in firefox.
+            // Err: CompileError: "wasm validation error: at offset 86: reading value from empty stack"
+            // Even though the program never reaches offset 86 which is after the else (see dissambly below, 0x56 = 86)
             // "m = $arg - 42; if (!m) { return 7; } else { return 666; }" triggers the error
             // "m = $arg - 42; if (!m) { return 7; }  return 666; " does not
             // Due to no statement after this one, the value is completely ignored
-            JWebAssembly.il.add(new WasmConstInstruction(5.0, 0));
+            /*
+            000020 <run>:
+             000022: 01 7c                      | local[0] type=f64
+             000024: 20 00                      | get_local 0
+             000026: 44 00 00 00 00 00 00 45 40 | f64.const 0x1.5p+5
+             00002f: a1                         | f64.sub
+             000030: 21 01                      | set_local 1
+             000032: 20 01                      | get_local 1
+             000034: aa                         | i32.trunc_s/f64
+             000035: 41 00                      | i32.const 0
+             000037: 47                         | i32.ne
+             000038: 04 40                      | if
+             00003a: 02 40                      |   block
+             00003c: 44 00 00 00 00 00 00 1c 40 |     f64.const 0x1.cp+2
+             000045: 0f                         |     return
+             000046: 0b                         |   end
+             000047: 05                         | else
+             000048: 02 40                      |   block
+             00004a: 44 00 00 00 00 00 d0 84 40 |     f64.const 0x1.4dp+9
+             000053: 0f                         |     return
+             000054: 0b                         |   end
+             000055: 0b                         | end
+             000056: 0b                         | end <-- Error here even though this is never reached
+  */
+            JWebAssembly.il.add(new WasmConstInstruction(0.0, 0));
         } catch (Exception e) {
             e.printStackTrace();
         }
