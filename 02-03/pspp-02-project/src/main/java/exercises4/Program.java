@@ -157,10 +157,10 @@ class Program implements Emitter {
         JWebAssembly.il.add(new WasmConvertInstruction(ValueTypeConvertion.d2i, 0));
         JWebAssembly.il.add(new WasmConstInstruction(0, 0));
         if (inverted) {
-            debug("Emitting not-equal");
+            debug("Inverted, emitting = 0");
             JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.eq, ValueType.i32, 0));
         } else {
-            debug("Emitting equal");
+            debug("emitting != 0");
             JWebAssembly.il.add(new WasmNumericInstruction(NumericOperator.ne, ValueType.i32, 0));
         }
         Scanner.check(Token.RBRACK);
@@ -218,8 +218,8 @@ class Program implements Emitter {
     }
 
     public static void main(String[] args) throws Exception {
-//        Scanner.init("a = 2" +
-//                "if (a - 2) { value = 2 } else { value = 1 }");
+//        Scanner.init("a = 6;" +
+//                "if (a) { return 10; } return 5;");
 
 //        Scanner.init("m = $arg0 - 42; if (!m) { return 7; } " +
 //                "else { " +
@@ -244,8 +244,6 @@ class Program implements Emitter {
         try {
             Scanner.scan();
             statementSequence();
-
-
 
             // Emit dummy const so that there is *always* something on the stack at the end of the emitted code.
             // IF not, it can trigger a validation error when running in firefox.
