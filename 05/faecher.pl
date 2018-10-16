@@ -131,12 +131,11 @@ module(S, Fächer):- modul(Fächer), semester(Fächer, S).
 semester_modul_liste(S,Resultat) :- setof(M,module(S, M),Resultat).
     
 % 5) Beispiel: ects([dd2, eesy], X) liefert 8
-% Unbekannte module haben 0 ects punkte.
+% Unbekannte module ergeben ein 'false'
 ects([], Total):- 
     Total is 0.
-ects([F], Total):- 
-    modul(F) -> ectsPunkte(F, A), Total is A; Total is 0.
 ects([F|Tail], Total):- 
-    ects([F], A), 
+    modul(F), 
+    ectsPunkte(F, A),
     ects(Tail, B), 
     Total is A + B.
