@@ -2,6 +2,5 @@
 ;; Factorial with range
 ;;
 
-(defun factorial (n)
-  ; (apply #'* ...)
-  1)   
+(defun factorial (n) 
+    (apply #'* (range 1 (+ n 1)))) 

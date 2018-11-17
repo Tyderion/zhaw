@@ -31,8 +31,9 @@
 ;; Abstraction
 ;;
 (defun reduce-list (f init seq)
-  ; ...
-  init)
+    (if (null seq) init
+        ;; else
+        (reduce-list (funcall f init (first seq)) f (rest seq))))
 
 
 ;;
@@ -44,7 +45,15 @@
         ((funcall f (car seq))
          (cons (car seq) (func f (cdr seq))))
         (t (func f (cdr seq)))))
-
+        
+;; Die Funktion "func" ist die filter funktion.
+;; z.B. (filter #'(lambda (x) (> x 3)) '(1 2 3 4 5 6 7)) ergibt (4 5 6 7)
+(defun filter (pred seq)
+ (cond 
+    ((null seq) nil)
+    ((funcall pred (car seq)) (cons (car seq) (filter pred (cdr seq))))
+    (t (filter pred (cdr seq)))
+ ))
 
 
 

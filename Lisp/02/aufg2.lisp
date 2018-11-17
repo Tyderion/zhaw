@@ -6,8 +6,15 @@
 ;; Create range of integers
 ;; This is not a working range function
 ;;
-(defun range (&rest args)
-  args)
+(defun range (start &optional end (step 1)) 
+    (cond
+        ((= step 0) nil)
+        ((null end) (range 0 start step))
+        ((and (= (signum step) 1) (>= start end)) nil)
+        ((and (= (signum step) -1) (<= start end)) nil)
+        (t (cons start (range (+ start step) end step)))
+    )
+)
 
 
 ;; Minimalist test tool
