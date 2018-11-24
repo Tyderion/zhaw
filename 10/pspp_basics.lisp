@@ -98,7 +98,15 @@
 ;; Make a list with a sequence of numbers
 ;; This function is not implemented here because it is part
 ;; of an exercise
-;(defun range (start &optional end (step 1)) ...
+(defun range (start &optional end (step 1)) 
+    (cond
+        ((= step 0) nil)
+        ((null end) (range 0 start step))
+        ((and (= (signum step) 1) (>= start end)) nil)
+        ((and (= (signum step) -1) (<= start end)) nil)
+        (t (cons start (range (+ start step) end step)))
+    )
+)
 
 
 ;; Merge two lists to an alist
