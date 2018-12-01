@@ -70,3 +70,39 @@
       (append 
         (sort-list (filter-list #'(lambda (x) (<= x head)) tail))
         (cons head (sort-list (filter-list #'(lambda (x) (> x head)) tail))))))))
+
+
+;;; Aufgabe 5: Html
+
+(defun html-is-attr (arg) (and (listp arg) (symbolp (car arg)) (stringp (cdr arg))))
+
+(defun html-node (node)
+ (cond ((symbolp node)
+ (format t "<~(~A~) />" node node))
+ ((stringp node)
+ (format t "~A" node))
+ ((listp node)
+    (format t "<~(~A~)" (car node))
+    ;(if (html-is-attr (cdr node)) )
+    (html-nodeattrs (cdr node))
+    (format t ">")
+    (html-subnodes (cdr node))
+    (let ((content (first (last node))))
+      (format t ">~A</~(~A~)>" (if (stringp content) content "") (car node))
+    )
+ )
+ )
+)
+
+
+(defun html-subnodes (nodes)
+ (unless (null nodes)
+ (unless (html-is-attr (car nodes))
+ (html-node (car nodes))
+ (html-subnodes (cdr nodes))))
+
+ (defun html-nodeattrs (nodes)
+ (unless (null nodes)
+ (if (html-is-attr (car nodes))
+  (format t " ~(~A~)=~S" (caar nodes) (cdar nodes)))
+ (html-nodeattrs (cdr nodes))))
