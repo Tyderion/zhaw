@@ -26,7 +26,7 @@ run('[0, 1, 2, 3, 4].map( (curr) => curr*curr )');
 
 // Mapping with reduce
 // ...
-
+//let myMap = curry((mapfn, array) => array.reduce((acc, ele) => [...acc, mapfn(ele)], []))
 
 // Curried version of reduce
 run('var reduce = curry((fun,init,arr) => arr.reduce(fun, init));',false);
@@ -46,6 +46,7 @@ var map = (fn) => reduce((prev, curr) => prev.concat(fn(curr)), []);
 
 // Try this version of map
 // ...
+
 
 
 // Tail recursive factorial, partial recursive call

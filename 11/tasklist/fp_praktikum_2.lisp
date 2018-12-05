@@ -137,3 +137,6 @@
 
  ;; Alle offene tasks von scott: 
  (funcall (open-tasks "Scott") (read-json "tasks.json"))
+
+
+ (filter-fn #'(lambda (x) (eq (getprop :id x) '(:id . 104))) *tasks*)
