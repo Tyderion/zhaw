@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/JavaModules.iml" filepath="$PROJECT_DIR$/JavaModules.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.zhaw.nadlegab/ch.zhaw.nadlegab.iml" filepath="$PROJECT_DIR$/ch.zhaw.nadlegab/ch.zhaw.nadlegab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch.zhaw.random/ch.zhaw.random.iml" filepath="$PROJECT_DIR$/ch.zhaw.random/ch.zhaw.random.iml" />
+    </modules>
+  </component>
+</project>
