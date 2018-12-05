@@ -1,0 +1,20 @@
+/**
+ * @mainpage PROGC - Selfstudy 03
+ *
+ * @section Purpose
+ *
+ * This is a PROGC selfstudy <B>Grades</B> source documentation.
+ *
+ * @section Assignment
+ *
+ * This program reads a list of scored points (one for each student) and a minimal amount of points for the grade 6.
+ * 
+ *
+ * Run the program by:
+ *
+ * @code
+ * make clean; make; make doc; make test
+ * @endcode
+ *
+ * The executable program is located in the bin folder.
+ */

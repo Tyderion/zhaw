@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "test_utils.h": "c",
+        "math.h": "c",
+        "stdlib.h": "c",
+        "cstdlib": "c",
+        "stdio.h": "c",
+        "typeinfo": "c"
+    }
+}
