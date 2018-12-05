@@ -1,0 +1,21 @@
+/**
+ * @mainpage PROGC - Selfstudy 04
+ *
+ * @section Purpose
+ *
+ * This is a PROGC selfstudy <B>Sorting Words</B> source documentation.
+ *
+ * @section Assignment
+ *
+ * This program asks the user to input a list of unique words (with a maximum length of 30 characters).
+ * This list will then be sorted and printed.
+ *
+ *
+ * Run the program by:
+ *
+ * @code
+ * make clean; make; make doc; make test
+ * @endcode
+ *
+ * The executable program is located in the bin folder.
+ */

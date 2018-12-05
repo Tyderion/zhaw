@@ -1,0 +1,20 @@
+/**
+ * @mainpage PROGC - Selfstudy 01
+ *
+ * @section Purpose
+ *
+ * This is a PROGC Selfstudy <B>Dates</B> source documentation.
+ *
+ * @section Assignment
+ *
+ * This study validates dates and and prints the next date from the entered one (if the entered one is valid).
+ * 
+ *
+ * Run the program by:
+ *
+ * @code
+ * make clean; make; make doc; make test
+ * @endcode
+ *
+ * The executable program is located in the bin folder.
+ */
