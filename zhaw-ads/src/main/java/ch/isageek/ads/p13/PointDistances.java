@@ -31,7 +31,8 @@ public class PointDistances {
     private int[] solve() {
         List<Integer> currentPoints = new ArrayList<>();
         currentPoints.add(0);
-        Try currentTry = new Try(null, currentPoints, Collections.emptyList(), validate(currentPoints));
+        Try root = new Try(null, currentPoints, Collections.emptyList(), validate(currentPoints));;
+        Try currentTry = root;
         while (true) {
             Optional<Integer> nextDistance = getNextDistance(currentTry);
             if (nextDistance.isPresent()) {
