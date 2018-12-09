@@ -1,0 +1,8 @@
+-c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork 
+-I.\RTE\_SPI_Display
+-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include
+-IC:\Keil_v5\ARM\PACK\InES\CTBoard14_DFP\4.0.0\Device\Include
+-IC:\Keil_v5\ARM\PACK\InES\CTBoard14_DFP\4.0.0\Device\Include\m0
+-IC:\Keil_v5\ARM\PACK\InES\CTBoard14_DFP\4.0.0\HAL\Include
+-D__UVISION_VERSION="524" -D_RTE_
+-o .\build\lcd_io.o --omf_browse .\build\lcd_io.crf --depend .\build\lcd_io.d "app\lcd_io.c"
