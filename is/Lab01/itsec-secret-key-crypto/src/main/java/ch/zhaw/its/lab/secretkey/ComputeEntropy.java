@@ -1,8 +1,5 @@
 package ch.zhaw.its.lab.secretkey;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -14,30 +11,22 @@ public class ComputeEntropy {
     }
 
     private void computeEntropyPerByte(String[] fileNames) {
-        for (String name : fileNames) {
-            try (InputStream is = new FileInputStream(name)) {
-                System.out.println(name + ":" + computeEntropyPerByte(is));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        FileHelper.doForFiles(fileNames, bytes -> {
+            System.out.println(bytes.getKey() + ":" + computeEntropyPerByte(bytes.getValue()));
+        });
     }
 
-    private double computeEntropyPerByte(InputStream is) throws IOException {
+    public double computeEntropyPerByte(final byte[] in) {
         int[] frequencies = Collections.nCopies(256, 0).stream().mapToInt(i -> i).toArray();
-        int in;
-        int length = 0;
-        while ((in = is.read()) != -1) {
-            frequencies[in]++;
-            length++;
+        for (byte b : in) {
+            frequencies[b+128]++;
         }
 
-        if (length == 0) {
+        if (in.length == 0) {
             return 0;
         }
 
-        final double len = (double) length;
-
+        final double len = (double) in.length;
         return -Arrays.stream(frequencies)
                 .mapToDouble(frequency -> frequency / len)
                 .filter(relativeFreq -> relativeFreq > 0)
