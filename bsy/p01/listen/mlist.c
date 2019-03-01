@@ -34,13 +34,18 @@ void mlDelList(mlist_t *list)
 {
     tnode_t *last;
     tnode_t *iter = list->head;
-    while (iter->next != NULL)
+    while (iter != NULL)
     {
         last = iter;
         iter = iter->next;
+        if (last->tcb)
+        {
+            mtDelThread(last->tcb);
+        }
         free(last);
     }
-    free(list->head);
+    free(list);
+    list = NULL;
 }
 void mlEnqueue(mlist_t *list, mthread_t *tcb)
 {
@@ -54,19 +59,17 @@ void mlEnqueue(mlist_t *list, mthread_t *tcb)
 mthread_t *mlDequeue(mlist_t *list)
 {
     tnode_t *dequeued;
-    if (list->head->next == NULL)
-    {
-        return NULL; // no elements in the list
-    }
     dequeued = list->head->next;
-    list->head->next = dequeued->next;
-    if (list->head->next == NULL)
+    if (dequeued == NULL)
     {
-        list->tail = list->head;
+        return NULL;
     }
+
     mthread_t *tcb = dequeued->tcb;
+    dequeued->tcb = NULL;
     list->numNodes--;
-    free(dequeued);
+    free(list->head);
+    list->head = dequeued;
     return tcb;
 }
 
@@ -82,7 +85,7 @@ void mlSortIn(mlist_t *list, mthread_t *tcb)
     iter = list->head;
     while (iter->next != NULL)
     {
-        if (iter->next->tcb->readyTime > tcb->readyTime)
+        if (mtGetReadyTime(iter->next->tcb) > mtGetReadyTime(tcb))
         {
             break;
         }
@@ -102,10 +105,6 @@ void mlSortIn(mlist_t *list, mthread_t *tcb)
 
 mthread_t *mlReadFirst(mlist_t *list)
 {
-    if (list->iter == NULL)
-    {
-        list->iter = list->head;
-    }
     if (list->head->next == NULL)
     {
         return NULL;
@@ -125,6 +124,11 @@ void mlSetPtrFirst(mlist_t *list)
 
 void mlSetPtrNext(mlist_t *list)
 {
+    // if (list->iter == list->tail)
+    // {
+    //     list->iter = NULL;
+    //     return;
+    // }
     if (list->iter != NULL)
     {
         list->iter = list->iter->next;
