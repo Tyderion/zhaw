@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0bb3b4e8-e65d-4175-affd-892a69fe851c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ch/zhaw/its/lab/secretkey/FileDecrypter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ch/zhaw/its/lab/secretkey/FileHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cipher" beforeDir="false" afterPath="$PROJECT_DIR$/cipher" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/zhaw/its/lab/secretkey/ComputeEntropy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/zhaw/its/lab/secretkey/ComputeEntropy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/zhaw/its/lab/secretkey/NaturalLanguage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/zhaw/its/lab/secretkey/NaturalLanguage.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -24,7 +20,7 @@
     <session id="1655156929">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.6" value="1" />
           <entry key="project.opened" value="2" />
@@ -35,8 +31,17 @@
           <entry key="cipher" value="5" />
           <entry key="class" value="3" />
           <entry key="decrypted" value="6" />
-          <entry key="decrypted2519482" value="1" />
-          <entry key="decrypted4877441" value="1" />
+          <entry key="decrypted10855979" value="1" />
+          <entry key="decrypted13080540" value="1" />
+          <entry key="decrypted13760780" value="1" />
+          <entry key="decrypted17196346" value="1" />
+          <entry key="decrypted2239882" value="1" />
+          <entry key="decrypted2519482" value="2" />
+          <entry key="decrypted3411537" value="1" />
+          <entry key="decrypted4877441" value="2" />
+          <entry key="decrypted6965398" value="1" />
+          <entry key="decrypted9136392" value="1" />
+          <entry key="decrypted9558443" value="1" />
           <entry key="java" value="18" />
           <entry key="mystery" value="1" />
           <entry key="natural1" value="2" />
@@ -48,20 +53,20 @@
         <counts>
           <entry key="CLASS" value="3" />
           <entry key="JAVA" value="18" />
-          <entry key="PLAIN_TEXT" value="20" />
+          <entry key="PLAIN_TEXT" value="31" />
           <entry key="XML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="5520" />
+          <entry key="java" value="5593" />
           <entry key="plain" value="8" />
           <entry key="xml" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="5520" />
+          <entry key="JAVA" value="5593" />
           <entry key="PLAIN_TEXT" value="8" />
           <entry key="XML" value="3" />
         </counts>
@@ -73,20 +78,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/ch/zhaw/its/lab/secretkey/NaturalLanguage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="59" column="81" selection-start-line="59" selection-start-column="81" selection-end-line="59" selection-end-column="81" />
+            <state relative-caret-position="583">
+              <caret line="61" column="68" lean-forward="true" selection-start-line="61" selection-start-column="68" selection-end-line="61" selection-end-column="68" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ch/zhaw/its/lab/secretkey/Ransom.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="466">
-              <caret line="42" column="19" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -110,33 +106,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/jre/lib/jce.jar!/javax/crypto/KeyGeneratorSpi.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="19" column="28" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/ch/zhaw/its/lab/secretkey/TotallySecureRandom.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/io/FileOutputStream.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1725">
-              <caret line="99" column="11" selection-start-line="99" selection-start-column="11" selection-end-line="99" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ch/zhaw/its/lab/secretkey/FileDecrypter.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="600">
@@ -145,15 +114,6 @@
                 <element signature="e#536#537#0" expanded="true" />
                 <element signature="e#570#571#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/util/stream/DoubleStream.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8441">
-              <caret line="413" column="36" selection-start-line="413" selection-start-column="36" selection-end-line="413" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -206,7 +166,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="408" />
     <option name="y" value="190" />
     <option name="width" value="1280" />
@@ -249,7 +209,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550856551959" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550859164760" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -300,7 +260,7 @@
     <configuration name="NaturalLanguage1" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.zhaw.its.lab.secretkey.NaturalLanguage" />
       <module name="main" />
-      <option name="PROGRAM_PARAMETERS" value="decrypted natural1 random1 mystery src/main/java/ch/zhaw/its/lab/secretkey/FileEncrypter.java" />
+      <option name="PROGRAM_PARAMETERS" value="natural1 random1 mystery src/main/java/ch/zhaw/its/lab/secretkey/FileEncrypter.java" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -360,12 +320,12 @@
       <option name="presentableId" value="Default" />
       <updated>1550844789654</updated>
       <workItem from="1550844790934" duration="7327000" />
-      <workItem from="1550854429187" duration="2120000" />
+      <workItem from="1550854429187" duration="3807000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9447000" />
+    <option name="totallyTimeSpent" value="11134000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
@@ -380,7 +340,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.329653" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.329653" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.329653" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39984226" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -604,16 +564,43 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/decrypted17196346">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decrypted13760780">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decrypted13080540">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decrypted9558443">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/decrypted4877441">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/decrypted2519482">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/decrypted2239882">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decrypted3411537">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decrypted10855979">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decrypted9136392">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decrypted6965398">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ch/zhaw/its/lab/secretkey/NaturalLanguage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="59" column="81" selection-start-line="59" selection-start-column="81" selection-end-line="59" selection-end-column="81" />
+        <state relative-caret-position="583">
+          <caret line="61" column="68" lean-forward="true" selection-start-line="61" selection-start-column="68" selection-end-line="61" selection-end-column="68" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

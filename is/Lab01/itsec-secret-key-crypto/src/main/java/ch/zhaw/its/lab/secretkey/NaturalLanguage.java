@@ -25,19 +25,19 @@ public class NaturalLanguage {
 
 
     public static void main(String[] args) {
-//        for (int i = 0; i < 10; i++) {
-//            byte[] rawIv = new byte[16];
-//            new TotallySecureRandom().nextBytes(rawIv);
-//            StringBuilder sb = new StringBuilder();
-//            for (byte b : rawIv) {
-//                sb.append(b).append(",");
-//            }
-//            System.out.println(sb.toString());
-//        }
-        FileHelper.doForFiles(args, result -> {
-            NaturalLanguage nl = new NaturalLanguage(result.getValue());
-            System.out.println(String.format("File '%s' is %snatural", result.getKey(), nl.isNaturalLanguage(result.getValue()) ? "" : "not "));
-        });
+        for (int i = 0; i < 1; i++) {
+            byte[] rawIv = new byte[16];
+            new TotallySecureRandom().nextBytes(rawIv);
+            StringBuilder sb = new StringBuilder();
+            for (byte b : rawIv) {
+                sb.append(b).append(",");
+            }
+            System.out.println(sb.toString());
+        }
+//        FileHelper.doForFiles(args, result -> {
+//            NaturalLanguage nl = new NaturalLanguage(result.getValue());
+//            System.out.println(String.format("File '%s' is %snatural", result.getKey(), nl.isNaturalLanguage(result.getValue()) ? "" : "not "));
+//        });
         if (args.length != 1) {
             return;
         }
@@ -46,25 +46,27 @@ public class NaturalLanguage {
             encrypted[0] = result.getValue();
         });
 
-        byte[] key = new byte[] {Byte.MIN_VALUE, Byte.MIN_VALUE, Byte.MIN_VALUE, Byte.MIN_VALUE, Byte.MIN_VALUE, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//        int a = 0xb47c361669010000;
+
+        byte[] key = new byte[] {Byte.MIN_VALUE, Byte.MIN_VALUE, Byte.MIN_VALUE, 0x16, 0x69, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
         NaturalLanguage nl = new NaturalLanguage(encrypted[0]);
         long count = 0;
         for (int i0 = Byte.MIN_VALUE; i0 <= Byte.MAX_VALUE; i0++) {
             for (int i1 = Byte.MIN_VALUE; i1 <= Byte.MAX_VALUE; i1++) {
                 for (int i2 = Byte.MIN_VALUE; i2 <= Byte.MAX_VALUE; i2++) {
-                    for (int i3 = Byte.MIN_VALUE; i3 <= Byte.MAX_VALUE; i3++) {
-                        for (int i4 = Byte.MIN_VALUE; i4 <= Byte.MAX_VALUE; i4++) {
+//                    for (int i3 = Byte.MIN_VALUE; i3 <= Byte.MAX_VALUE; i3++) {
+//                        for (int i4 = Byte.MIN_VALUE; i4 <= Byte.MAX_VALUE; i4++) {
                             count++;
                             if (nl.tryDecrypt(key, count)) {
                                 System.out.println("Tried " + count + " times.");
                             }
                             key[4]++;
-                        }
-                        key[4] = Byte.MIN_VALUE;
-                        key[3]++;
-                    }
-                    key[3] = Byte.MIN_VALUE;
+//                        }
+//                        key[4] = Byte.MIN_VALUE;
+//                        key[3]++;
+//                    }
+//                    key[3] = Byte.MIN_VALUE;
                     key[2]++;
                 }
                 key[2] = Byte.MIN_VALUE;
