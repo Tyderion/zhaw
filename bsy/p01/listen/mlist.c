@@ -36,7 +36,7 @@ void mlDelList(mlist_t *list)
         currentNode = node;
         if (currentNode->tcb)
         {
-            free(currentNode->tcb);
+            mtDelThread(currentNode->tcb);
         }
         if (currentNode->next)
         {
