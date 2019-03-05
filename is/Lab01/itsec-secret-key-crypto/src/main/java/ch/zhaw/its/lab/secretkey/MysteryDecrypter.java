@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 import static ch.zhaw.its.lab.secretkey.FileDecrypter.CALGORITHM;
 
@@ -18,12 +19,14 @@ public class MysteryDecrypter {
     private final String filename;
     private final FileDecrypter fileDecrypter;
     private final FileEncrypter fileEncrypter;
+    private final byte[] encrypted;
     private final NaturalLanguage naturalLanguage;
 
     public MysteryDecrypter(String filename, byte[] encrypted) {
         this.filename = filename;
         fileDecrypter = new FileDecrypter(encrypted);
         fileEncrypter = new FileEncrypter(filename, String.format(FILENAME_DECRYPTED, filename));
+        this.encrypted = encrypted;
         naturalLanguage = new NaturalLanguage();
     }
 
@@ -38,8 +41,7 @@ public class MysteryDecrypter {
 
     private void decrypt() {
         try {
-            IvParameterSpec iv = fileDecrypter.readIv(Cipher.getInstance(CALGORITHM));
-            byte[] key = iv.getIV();
+            byte[] key = Arrays.copyOfRange(encrypted, 0, Cipher.getInstance(CALGORITHM).getBlockSize());
             for (byte j = Byte.MIN_VALUE; j < Byte.MAX_VALUE; j++) {
                 key[0] = j;
                 byte[] decrypted = fileDecrypter.decrypt(key);
