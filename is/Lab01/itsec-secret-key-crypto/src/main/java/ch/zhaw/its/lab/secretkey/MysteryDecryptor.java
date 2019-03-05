@@ -15,7 +15,7 @@ import static ch.zhaw.its.lab.secretkey.FileDecrypter.CALGORITHM;
 
 public class MysteryDecryptor {
 
-    private final static String FILENAME_DECRYPTED = "decrypted";
+    private final static String FILENAME_DECRYPTED = "decrypted.txt";
     private final FileDecrypter fileDecrypter;
     private final NaturalLanguage naturalLanguage;
 
@@ -37,17 +37,12 @@ public class MysteryDecryptor {
     private void decrypt() {
         try {
             IvParameterSpec iv = fileDecrypter.readIv(Cipher.getInstance(CALGORITHM));
-
-            int tryCount = 0;
-            for (int i = 0; i < 6; i++) {
-                byte[] key = iv.getIV();
-                for (byte j = Byte.MIN_VALUE; j < Byte.MAX_VALUE; j++) {
-                    key[i] = j;
-                    tryCount++;
-                    byte[] decrypted = fileDecrypter.decrypt(key);
-                    if (naturalLanguage.isNaturalLanguage(decrypted)) {
-                        writeFile(FILENAME_DECRYPTED + tryCount, decrypted);
-                    }
+            byte[] key = iv.getIV();
+            for (byte j = Byte.MIN_VALUE; j < Byte.MAX_VALUE; j++) {
+                key[0] = j;
+                byte[] decrypted = fileDecrypter.decrypt(key);
+                if (naturalLanguage.isNaturalLanguage(decrypted)) {
+                    writeFile(FILENAME_DECRYPTED, decrypted);
                 }
             }
         } catch (NoSuchAlgorithmException | IOException | BadPaddingException | IllegalBlockSizeException | InvalidAlgorithmParameterException | InvalidKeyException | NoSuchPaddingException e) {
