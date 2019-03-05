@@ -4,7 +4,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -42,12 +41,15 @@ public class MysteryDecrypter {
     private void decrypt() {
         try {
             byte[] key = Arrays.copyOfRange(encrypted, 0, Cipher.getInstance(CALGORITHM).getBlockSize());
-            for (byte j = Byte.MIN_VALUE; j < Byte.MAX_VALUE; j++) {
-                key[0] = j;
+
+            int count = 0;
+            while (key[0] > Byte.MIN_VALUE) {
+                key[0]--;
+                count++;
                 byte[] decrypted = fileDecrypter.decrypt(key);
                 if (naturalLanguage.isNaturalLanguage(decrypted)) {
                     fileEncrypter.decrypt(key);
-                    StringBuilder output = new StringBuilder(String.format("Key [%s]: | ", filename));
+                    StringBuilder output = new StringBuilder(String.format("Key [%s] within %d tries: | ", filename, count));
                     for (byte b : key) {
                         output.append(b).append(" | ");
                     }
