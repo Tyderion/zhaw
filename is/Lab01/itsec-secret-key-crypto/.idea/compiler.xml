@@ -9,8 +9,5 @@
         <module name="secretkey" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="secretkey" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
