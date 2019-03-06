@@ -124,11 +124,6 @@ void mlSetPtrFirst(mlist_t *list)
 
 void mlSetPtrNext(mlist_t *list)
 {
-    // if (list->iter == list->tail)
-    // {
-    //     list->iter = NULL;
-    //     return;
-    // }
     if (list->iter != NULL)
     {
         list->iter = list->iter->next;
