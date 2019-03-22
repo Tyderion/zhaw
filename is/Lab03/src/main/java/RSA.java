@@ -91,6 +91,18 @@ public class RSA {
         return plain.modPow(e, n);
     }
 
+    public BigInteger sign(BigInteger message) throws OperationNotSupportedException {
+        if (d == null) {
+            throw new OperationNotSupportedException();
+        }
+        return message.modPow(d, n);
+    }
+
+    public boolean verify(BigInteger message, BigInteger signature) {
+        return signature.modPow(e, n).equals(message);
+    }
+
+
     public BigInteger decrypt(BigInteger cipher) throws BadMessageException, OperationNotSupportedException {
         if (d == null) {
             throw new OperationNotSupportedException();
