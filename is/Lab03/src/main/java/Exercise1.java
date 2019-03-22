@@ -17,9 +17,6 @@ public class Exercise1 {
             bigW = computeBigW(b);
             b++;
         }
-        BigInteger b = BigInteger.valueOf(100);
-
-        b.modPow()
 
         return b;
     }
