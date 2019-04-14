@@ -25,7 +25,7 @@ unsigned int mqGetTime(void);
 //******************************************************************************
 // Static data of queueing system
 
-mlist_t* readyQueue;                                // the ready queue 
+mlist_t* readyQueues[NUM_PRIO_QUEUES];                                // the ready queue 
 
 //******************************************************************************
 //
@@ -38,12 +38,11 @@ mlist_t* readyQueue;                                // the ready queue
 
 static int queueState = 0;
 
-void mqInit(void) {
+void mqInit(void) {    
     if (queueState == 0) {
-
-        /*???? adapt to your needs ????*/
-        readyQueue = mlNewList();
-
+        for (int i = 0; i < NUM_PRIO_QUEUES; i++){
+            readyQueues[i] = mlNewList();
+        }
         mqGetTime();                                // register start time
         queueState = 1;                             // now we are initialized 
     }
@@ -55,7 +54,9 @@ void mqInit(void) {
 // Hint:        will be called by scheduler before termination
 
 void mqDelete(void) {
-    mlDelList(readyQueue);
+    for (int i = 0; i < NUM_PRIO_QUEUES; i++){
+        mlDelList(readyQueues[i]);
+    }
     queueState = 0;
     printf("\n*** cleaning queues ***\n");
 }
@@ -66,8 +67,14 @@ void mqDelete(void) {
 //              if there is no thread, return value is NULL
 
 mthread_t* mqGetNextThread(void) {
-    /* ?????????????????*/
-    return NULL;    // this is just a placeholder -> replace by pointer to tcb
+    /* ????????????????? */
+    for (int i = 0; i < NUM_PRIO_QUEUES; i++){
+        mthread_t* highestPrio = mlDequeue(readyQueues[i]);
+        if (highestPrio != NULL) {
+            return highestPrio;
+        }
+    }
+    return NULL;
 }
 
 //==============================================================================
@@ -76,6 +83,8 @@ mthread_t* mqGetNextThread(void) {
 
 void mqAddToQueue(mthread_t *tcb, int sleepTime) {
     /* ?????????????????*/
+    
+    mlEnqueue(readyQueues[mtGetPrio(tcb)], tcb);
 }
 
 //==============================================================================

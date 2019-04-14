@@ -48,6 +48,7 @@ void* printMessage1(void* ptr)                // user defined thread function
         printf("%s  \n", message);
         for (int j = 0; j < 500000; j++) {}    // do some work 
     }
+    printMessage1(ptr);
     printf("Thread \"%s\" terminates\n", message);
     mthreadExit();
 }
@@ -61,6 +62,7 @@ void* printMessage2(void* ptr)                // user defined thread function
         printf("%s  \n", message);
         for (int j = 0; j < 500000; j++) {}    // do some work 
     }
+    printMessage2(ptr); // 
     printf("Thread \"%s\" terminates\n", message);
     mthreadExit();
 }

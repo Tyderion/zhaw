@@ -64,7 +64,8 @@ void mqDelete(void) {
 
 mthread_t* mqGetNextThread(void) {
     /* ????????????????? */
-    return NULL;    // this is just a placeholder -> replace by pointer to tcb
+    return mlDequeue(readyQueue);
+    //return NULL;    // this is just a placeholder -> replace by pointer to tcb
 }
 
 //==============================================================================
@@ -73,6 +74,7 @@ mthread_t* mqGetNextThread(void) {
 
 void mqAddToQueue(mthread_t *tcb, int sleepTime) {
     /* ?????????????????*/
+    mlEnqueue(readyQueue, tcb);
 }
 
 //==============================================================================
