@@ -12,8 +12,16 @@
 /* returns the number of characters (! must be less/equal : count-1          */
 
 int readline(char *buf, int count) {
+    char input;
+    int size = 0;
+    while(size < count - 1 && (input = getchar()) != '\n' && input != EOF) {
+        buf[size] = input;
+        size++;
+    }
 
-    return 0;
+    buf[size] = '\0';
+
+    return size;
 }
 
 /*****************************************************************************/
