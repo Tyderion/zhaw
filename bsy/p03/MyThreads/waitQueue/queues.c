@@ -25,7 +25,8 @@ unsigned int mqGetTime(void);
 //******************************************************************************
 // Static data of queueing system
 
-mlist_t* readyQueue;                                // the ready queue 
+mlist_t* readyQueues[NUM_PRIO_QUEUES];                                // the ready queue 
+mlist_t* waitQueue;
 
 //******************************************************************************
 //
@@ -38,12 +39,12 @@ mlist_t* readyQueue;                                // the ready queue
 
 static int queueState = 0;
 
-void mqInit(void) {
+void mqInit(void) {    
     if (queueState == 0) {
-
-        /*???? adapt to your needs ????*/
-        readyQueue = mlNewList();
-
+        for (int i = 0; i < NUM_PRIO_QUEUES; i++){
+            readyQueues[i] = mlNewList();
+        }
+        waitQueue = mlNewList();
         mqGetTime();                                // register start time
         queueState = 1;                             // now we are initialized 
     }
@@ -55,7 +56,10 @@ void mqInit(void) {
 // Hint:        will be called by scheduler before termination
 
 void mqDelete(void) {
-    mlDelList(readyQueue);
+    for (int i = 0; i < NUM_PRIO_QUEUES; i++){
+        mlDelList(readyQueues[i]);
+    }
+    mlDelList(waitQueue);
     queueState = 0;
     printf("\n*** cleaning queues ***\n");
 }
@@ -66,8 +70,27 @@ void mqDelete(void) {
 //              if there is no thread, return value is NULL
 
 mthread_t* mqGetNextThread(void) {
-    /* ?????????????????*/
-    return NULL;    // this is just a placeholder -> replace by pointer to tcb
+    /* ????????????????? */
+    // check wait queues, add all threads that are ready to their respective queues
+    mthread_t* tcb;
+    while ((tcb = mlReadFirst(waitQueue)) != NULL && mtGetReadyTime(tcb) < mqGetTime() ) {
+        mlEnqueue(readyQueues[mtGetPrio(tcb)], mlDequeue(waitQueue));
+    }
+
+    for (int i = 0; i < NUM_PRIO_QUEUES; i++){
+        tcb = mlDequeue(readyQueues[i]);
+        if (tcb != NULL) {
+            return tcb;
+        }
+    }
+
+ // if waitQueue not empty but , wait until thread in waitQueue is ready again
+    if ((tcb = mlReadFirst(waitQueue)) != NULL ){
+        usleep((mtGetReadyTime(tcb) - mqGetTime()) * 1000);
+        return mqGetNextThread();
+}
+    
+    return NULL;
 }
 
 //==============================================================================
@@ -76,6 +99,12 @@ mthread_t* mqGetNextThread(void) {
 
 void mqAddToQueue(mthread_t *tcb, int sleepTime) {
     /* ?????????????????*/
+    if (sleepTime > 0) {
+        tcb->readyTime = mqGetTime() + sleepTime;
+        mlSortIn(waitQueue, tcb);
+    } else {
+        mlEnqueue(readyQueues[mtGetPrio(tcb)], tcb);
+    }
 }
 
 //==============================================================================

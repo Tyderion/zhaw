@@ -90,6 +90,11 @@ void dispatchTask(int argument)
 
     schedArg = argument;                  // save argument to static variable
 
+    if (activeThread != NULL && mtGetFreeStackSize(activeThread) < LOW_STACK) {
+        printf("\n*** Not enough stack space (%ld) for thread %d ***", mtGetFreeStackSize(activeThread), activeThread->tID);
+        schedArg = EXIT;
+    }
+
     /* --- check how we were called ----------------------------------------- */
 
     switch (schedArg)    {
