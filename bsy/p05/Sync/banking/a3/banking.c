@@ -73,8 +73,13 @@ void deposit(int branchNr, int accountNr, long int value) {
 }
 
 void transfer(int fromB, int toB, int accountNr, long int value) {
+
+    pthread_mutex_lock(&(Bank[fromB].branchLock));
     int money = withdraw(fromB, accountNr, value);
+    pthread_mutex_unlock(&(Bank[fromB].branchLock));
+    pthread_mutex_lock(&(Bank[toB].branchLock));
     deposit(toB, accountNr, money);
+    pthread_mutex_unlock(&(Bank[toB].branchLock));
 }
 
 void checkAssets(void) {
