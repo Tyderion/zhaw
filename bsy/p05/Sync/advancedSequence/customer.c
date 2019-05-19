@@ -39,10 +39,20 @@ int main(int argc, char *argv[]) {
     printf("Customer starting (%d)\n", myID);
 
     // now check the sum 
+    // now check the sum 
     for (i = 0; i < ITERS; i++) {
-        printf("\t\t\t\tcustomer(%d) put coin %d\n", myID, i); 
+        sem_wait(myTurn);
+        sem_wait(ready);
+        int coinCount;
+        for (coinCount = 0; coinCount <  NUM_COIN; coinCount++) {
+            printf("\t\t\t\tcustomer(%d) put coin %d\n", myID, i);
+            sem_post(coin);
+        }
+       
         printf("\t\t\t\tcustomer(%d) waiting for coffee %d\n", myID, i);
+        sem_wait(coffee);
         printf("\t\t\t\tcustomer(%d) got coffee %d\n", myID, i);
+        sem_post(myTurn);
         drinkingCoffee(myID);
     }
 }

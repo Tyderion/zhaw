@@ -23,7 +23,7 @@
 
 int main(void) {
 
-    int      i;
+    int      i, coinCount;
     sem_t    *coin, *coffee, *ready;
 
     // set up a semaphore
@@ -36,9 +36,14 @@ int main(void) {
 
     i = 0;
     while (i < ITERS) {
+        sem_post(ready);
         printf("teller (%d): waiting for coin\n", i);
-        printf("       (%d): got coin\n", i);  
+        for (coinCount = 0; coinCount <  NUM_COIN; coinCount++) {
+            sem_wait(coin);
+            printf("       (%d): got coin %d\n", i, coinCount);  
+        }
         printf("       (%d): dispense coffee\n", i); 
+        sem_post(coffee);
         i++;
     }
 }
