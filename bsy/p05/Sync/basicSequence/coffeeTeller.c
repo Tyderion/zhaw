@@ -36,9 +36,12 @@ int main(void) {
 
     i = 0;
     while (i < ITERS) {
+        sem_post(ready);
         printf("teller (%d): waiting for coin\n", i);
+        sem_wait(coin);
         printf("       (%d): got coin\n", i);  
         printf("       (%d): dispense coffee\n", i); 
+        sem_post(coffee);
         i++;
     }
 }
