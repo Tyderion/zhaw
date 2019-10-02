@@ -1,32 +1,32 @@
 function earth_sun1()
 
-ce_start = [5; 0]; 
+    % define centers
+    center_earth_start = [5; 0]; 
+    center_sun = [0; 0];
 
-sun = [0; 0]; %coordinates of the sun
+    % angle for earth orbiting the sun (arbitrarily chosen number)
+    phi_rotate =  pi/180;
+    n = 1000; %number of iterations
 
-Phi_rotate =  pi/180; %angle for earth orbiting the sun (arbitrarily chosen number)
-n = 1000; %number of iterations
+    center_earth = [center_earth_start; 1];
 
-ce = [ce_start; 1];
+    for i = 1:n
 
+        % earth orbiting the sun
+        center_earth = rotate_around_point(center_earth, center_sun(1), center_sun(2), phi_rotate);
 
-for i = 1:n
+        % plot init
+        clf
+        hold on
+        % plot earth
+        plot(center_earth(1), center_earth(2), 'r.');
+        % plot sun
+        plot(center_sun(1), center_sun(2), 'y*');
+        % plot settings
+        set(gca,'Color','k')
+        axis([-10, 10, -10, 10]);
+        pause(0.0005);  
+    end
 
-    %earth orbiting the sun
-
-    ce = rotate_around_point(ce, sun(1), sun(2), Phi_rotate);
-    
-    %plot
-    clf
-    hold on
-    % Earth
-    plot(ce(1), ce(2), 'r.');
-    %Sun
-    plot(sun(1), sun(2), 'y*');
-    
-    set(gca,'Color','k')
-    axis([-10, 10, -10, 10]);
-    pause(0.0005);   
-    
-end;
+end
 
