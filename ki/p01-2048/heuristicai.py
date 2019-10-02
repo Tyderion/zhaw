@@ -2,6 +2,8 @@ import random
 import game
 import sys
 from enum import Enum
+import numpy as np
+import copy
 
 # Author:				chrn (original by nneonneo)
 # Date:				11.11.2016
@@ -21,15 +23,20 @@ def find_best_move(board):
 	# Build a heuristic agent on your own that is much better than the random agent.
 	# Your own agent don't have to beat the game.
 
-    bestmove = merge_move(board)
+
+    bestmove = get_merge_moves(board)
     if (bestmove == NO_MOVE):
         # find a move that enables a move
+        get_next_merge_count(board, UP)
         bestmove = find_best_move_random_agent()
     return bestmove
 
 def find_best_move_random_agent():
     return random.choice([UP,DOWN,LEFT,RIGHT])
 
+def get_next_merge_count(board, direction):
+    b = copy.deepcopy(board)
+    return 0
 
 class Move:
     def __init__(self, horizontal, index, first, second, number):
@@ -39,13 +46,22 @@ class Move:
         self.second = second
         self.number = number
 
-    def direction(self):
+    def direction(self, board):
         if self.horizontal:
-            if self.first == 0:
-                return LEFT
+            return LEFT
+            # if self.first == 0:
+            #     return LEFT
+            # elif self.second == 3:
+            #     return RIGHT
+            # elif board[self.index][self.first] == EMPTY:
+            #     return LEFT
             return RIGHT
-        if self.first == 0:
-            return UP
+        # if self.first == 0:
+        #     return UP
+        # elif self.second == 3:
+        #     return DOWN
+        # elif board[self.first][self.index] == EMPTY:
+        #     return UP
         return DOWN
 
     def __repr__(self):
@@ -55,20 +71,20 @@ class Move:
             return "({}, {})-({}, {}): {}".format(self.index, self.first, self.index, self.second, self.number)
         return "({}, {})-({}, {}): {}".format(self.first, self.index, self.second, self.index, self.number)
 
-def merge_move(board):
-    rows = flatten([row_merge(board, row) for row in range(4)])
-    cols = flatten([col_merge(board, col) for col in range(4)])
+def get_merge_moves(board):
+    rows = flatten([count_row_merges(board, row) for row in range(4)])
+    cols = flatten([count_col_merges(board, col) for col in range(4)])
     if not rows and not cols:
         return NO_MOVE
     if not rows:
-        return cols[0].direction()
+        return cols[0].direction(board)
     if not cols:
-        return rows[0].direction()
+        return rows[0].direction(board)
     if len(rows) >= len(cols):
-        return max(rows, key=lambda item: item.number).direction()
-    return max(rows, key=lambda item: item.number).direction()
+        return max(rows, key=lambda item: item.number).direction(board)
+    return max(rows, key=lambda item: item.number).direction(board)
 
-def row_merge(board, row):
+def count_row_merges(board, row):
     result = []
     current = -1
     for i in range(4):
@@ -83,7 +99,7 @@ def row_merge(board, row):
             current = i
     return result
 
-def col_merge(board, col):
+def count_col_merges(board, col):
     result = []
     current = -1
     for i in range(4):
