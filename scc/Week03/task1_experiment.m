@@ -29,5 +29,6 @@ imshow(imfilter(imfilter(Coins, gradientx), gradienty));
 
 I1 = imfilter(Coins, gradientx);
 I2 = imfilter(Coins, gradienty);
+CoinsFiltered = sqrt(I1.^2 + I2.^2);
 
-imshow(sqrt(I1.^2 + I2.^2));
+imshow(experiment_replace_inner_part(Coins, CoinsFiltered));
