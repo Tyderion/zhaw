@@ -4,6 +4,7 @@ import sys
 from enum import Enum
 import numpy as np
 import copy
+import multiprocessing
 
 # Author:				chrn (original by nneonneo)
 # Date:				11.11.2016
@@ -24,12 +25,9 @@ def find_best_move(board):
 	# Your own agent don't have to beat the game.
 
 
-    bestmove = heuristic_simple(board, 3, True)
-    highest_merge = get_highest_merge(board)
-    highest_merge = highest_merge.direction(board)
-    if highest_merge != bestmove[0] and highest_merge != NO_MOVE:
-        return highest_merge
-    if board_equals(board, execute_move(bestmove[0], copy.deepcopy(board))):
+    bestmove = par_simple(board, 2)
+    #bestmove = heuristic_simple(board, 3, True)
+    if board_equals(board, execute_move(bestmove[0], board)):
         move = find_best_move_random_agent()
         while move == bestmove[0]:
             move = find_best_move_random_agent()
@@ -51,12 +49,46 @@ def get_empty_count(board):
                 result += 1
     return result
 
-def heuristic_simple(board, depth, predict):
-    if depth == 0:
-        return max_merges(board)
-    best_move = [LEFT, 0]
+def par_simple(board, depth):
+    jobs = []
+    manager = multiprocessing.Manager()
+    return_dict = manager.dict()
+    rowmerges = flatten([count_row_merges(board, row) for row in range(4)])
+    colmerges = flatten([count_col_merges(board, col) for col in range(4)])
+    highest_move = get_highest_merge(rowmerges, colmerges)
+    if highest_move.direction(board) != NO_MOVE:
+        return [highest_move.direction(board), highest_move.number]
     for move in [UP, DOWN, LEFT, RIGHT]:
-        new_board = execute_move(move, copy.deepcopy(board))
+        # Declare a new process and pass arguments to it
+        new_board = execute_move(move, board)
+        p1 = multiprocessing.Process(target=worker, args=(move, new_board, depth, return_dict))
+        jobs.append(p1)
+        p1.start()
+
+    for proc in jobs:
+        proc.join()
+
+    best_move = [NO_MOVE, -1]
+    for move in return_dict.values():
+        if move[1] > best_move[1]:
+            best_move = move
+    return best_move
+
+def worker(move, board, depth, result):
+    prediction = heuristic_simple(board, depth, True)
+    result[move] = prediction
+
+def heuristic_simple(board, depth, predict):
+    rowmerges = flatten([count_row_merges(board, row) for row in range(4)])
+    colmerges = flatten([count_col_merges(board, col) for col in range(4)])
+    best_move = [LEFT, 0]
+    highest_move = get_highest_merge(rowmerges, colmerges)
+    if highest_move.direction(board) != NO_MOVE:
+        return [highest_move.direction(board), highest_move.number]
+    if depth == 0:
+        return max_merges(rowmerges, colmerges)
+    for move in [UP, DOWN, LEFT, RIGHT]:
+        new_board = execute_move(move, board)
         if predict: #and get_empty_count(new_board) < 6:
             count = 0
             sum_count = 0
@@ -77,9 +109,9 @@ def heuristic_simple(board, depth, predict):
             best_move = current
     return best_move
 
-def max_merges(board):
-    rows = len(flatten([count_row_merges(board, row) for row in range(4)]))
-    cols = len(flatten([count_col_merges(board, col) for col in range(4)]))
+def max_merges(row_merges, col_merges):
+    rows = len(row_merges)
+    cols = len(col_merges)
     return [LEFT, rows] if rows > cols else [DOWN, cols]
 
 class Move:
@@ -119,9 +151,10 @@ class Move:
 
 
 no_move = Move(True, 0, 0, 0, -1)
-def get_highest_merge(board):
-    rows = flatten([count_row_merges(board, row) for row in range(4)])
-    cols = flatten([count_col_merges(board, col) for col in range(4)])
+def get_highest_merge(row_merges, col_merges):
+    limit = 15
+    rows = [ele for ele in row_merges if ele.number > limit]
+    cols = [ele for ele in col_merges if ele.number > limit]
 
     maxrow = no_move if len(rows) == 0 else max(rows, key=lambda item: item.number)
     maxcol = no_move if len(cols) == 0 else max(cols, key=lambda item: item.number)
