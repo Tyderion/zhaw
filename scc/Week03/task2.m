@@ -9,9 +9,6 @@ imshow(Jetski);
 subplot(2, 2, 2);
 imshow(imfilter(Jetski, horizontalBlur));
 
-
-diagonalBlur = fspecial('motion', 20, 180-45);
-
 diagVec = diag(blurVec)+ diag(blurVec(1:19)*0.3, 1) + diag(blurVec(1:19)*0.3, -1);
 
 diagonalBlur = diagVec * (1 / sum(sum(diagVec)));

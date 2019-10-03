@@ -26,6 +26,6 @@ imshow(Coins);
 subplot(3, 2, 6)
 imshow(imfilter(imfilter(Coins, gradientx), gradienty));
 
-I2 = imfilter(Coins, gradientx);
+I1 = imfilter(Coins, gradientx);
 I2 = imfilter(Coins, gradienty);
 imshow(sqrt(I1.^2 + I2.^2));
