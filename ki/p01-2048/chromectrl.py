@@ -21,7 +21,7 @@ class ChromeDebuggerControl(object):
         elif len(pages) == 1:
             page = pages[0]
         else:
-            page = pages[0]
+            page = pages[4]
             # print("Select a page to attach to:")
             # for i, page in enumerate(pages):
             #     print("%d) %s" % (i+1, page['title'].encode('unicode_escape')))

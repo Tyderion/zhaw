@@ -24,12 +24,17 @@ def find_best_move(board):
 	# Your own agent don't have to beat the game.
 
 
-    bestmove = get_merge_moves(board)
-    if (bestmove == NO_MOVE):
-        # find a move that enables a move
-        get_next_merge_count(board, UP)
-        bestmove = find_best_move_random_agent()
-    return bestmove
+    bestmove = heuristic_simple(board, 3, True)
+    highest_merge = get_highest_merge(board)
+    highest_merge = highest_merge.direction(board)
+    if highest_merge != bestmove[0] and highest_merge != NO_MOVE:
+        return highest_merge
+    if board_equals(board, execute_move(bestmove[0], copy.deepcopy(board))):
+        move = find_best_move_random_agent()
+        while move == bestmove[0]:
+            move = find_best_move_random_agent()
+        return move
+    return bestmove[0]
 
 def find_best_move_random_agent():
     return random.choice([UP,DOWN,LEFT,RIGHT])
@@ -37,6 +42,45 @@ def find_best_move_random_agent():
 def get_next_merge_count(board, direction):
     b = copy.deepcopy(board)
     return 0
+
+def get_empty_count(board):
+    result = 0
+    for row in range(4):
+        for col in range(4):
+            if board[row][col] == 0:
+                result += 1
+    return result
+
+def heuristic_simple(board, depth, predict):
+    if depth == 0:
+        return max_merges(board)
+    best_move = [LEFT, 0]
+    for move in [UP, DOWN, LEFT, RIGHT]:
+        new_board = execute_move(move, copy.deepcopy(board))
+        if predict: #and get_empty_count(new_board) < 6:
+            count = 0
+            sum_count = 0
+            for row in range(4):
+                for col in range(4):
+                    if new_board[row][col] == 0:
+                        # TODO: Include 90% chance of new 2
+                        count += 1
+                        new_board[row][col] = 2
+                        sum_count += heuristic_simple(new_board, depth - 1, predict)[1]
+                        # new_board[row][col] = 4
+                        # sum_count += heuristic_simple(new_board, depth - 1)[1]
+                        new_board[row][col] = 0
+            current = [move, 0 if count == 0 else sum_count / count]
+        else:
+            current = heuristic_simple(new_board, depth - 1, predict)
+        if current[1] > best_move[1]:
+            best_move = current
+    return best_move
+
+def max_merges(board):
+    rows = len(flatten([count_row_merges(board, row) for row in range(4)]))
+    cols = len(flatten([count_col_merges(board, col) for col in range(4)]))
+    return [LEFT, rows] if rows > cols else [DOWN, cols]
 
 class Move:
     def __init__(self, horizontal, index, first, second, number):
@@ -47,6 +91,8 @@ class Move:
         self.number = number
 
     def direction(self, board):
+        if self.number == -1:
+            return NO_MOVE
         if self.horizontal:
             return LEFT
             # if self.first == 0:
@@ -70,6 +116,21 @@ class Move:
         if self.horizontal:
             return "({}, {})-({}, {}): {}".format(self.index, self.first, self.index, self.second, self.number)
         return "({}, {})-({}, {}): {}".format(self.first, self.index, self.second, self.index, self.number)
+
+
+no_move = Move(True, 0, 0, 0, -1)
+def get_highest_merge(board):
+    rows = flatten([count_row_merges(board, row) for row in range(4)])
+    cols = flatten([count_col_merges(board, col) for col in range(4)])
+
+    maxrow = no_move if len(rows) == 0 else max(rows, key=lambda item: item.number)
+    maxcol = no_move if len(cols) == 0 else max(cols, key=lambda item: item.number)
+    if maxrow.number == maxcol.number:
+        return no_move
+    elif maxrow.number > maxcol.number:
+        return maxrow
+    else:
+        return maxcol
 
 def get_merge_moves(board):
     rows = flatten([count_row_merges(board, row) for row in range(4)])
