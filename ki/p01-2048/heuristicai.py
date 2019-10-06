@@ -20,7 +20,7 @@ def find_best_move(board):
 
     for move in range(4):
         new_board = execute_move(move, board)
-        new_score = score(new_board)
+        new_score = getScore(new_board)
         if new_score > best_score:
             best_score = new_score
             best_move = move
@@ -49,40 +49,65 @@ weights = np.array([
 ])
 
 weights = np.array([
-    [4**15, 4**14, 4**13, 4**12],
-    [4**8, 4**9, 4**10, 4**11],
-    [4**7, 4**6, 4**5, 4**4],
-    [4**0, 4**1, 4**2, 4**3]
+    [4 ** 15, 4 ** 14, 4 ** 13, 4 ** 12],
+    [4 ** 8, 4 ** 9, 4 ** 10, 4 ** 11],
+    [4 ** 7, 4 ** 6, 4 ** 5, 4 ** 4],
+    [4 ** 0, 4 ** 1, 4 ** 2, 4 ** 3]
 ])
 
 weights = np.array([
-    [4**6, 4**5, 4**4, 4**3],
-    [4**5, 4**4, 4**3, 4**2],
-    [4**4, 4**3, 4**2, 4**1],
-    [4**3, 4**2, 4**1, 4**0]
+    [4 ** 6, 4 ** 5, 4 ** 4, 4 ** 3],
+    [4 ** 5, 4 ** 4, 4 ** 3, 4 ** 2],
+    [4 ** 4, 4 ** 3, 4 ** 2, 4 ** 1],
+    [4 ** 3, 4 ** 2, 4 ** 1, 4 ** 0]
 ])
 weights = np.array([
-    [0,0, 1, 3],
+    [0, 0, 1, 3],
     [0, 1, 3, 5],
     [1, 3, 5, 15],
     [3, 5, 15, 30]
 ])
 
-def score(board):
-    free_spots = count_zeros(board) + 1
+weights = np.array([
+    [6, 5, 4, 3],
+    [5, 4, 3, 2],
+    [4, 3, 2, 1],
+    [3, 2, 1, 0]
+])
+
+weights2 = np.array([[6, 5, 4, 1],
+                    [5, 4, 1, 0],
+                    [4, 1, 0, -1],
+                    [1, 0, -1, -2]])
+
+
+def getScore2(board):
+    score = 0
+    for row in range(4):
+        for col in range(4):
+            score += weights[row][col] * board[row][col]**2
+
+    penalty = compute_penalty(board)
+    return score - penalty
+
+def getScore(board):
+    # free_spots = count_zeros(board) + 1
     result = (weights * board).sum()
     penalty = compute_penalty(board)
 
-    return (result - penalty) * free_spots
+    return (result - penalty)  # * free_spots
+
 
 def compute_penalty(board):
     penalty = 0
     for row in range(4):
         for col in range(4):
             current = board[row][col]
-            for nrow in range(row-1, row+1):
-                for ncol in range(col-1, col+1):
-                    if nrow < 0 or nrow > 3 or ncol <0 or ncol > 3:
+            if current == 0:
+                pass
+            for nrow in range(row - 1, row + 1):
+                for ncol in range(col - 1, col + 1):
+                    if nrow < 0 or nrow > 3 or ncol < 0 or ncol > 3:
                         pass
                     penalty += abs(current - board[nrow][ncol])
     return penalty
