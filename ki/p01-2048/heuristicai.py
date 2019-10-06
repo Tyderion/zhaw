@@ -43,17 +43,49 @@ def find_best_move(board):
 #            [2, 2, 2, 2]]
 weights = np.array([
     [1, 1, 1, 1],
-    [1, 0.1, 0.1, 1],
-    [1, 0.1, 0.1, 1],
+    [1, -0.5, -0.5, 1],
+    [1, -0.5, -0.5, 1],
     [1, 1, 1, 1]
 ])
 
+weights = np.array([
+    [4**15, 4**14, 4**13, 4**12],
+    [4**8, 4**9, 4**10, 4**11],
+    [4**7, 4**6, 4**5, 4**4],
+    [4**0, 4**1, 4**2, 4**3]
+])
+
+weights = np.array([
+    [4**6, 4**5, 4**4, 4**3],
+    [4**5, 4**4, 4**3, 4**2],
+    [4**4, 4**3, 4**2, 4**1],
+    [4**3, 4**2, 4**1, 4**0]
+])
+weights = np.array([
+    [0,0, 1, 3],
+    [0, 1, 3, 5],
+    [1, 3, 5, 15],
+    [3, 5, 15, 30]
+])
 
 def score(board):
     free_spots = count_zeros(board) + 1
     result = (weights * board).sum()
+    penalty = compute_penalty(board)
 
-    return result * free_spots
+    return (result - penalty) * free_spots
+
+def compute_penalty(board):
+    penalty = 0
+    for row in range(4):
+        for col in range(4):
+            current = board[row][col]
+            for nrow in range(row-1, row+1):
+                for ncol in range(col-1, col+1):
+                    if nrow < 0 or nrow > 3 or ncol <0 or ncol > 3:
+                        pass
+                    penalty += abs(current - board[nrow][ncol])
+    return penalty
 
 
 def count_zeros(board):

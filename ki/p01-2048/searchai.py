@@ -13,7 +13,7 @@ UP, DOWN, LEFT, RIGHT = 0, 1, 2, 3
 MOVES = [UP, DOWN, LEFT, RIGHT]
 PROBABILITY_2 = 0.9
 PROBABILITY_4 = 0.1
-
+MIN_SCORE = -10 ** 14
 
 def find_best_move(board):
     """
@@ -36,7 +36,7 @@ def score_toplevel_move(move, board):
     new_board = execute_move(move, board)
 
     if board_equals(board, new_board):
-        return -10 * 2 ** 12
+        return MIN_SCORE
     # TODO:
     # Implement the Expectimax Algorithm.
     # 1.) Start the recursion until it reach a certain depth
@@ -44,10 +44,10 @@ def score_toplevel_move(move, board):
     #     calculate their scores dependence of the probability this will occur. (recursively)
     # 3.) When you reach the leaf calculate the board score with your heuristic.
     free_spots = count_zeros(new_board)
-    if free_spots == 0:
-        return expectimax(new_board, 4)
-    if free_spots < 4:
+    if free_spots <= 1:
         return expectimax(new_board, 3)
+    if free_spots < 3:
+        return expectimax(new_board, 2)
     else:
         return expectimax(new_board, 2)
 
