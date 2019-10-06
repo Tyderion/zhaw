@@ -41,11 +41,12 @@ def get_best_move(board, depth):
         new_board = execute_move(move, board)
         if board_equals(board, new_board):
             pass
-        new_score = expect(board, depth, BOARD)
+        else:
+            new_score = expect(board, depth, BOARD)
 
-        if new_score > score:
-            best_move = move
-            score = new_score
+            if new_score > score:
+                best_move = move
+                score = new_score
 
     return best_move
 
@@ -59,9 +60,10 @@ def expect(board, depth, agent):
             new_board = execute_move(move, board)
             if board_equals(board, new_board):
                 pass
-            new_score = expect(board, depth - 1, BOARD)
-            if new_score > score:
-                score = new_score
+            else:
+                new_score = expect(board, depth - 1, BOARD)
+                if new_score > score:
+                    score = new_score
         return score
     elif agent == BOARD:
         for row in range(4):

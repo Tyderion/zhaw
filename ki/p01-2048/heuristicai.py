@@ -85,7 +85,7 @@ def getScore2(board):
     score = 0
     for row in range(4):
         for col in range(4):
-            score += weights[row][col] * board[row][col]**2
+            score += weights2[row][col] * board[row][col]**2
 
     penalty = compute_penalty(board)
     return score - penalty
@@ -105,10 +105,10 @@ def compute_penalty(board):
             current = board[row][col]
             if current == 0:
                 pass
-            for nrow in range(row - 1, row + 1):
-                for ncol in range(col - 1, col + 1):
-                    if nrow < 0 or nrow > 3 or ncol < 0 or ncol > 3:
-                        pass
+            for (nrow, ncol) in [(row-1, col), (row, col-1), (row+1, col), (row, col+1)]:
+                if nrow < 0 or nrow > 3 or ncol < 0 or ncol > 3:
+                    pass
+                else:
                     penalty += abs(current - board[nrow][ncol])
     return penalty
 
