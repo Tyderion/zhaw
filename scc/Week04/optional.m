@@ -1,5 +1,9 @@
+%% Task 2 prerequisities
+load('trainMatrixEx3.mat');
+load('trainLabelsEx3.mat');
 
-task2()
+[probTokensSpam,probTokensNonSpam] = doTrainingForTask2(trainLabelsEx3, trainMatrixEx3);
+
 %% Optional Task
 
 load('tokenArray.mat');
