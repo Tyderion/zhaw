@@ -41,27 +41,27 @@ def find_best_move(board):
 #            [2, -1, -1, 1],
 #            [2, -1, -1, 1],
 #            [2, 2, 2, 2]]
-weights = np.array([
+ourWeights = np.array([
     [1, 1, 1, 1],
     [1, -0.5, -0.5, 1],
     [1, -0.5, -0.5, 1],
     [1, 1, 1, 1]
 ])
 
-weights = np.array([
+snakeWeights = np.array([
     [4 ** 15, 4 ** 14, 4 ** 13, 4 ** 12],
     [4 ** 8, 4 ** 9, 4 ** 10, 4 ** 11],
     [4 ** 7, 4 ** 6, 4 ** 5, 4 ** 4],
     [4 ** 0, 4 ** 1, 4 ** 2, 4 ** 3]
 ])
 
-weights = np.array([
+diagonalWeights = np.array([
     [4 ** 6, 4 ** 5, 4 ** 4, 4 ** 3],
     [4 ** 5, 4 ** 4, 4 ** 3, 4 ** 2],
     [4 ** 4, 4 ** 3, 4 ** 2, 4 ** 1],
     [4 ** 3, 4 ** 2, 4 ** 1, 4 ** 0]
 ])
-weights = np.array([
+someOtherWeights = np.array([
     [0, 0, 1, 3],
     [0, 1, 3, 5],
     [1, 3, 5, 15],
@@ -85,17 +85,19 @@ def getScore2(board):
     score = 0
     for row in range(4):
         for col in range(4):
-            score += weights2[row][col] * board[row][col]**2
-
+            score += weights2[row][col] * board[row][col]
     penalty = compute_penalty(board)
     return score - penalty
 
 def getScore(board):
     # free_spots = count_zeros(board) + 1
-    result = (weights * board).sum()
+    result = 0
+    for row in range(4):
+        for col in range(4):
+            result += weights[row][col] * board[row][col]
     penalty = compute_penalty(board)
 
-    return (result - penalty)  # * free_spots
+    return result - penalty  # * free_spots
 
 
 def compute_penalty(board):
@@ -105,11 +107,14 @@ def compute_penalty(board):
             current = board[row][col]
             if current == 0:
                 pass
-            for (nrow, ncol) in [(row-1, col), (row, col-1), (row+1, col), (row, col+1)]:
-                if nrow < 0 or nrow > 3 or ncol < 0 or ncol > 3:
-                    pass
-                else:
-                    penalty += abs(current - board[nrow][ncol])
+            else:
+                for (nrow, ncol) in [(row-1, col), (row, col-1), (row+1, col), (row, col+1)]:
+                    if nrow < 0 or nrow > 3 or ncol < 0 or ncol > 3:
+                        pass
+                    elif board[nrow][ncol] == 0:
+                        pass
+                    else:
+                        penalty += abs(current - board[nrow][ncol])
     return penalty
 
 

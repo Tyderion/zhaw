@@ -21,18 +21,18 @@ class ChromeDebuggerControl(object):
         elif len(pages) == 1:
             page = pages[0]
         else:
-            page = pages[4]
-            # print("Select a page to attach to:")
-            # for i, page in enumerate(pages):
-            #     print("%d) %s" % (i+1, page['title'].encode('unicode_escape')))
-            # while 1:
-            #     try:
-            #         pageidx = int(input("Selection? "))
-            #         page = pages[pageidx-1]
-            #         break
-            #     #except Exception, e:
-            #     except Exception as e:
-            #         print("Invalid selection:", e)
+            #page = pages[3]
+            print("Select a page to attach to:")
+            for i, page in enumerate(pages):
+                print("%d) %s" % (i+1, page['title'].encode('unicode_escape')))
+            while 1:
+                try:
+                    pageidx = int(input("Selection? "))
+                    page = pages[pageidx-1]
+                    break
+                #except Exception, e:
+                except Exception as e:
+                    print("Invalid selection:", e)
 
         # Configure debugging websocket
         wsurl = page['webSocketDebuggerUrl']

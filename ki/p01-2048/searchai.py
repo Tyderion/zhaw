@@ -25,6 +25,7 @@ def find_best_move(board):
     """
     with Pool(processes=4) as pool:
        result = pool.starmap(score_toplevel_move, [(move, board) for move in MOVES])
+    #result = [score_toplevel_move(move, board) for move in MOVES]
     best_move = result.index(max(result))
     #best_move = get_best_move(board, 6 if count_zeros(board) < 5 else 4)
 
@@ -52,16 +53,16 @@ def get_best_move(board, depth):
 
 
 def expect(board, depth, agent):
-    score = MIN_SCORE
+    score = 0
     if depth == 0:
-        return getScore2(board)
+        return getScore(board)
     elif agent == PLAYER:
         for move in MOVES:
             new_board = execute_move(move, board)
             if board_equals(board, new_board):
                 pass
             else:
-                new_score = expect(board, depth - 1, BOARD)
+                new_score = expect(new_board, depth - 1, BOARD)
                 if new_score > score:
                     score = new_score
         return score
@@ -69,16 +70,17 @@ def expect(board, depth, agent):
         for row in range(4):
             for col in range(4):
                 if board[row][col] == 0:
-                    board[row][col] = 2
-                    new_score = expect(board, depth - 1, PLAYER)
+                    new_board = board.copy()
+                    new_board[row][col] = 2
+                    new_score = expect(new_board, depth - 1, PLAYER)
                     if new_score != MIN_SCORE:
                         score += PROBABILITY_2 * new_score
 
-                    board[row][col] = 4
-                    new_score = expect(board, depth - 1, PLAYER)
+                    new_board = board.copy()
+                    new_board[row][col] = 4
+                    new_score = expect(new_board, depth - 1, PLAYER)
                     if new_score != MIN_SCORE:
                         score += PROBABILITY_2 * new_score
-                    board[row][col] = 0
         zeros = count_zeros(board)
         if zeros == 0:
             return score
@@ -100,10 +102,12 @@ def score_toplevel_move(move, board):
     #     calculate their scores dependence of the probability this will occur. (recursively)
     # 3.) When you reach the leaf calculate the board score with your heuristic.
     free_spots = count_zeros(new_board)
-    if free_spots < 5:
-        return expect(new_board, 6, BOARD)
+    if free_spots < 3:
+        return expectimax(new_board, 3)
+        #return expect(new_board, 6, BOARD)
     else:
-        return expect(new_board, 4, BOARD)
+        return expectimax(new_board, 2)
+        #return expect(new_board, 4, BOARD)
 
 
 def expectimax(board, depth):
@@ -116,16 +120,17 @@ def expectimax(board, depth):
         for row in range(4):
             for col in range(4):
                 if board[row][col] == 0:
-                    board[row][col] = 2
-                    new_board = execute_move(move, board)
-                    result += PROBABILITY_2 * expectimax(new_board, depth - 1)
+                    new_board = board.copy()
+                    new_board[row][col] = 2
+                    new_board = execute_move(move, new_board)
+                    result += PROBABILITY_2 / amount_of_moves * expectimax(new_board, depth - 1)
 
-                    board[row][col] = 4
-                    new_board = execute_move(move, board)
-                    result += PROBABILITY_4 * expectimax(new_board, depth - 1)
-                    board[row][col] = 0
+                    new_board = board.copy()
+                    new_board[row][col] = 4
+                    new_board = execute_move(move, new_board)
+                    result += PROBABILITY_4 / amount_of_moves * expectimax(new_board, depth - 1)
 
-    return result / amount_of_moves
+    return result
 
 
 def execute_move(move, board):
