@@ -58,23 +58,26 @@ def expectimax(board, depth):
     if depth == 0:
         return getScore(board)
 
-    result = 0
+    best_score = 0
     amount_of_moves = count_zeros(board)
     for move in MOVES:
+        score = 0
         for row in range(4):
             for col in range(4):
                 if board[row][col] == 0:
                     new_board = board.copy()
                     new_board[row][col] = 2
                     new_board = execute_move(move, new_board)
-                    result += PROBABILITY_2 / amount_of_moves * expectimax(new_board, depth - 1)
+                    score += PROBABILITY_2 / amount_of_moves * expectimax(new_board, depth - 1)
 
                     new_board = board.copy()
                     new_board[row][col] = 4
                     new_board = execute_move(move, new_board)
-                    result += PROBABILITY_4 / amount_of_moves * expectimax(new_board, depth - 1)
+                    score += PROBABILITY_4 / amount_of_moves * expectimax(new_board, depth - 1)
+        if score > best_score:
+            best_score = score
 
-    return result
+    return best_score
 
 
 def execute_move(move, board):
