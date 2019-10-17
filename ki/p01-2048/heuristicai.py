@@ -21,10 +21,9 @@ def find_best_move(board):
     for move in range(4):
         new_board = execute_move(move, board)
         new_score = getScore(new_board)
-        if new_score > best_score:
+        if new_score > best_score and not board_equals(board, new_board):
             best_score = new_score
             best_move = move
-
     return best_move
 
 
