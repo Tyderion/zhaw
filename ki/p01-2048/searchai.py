@@ -2,7 +2,7 @@ import random
 import game
 import sys
 from multiprocessing import Pool
-from heuristicai import getScore, count_zeros, getScore2
+from heuristicai import getScore, count_zeros
 
 # Author:      chrn (original by nneonneo)
 # Date:        11.11.2016
@@ -29,6 +29,8 @@ def find_best_move(board):
 
     for m in MOVES:
         print("move: %d score: %.4f" % (m, result[m]))
+        
+    print("hello world")
 
     return best_move
 

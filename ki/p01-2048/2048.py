@@ -12,7 +12,7 @@
 
 import time
 
-#import heuristicai2 as ai #for task 4
+#import heuristicai as ai #for task 4
 import searchai as ai #for task 5
 #import heuristicai_SOLUTION as ai #for task 4
 #import searchai_SOLUTION as ai #for task 5

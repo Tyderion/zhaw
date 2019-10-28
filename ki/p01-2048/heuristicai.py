@@ -54,7 +54,7 @@ snakeWeights = np.array([
     [4 ** 0, 4 ** 1, 4 ** 2, 4 ** 3]
 ])
 
-diagonalWeights = np.array([
+weights = np.array([
     [4 ** 6, 4 ** 5, 4 ** 4, 4 ** 3],
     [4 ** 5, 4 ** 4, 4 ** 3, 4 ** 2],
     [4 ** 4, 4 ** 3, 4 ** 2, 4 ** 1],
@@ -67,7 +67,7 @@ someOtherWeights = np.array([
     [3, 5, 15, 30]
 ])
 
-weights = np.array([
+currentWeights = np.array([
     [6, 5, 4, 3],
     [5, 4, 3, 2],
     [4, 3, 2, 1],
@@ -80,23 +80,15 @@ weights2 = np.array([[6, 5, 4, 1],
                     [1, 0, -1, -2]])
 
 
-def getScore2(board):
-    score = 0
-    for row in range(4):
-        for col in range(4):
-            score += weights2[row][col] * board[row][col]
-    penalty = compute_penalty(board)
-    return score - penalty
-
 def getScore(board):
-    # free_spots = count_zeros(board) + 1
+    free_spots = count_zeros(board) + 1
     result = 0
     for row in range(4):
         for col in range(4):
             result += weights[row][col] * board[row][col]
     penalty = compute_penalty(board)
 
-    return result - penalty  # * free_spots
+    return result - penalty
 
 
 def compute_penalty(board):
