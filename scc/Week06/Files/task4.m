@@ -45,23 +45,18 @@ comparison = table( gmm, nearest, 'RowNames',labels);
 displayTable(comparison, ha)
 
 %% Compute False Rates (positive, negative)
-function [fp, fn] = falseRates(computed, correct)
-    fp = 0;
-    fn = 0;
-    for i=1:size(computed, 1)
-        for j=1:size(computed,2)
-            if computed(i, j) == 1 && correct(i, j) == 0
-                fp = fp + 1;
-            end
-            if computed(i, j) == 0 && correct(i, j) == 1
-                fn = fn + 1;
-            end
-        end
-    end
-    fp = fp / sum(computed == 1, 'all');
-    fn = fn / sum(computed == 0, 'all');
+function [false_positive_rate, false_negative_rate] = falseRates(computed, correct)
+    % -1 = false negative, 0 = correct, 1 = false positive
+    correct_grayscale = correct / 255;
+    diff = uint8(computed) - correct_grayscale;
+    true_negatives = sum(correct_grayscale == 0, 'all');
+    true_positives = sum(correct_grayscale == 1, 'all');
+    false_positives = sum(diff == 1, 'all');
+    false_negatives = sum(diff == -1, 'all');
+    
+    false_positive_rate = false_positives / (false_positives + true_negatives);
+    false_negative_rate = false_negatives / (false_negatives + true_positives);
 end
-
 %% Helper function to display a table in a specific subplot
 % Display table in figure: https://ch.mathworks.com/matlabcentral/answers/254690-how-can-i-display-a-matlab-table-in-a-figure
 % and https://ch.mathworks.com/matlabcentral/answers/313184-how-do-i-place-a-uitable-in-a-subplot-matlab-r2013a
