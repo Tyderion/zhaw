@@ -12,7 +12,6 @@ for i = 1:k
     T = A(N*(i-1)+1:N*i,:);
     means(i,:) = mean(T);
     covMatrix = cov(T);
-    [~, p] = chol(covMatrix);
     probDensity(:,i) = mvnpdf(M, means(i,:), covMatrix);
 end
 disp(means)
